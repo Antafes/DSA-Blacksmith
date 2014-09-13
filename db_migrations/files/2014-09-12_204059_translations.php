@@ -23,13 +23,15 @@ $DB_MIGRATION = array(
 		');
 
 		$results[] = query_raw('
-			CREATE TABLE translations (
-				translationId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-				languageId INT UNSIGNED NOT NULL,
+			CREATE TABLE `translations` (
+				`translationId` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+				`languageId` INT(10) UNSIGNED NOT NULL,
 				`key` VARCHAR(255) NOT NULL COLLATE "utf8_general_ci",
 				`value` TEXT NOT NULL COLLATE "utf8_general_ci",
-				deleted TINYINT(1) NOT NULL,
-				PRIMARY KEY (`translationId`)
+				`deleted` TINYINT(1) NOT NULL,
+				PRIMARY KEY (`translationId`),
+				INDEX `translation_language` (`languageId`),
+				CONSTRAINT `translation_language` FOREIGN KEY (`languageId`) REFERENCES `languages` (`languageId`)
 			)
 			COLLATE="utf8_bin"
 			ENGINE=InnoDB
@@ -62,151 +64,151 @@ $DB_MIGRATION = array(
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (1, 1, "german", "Deutsch", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "german", "Deutsch", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (2, 2, "german", "Deutsch", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "german", "Deutsch", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (3, 1, "english", "English", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "english", "English", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (4, 2, "english", "English", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "english", "English", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (5, 1, "title", "DSA Schmiede", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "title", "DSA Schmiede", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (6, 2, "title", "DSA Blacksmith", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "title", "DSA Blacksmith", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (7, 1, "index", "Startseite", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "index", "Startseite", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (8, 2, "index", "Index", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "index", "Index", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (9, 1, "materials", "Materialien", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "materials", "Materialien", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (10, 1, "techniques", "Techniken", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "techniques", "Techniken", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (11, 1, "itemTypes", "Gegenstandstypen", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "itemTypes", "Gegenstandstypen", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (12, 1, "username", "Benutzername", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "username", "Benutzername", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (13, 2, "username", "Username", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "username", "Username", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (14, 1, "password", "Passwort", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "password", "Passwort", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (15, 2, "password", "Password", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "password", "Password", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (16, 1, "login", "Login", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "login", "Login", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (17, 2, "login", "Login", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "login", "Login", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (18, 1, "register", "Registrieren", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "register", "Registrieren", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (19, 2, "register", "Register", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "register", "Register", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (20, 1, "invalidLogin", "Die eingegebenen Logindaten sind nicht bekannt.", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "invalidLogin", "Die eingegebenen Logindaten sind nicht bekannt.", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (21, 2, "invalidLogin", "The entered login data are not known.", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "invalidLogin", "The entered login data are not known.", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (22, 1, "emptyLogin", "Bitte fülle alle Felder aus.", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "emptyLogin", "Bitte fülle alle Felder aus.", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (23, 2, "emptyLogin", "Please fill in all fields.", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "emptyLogin", "Please fill in all fields.", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (24, 1, "logout", "Logout", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "logout", "Logout", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (25, 2, "logout", "Logout", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "logout", "Logout", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (26, 1, "repeatPassword", "Passwort wiederholen", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "repeatPassword", "Passwort wiederholen", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (27, 2, "repeatPassword", "Repeat password", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "repeatPassword", "Repeat password", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (28, 1, "registerEmpty", "Bitte fülle alle Felder aus.", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "registerEmpty", "Bitte fülle alle Felder aus.", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (29, 2, "registerEmpty", "Pleas fill in all fields.", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "registerEmpty", "Pleas fill in all fields.", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (30, 1, "passwordsDontMatch", "Die eingegebenen Passwörter stimmen nicht überein.", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "passwordsDontMatch", "Die eingegebenen Passwörter stimmen nicht überein.", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (31, 2, "passwordsDontMatch", "The entered passwords don\'t match.", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "passwordsDontMatch", "The entered passwords don\'t match.", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (32, 1, "usernameAlreadyInUse", "Der Benutzername wird bereits verwendet.", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "usernameAlreadyInUse", "Der Benutzername wird bereits verwendet.", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (33, 2, "usernameAlreadyInUse", "The username is already in use.", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "usernameAlreadyInUse", "The username is already in use.", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (34, 1, "registrationSuccessful", "Die Registrierung war erfolgreich.<br />Du erhältst eine E-Mail sobald du freigeschalten wurdest.", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "registrationSuccessful", "Die Registrierung war erfolgreich.<br />Du erhältst eine E-Mail sobald du freigeschalten wurdest.", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (35, 2, "registrationSuccessful", "The registration was successful.<br />You will receive an email on activation.", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "registrationSuccessful", "The registration was successful.<br />You will receive an email on activation.", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (36, 1, "admin", "Admin", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "admin", "Admin", 0)
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`translationId`, `languageId`, `key`, `value`, `deleted`) VALUES (37, 2, "admin", "Admin", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (2, "admin", "Admin", 0)
 		');
 
 		return !in_array(false, $results);

@@ -97,7 +97,7 @@ class Translator
 
 		foreach ($languages as $language)
 		{
-			$this->languages[$language['languageId']] = \Model\Language::getLanguageById(
+			$this->languages[$language['languageId']] = \Model\Language::loadById(
 				$language['languageId']
 			);
 		}

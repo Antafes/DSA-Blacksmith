@@ -27,7 +27,6 @@ class Header extends \Page
 		// Add JS files
 		$this->template->loadJs('jquery-2.1.1');
 		$this->template->loadJs('jquery-ui-1.11.0.custom');
-		$this->template->loadJs('header');
 
 		$this->createMenu();
 	}

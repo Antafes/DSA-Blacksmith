@@ -1,0 +1,112 @@
+a
+{
+	color: #000000;
+	text-decoration: none;
+}
+
+table > thead
+{
+	font-weight: bold;
+	border-bottom: 1px solid #878787;
+}
+
+table > thead > tr > td,
+table > tbody > tr > td
+{
+	height: 16px;
+	padding: 4px;
+}
+
+table > thead > tr > td
+{
+	text-align: center;
+}
+
+table .material
+{
+	width: 200px;
+}
+
+table .materialType,
+table .priceFactor,
+table .breakFactor,
+table .armor
+{
+	width: 100px;
+}
+
+table .priceWeight
+{
+	width: 110px;
+}
+
+table .proof
+{
+	width: 50px;
+}
+
+table .additional
+{
+	width: 300px;
+}
+
+.submenu
+{
+	margin-bottom: 15px;
+}
+
+.materials
+{
+	margin-top: 20px;
+}
+
+table.addMaterial
+{
+	width: 100%;
+}
+
+table.addMaterial .buttonArea
+{
+	text-align: center;
+}
+
+table.addMaterial input,
+table.addMaterial select,
+table.addMaterial textarea
+{
+	width: 100%;
+}
+
+table.addMaterial .priceWeight
+{
+	width: 155px;
+}
+
+table.addMaterial .currency
+{
+	width: 70px;
+}
+
+table.addMaterial textarea
+{
+	height: 100px;
+}
+
+table.addMaterial .materialType
+{
+	vertical-align: middle;
+	position: relative;
+}
+
+table.addMaterial .materialType a
+{
+	display: inline-block;
+	position: absolute;
+	top: 5px;
+	right: 0;
+}
+
+table.addMaterial .materialType select
+{
+	width: 210px;
+}

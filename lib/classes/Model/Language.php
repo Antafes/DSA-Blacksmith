@@ -2,11 +2,11 @@
 namespace Model;
 
 /**
- * Description of EsLanguage
+ * Description of Language
  *
  * @author Neithan
  */
-class Language
+class Language extends \Model
 {
 	/**
 	 * @var integer
@@ -52,7 +52,7 @@ class Language
 	 * @param integer $id
 	 * @return \self
 	 */
-	public static function getLanguageById($id)
+	public static function loadById($id)
 	{
 		$sql = '
 			SELECT languageId, language, iso2code
