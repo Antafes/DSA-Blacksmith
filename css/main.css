@@ -22,7 +22,8 @@ table > thead > tr > td
 	text-align: center;
 }
 
-table .material
+table .material,
+table .itemType
 {
 	width: 200px;
 }
@@ -30,7 +31,8 @@ table .material
 table .materialType,
 table .priceFactor,
 table .breakFactor,
-table .armor
+table .armor,
+table .time
 {
 	width: 100px;
 }
