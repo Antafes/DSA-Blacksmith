@@ -28,7 +28,11 @@ class ItemType extends \Model
 	 */
 	protected $time;
 
-
+	/**
+	 * @param integer $id
+	 *
+	 * @return \self
+	 */
 	public static function loadById($id)
 	{
 		$sql = '

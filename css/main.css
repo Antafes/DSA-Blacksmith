@@ -4,6 +4,11 @@ a
 	text-decoration: none;
 }
 
+.help
+{
+	font-size: 11px;
+}
+
 table > thead
 {
 	font-weight: bold;
@@ -23,7 +28,8 @@ table > thead > tr > td
 }
 
 table .material,
-table .itemType
+table .itemType,
+table .technique
 {
 	width: 200px;
 }
@@ -32,7 +38,9 @@ table .materialType,
 table .priceFactor,
 table .breakFactor,
 table .armor,
-table .time
+table .time,
+table .timeFactor,
+table .hitPoints
 {
 	width: 100px;
 }
@@ -47,7 +55,8 @@ table .proof
 	width: 50px;
 }
 
-table .additional
+table .additional,
+table .forceModificator
 {
 	width: 300px;
 }
@@ -62,19 +71,26 @@ table .additional
 	margin-top: 20px;
 }
 
-table.addMaterial
+table.addMaterial,
+table.addTechnique,
+table.addItemTypes
 {
 	width: 100%;
 }
 
-table.addMaterial .buttonArea
+table.addMaterial .buttonArea,
+table.addTechnique .buttonArea,
+table.addItemTypes .buttonArea
 {
 	text-align: center;
 }
 
 table.addMaterial input,
 table.addMaterial select,
-table.addMaterial textarea
+table.addMaterial textarea,
+table.addTechnique input,
+table.addTechnique textarea,
+table.addItemTypes input
 {
 	width: 100%;
 }
@@ -89,7 +105,8 @@ table.addMaterial .currency
 	width: 70px;
 }
 
-table.addMaterial textarea
+table.addMaterial textarea,
+table.addTechnique textarea
 {
 	height: 100px;
 }
@@ -111,4 +128,9 @@ table.addMaterial .materialType a
 table.addMaterial .materialType select
 {
 	width: 210px;
+}
+
+table.addTechnique > tbody > tr > td:first-child
+{
+	max-width: 150px;
 }

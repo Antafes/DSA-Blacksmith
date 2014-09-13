@@ -8,6 +8,9 @@ namespace Listing;
  */
 class Materials extends \Listing
 {
+	/**
+	 * @return \self
+	 */
 	public static function loadList()
 	{
 		$sql = '
@@ -35,6 +38,11 @@ class Materials extends \Listing
 		return $obj;
 	}
 
+	/**
+	 * @param integer $id
+	 *
+	 * @return \Model\Material
+	 */
 	public function getById($id)
 	{
 		return $this->list[$id];

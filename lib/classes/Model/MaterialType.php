@@ -11,6 +11,11 @@ class MaterialType extends \Model
 	protected $materialTypeId;
 	protected $name;
 
+	/**
+	 * @param integer $id
+	 *
+	 * @return \self
+	 */
 	public static function loadById($id)
 	{
 		$sql = '

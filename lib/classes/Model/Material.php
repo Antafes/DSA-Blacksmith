@@ -56,6 +56,8 @@ class Material extends \Model
 	 * Load a material by ID
 	 *
 	 * @param integer $id
+	 *
+	 * @return \self
 	 */
 	public static function loadById($id)
 	{

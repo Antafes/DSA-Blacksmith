@@ -2,11 +2,11 @@
 namespace Listing;
 
 /**
- * Description of MaterialTypes
+ * Description of Techniques
  *
  * @author Neithan
  */
-class MaterialTypes extends \Listing
+class Techniques extends \Listing
 {
 	/**
 	 * @return \self
@@ -14,23 +14,23 @@ class MaterialTypes extends \Listing
 	public static function loadList()
 	{
 		$sql = '
-			SELECT `materialTypeId`
-			FROM materialtypes
+			SELECT `techniqueId`
+			FROM techniques
 			WHERE !deleted
 			ORDER BY `name`
 		';
-		$materialTypeIds = query($sql, true);
+		$techniqueIds = query($sql, true);
 		$obj = new self();
 
-		if (empty($materialTypeIds))
+		if (empty($techniqueIds))
 		{
 			return $obj;
 		}
 
 		$list = array();
-		foreach ($materialTypeIds as $materialType)
+		foreach ($techniqueIds as $technique)
 		{
-			$list[$materialType['materialTypeId']] = \Model\MaterialType::loadById($materialType['materialTypeId']);
+			$list[$technique['techniqueId']] = \Model\Technique::loadById($technique['techniqueId']);
 		}
 
 		$obj->setList($list);
@@ -41,7 +41,7 @@ class MaterialTypes extends \Listing
 	/**
 	 * @param integer $id
 	 *
-	 * @return \Model\MaterialType
+	 * @return \Model\Technique
 	 */
 	public function getById($id)
 	{

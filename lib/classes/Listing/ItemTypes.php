@@ -8,6 +8,9 @@ namespace Listing;
  */
 class ItemTypes extends \Listing
 {
+	/**
+	 * @return \self
+	 */
 	public static function loadList()
 	{
 		$sql = '
@@ -35,6 +38,11 @@ class ItemTypes extends \Listing
 		return $obj;
 	}
 
+	/**
+	 * @param integer $id
+	 *
+	 * @return \Model\ItemType
+	 */
 	public function getById($id)
 	{
 		return $this->list[$id];
