@@ -69,7 +69,7 @@ class User
 		$userData = query($sql);
 
 		$encPassword = self::encryptPassword($password, $userData['salt']);
-		var_dump($userData, $encPassword);
+
 		if (strcasecmp($name, $userData['name']) === 0 && $encPassword == $userData['password'])
 		{
 			$object = new self();
