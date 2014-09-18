@@ -323,6 +323,10 @@ $DB_MIGRATION = array(
 				CHANGE COLUMN `talentPoints` `priceFactor` DECIMAL(4,2) NOT NULL AFTER `name`
 		');
 
+		$results[] = query_raw('
+			UPDATE `translations` SET `value`="Werte in folgendem Schema eintragen: TA / PA\r\nWenn zwischen mehreren Modifikatoren gewählt werden soll, können die Wertpaare mit \"||\", \"or\" oder \"oder\" getrennt werden." WHERE  `translationId`=73
+		');
+
 		return !in_array(false, $results);
 
 	}
