@@ -507,7 +507,8 @@ class Blueprint extends \Model
 		if ($this->twoHanded)
 			$notes .= 'z ';
 
-		if ($this->upgradeInitiative || !empty($this->getUpgradeForceModificator()))
+		$upgradeForceModificator = $this->getUpgradeForceModificator();
+		if ($this->upgradeInitiative || !empty($upgradeForceModificator))
 			$notes .= 'p';
 
 		return trim($notes);
