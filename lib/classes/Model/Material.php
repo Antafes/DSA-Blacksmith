@@ -111,7 +111,8 @@ class Material extends \Model
 			return false;
 
 		$additional = array();
-		if (!empty(trim($data['additional'])))
+		$data['additional'] = trim($data['additional']);
+		if (!empty($data['additional']))
 		{
 			preg_match_all('/(\w.*?) +(\w.*?)(?=(\r\n|\r|\n))/m', trim($data['additional']), $matches, PREG_SET_ORDER);
 			foreach ($matches as $match)
