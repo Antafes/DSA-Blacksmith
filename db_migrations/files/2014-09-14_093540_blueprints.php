@@ -262,7 +262,7 @@ $DB_MIGRATION = array(
 			ALTER TABLE `materials`
 				CHANGE COLUMN `breakFactor` `breakFactor` INT(11) NOT NULL AFTER `proof`
 		');
-		var_dump($results);
+
 		return !in_array(false, $results);
 
 	},
