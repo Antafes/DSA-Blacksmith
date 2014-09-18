@@ -228,8 +228,8 @@
 	</div>
 	<script type="text/javascript">
 		$(function() {
-			window.materials = JSON.parse('{$materialList|json_encode}');
-			window.techniques = JSON.parse('{$techniqueList|json_encode}');
+			window.materials = JSON.parse('{$materialList}');
+			window.techniques = JSON.parse('{$techniqueList}');
 		});
 	</script>
 </div>

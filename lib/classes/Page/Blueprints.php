@@ -34,9 +34,9 @@ class Blueprints extends \Page
 		$this->getTemplate()->assign('blueprintListing', $blueprintListing);
 		$this->getTemplate()->assign('itemTypeListing', $itemTypeListing);
 		$this->getTemplate()->assign('materialListing', $materialListing);
-		$this->getTemplate()->assign('materialList', $materialListing->getAsArray());
+		$this->getTemplate()->assign('materialList', json_encode($materialListing->getAsArray()));
 		$this->getTemplate()->assign('techniqueListing', $techniqueListing);
-		$this->getTemplate()->assign('techniqueList', $techniqueListing->getAsArray());
+		$this->getTemplate()->assign('techniqueList', json_encode($techniqueListing->getAsArray()));
 		$this->getTemplate()->assign('currencyList', $moneyHelper->getCurrencyList());
 	}
 
