@@ -246,7 +246,7 @@ class Blueprint extends \Model
 			}
 			elseif ($key === 'twoHanded' || $key === 'improvisational')
 			{
-				$this->$key = boolval($value);
+				$this->$key = (bool) $value;
 			}
 			elseif (property_exists($this, $key))
 			{
