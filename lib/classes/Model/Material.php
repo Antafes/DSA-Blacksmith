@@ -137,7 +137,8 @@ class Material extends \Model
 		}
 
 		$priceWeight = 0;
-		if (!empty(trim($data['priceWeight'])))
+		$data['priceWeight'] = trim($data['priceWeight']);
+		if (!empty($data['priceWeight']))
 		{
 			$moneyHelper = new \Helper\Money();
 			$priceWeight = $moneyHelper->exchange($data['priceWeight'], $data['currency']);
