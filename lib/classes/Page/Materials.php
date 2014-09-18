@@ -25,10 +25,10 @@ class Materials extends \Page
 			$this->removeMaterial($materialListing->getById($_GET['remove']));
 		}
 
-		$money = new \Helper\Money();
+		$moneyHelper = new \Helper\Money();
 		$this->getTemplate()->assign('materialListing', $materialListing);
 		$this->getTemplate()->assign('materialTypeListing', $materialTypeListing);
-		$this->getTemplate()->assign('currencyList', $money->getCurrencyList());
+		$this->getTemplate()->assign('currencyList', $moneyHelper->getCurrencyList());
 	}
 
 	/**

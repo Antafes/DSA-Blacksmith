@@ -29,7 +29,8 @@ table > thead > tr > td
 
 table .material,
 table .itemType,
-table .technique
+table .technique,
+table .name
 {
 	width: 200px;
 }
@@ -40,7 +41,10 @@ table .breakFactor,
 table .armor,
 table .time,
 table .timeFactor,
-table .hitPoints
+table .hitPoints,
+table .notes,
+table .price,
+table .weight
 {
 	width: 100px;
 }
@@ -50,9 +54,16 @@ table .priceWeight
 	width: 110px;
 }
 
-table .proof
+table .proof,
+table.showBlueprint .breakFactor,
+table.showBlueprint .initiative
 {
 	width: 50px;
+}
+
+table.showBlueprint .forceModificator
+{
+	width: 75px;
 }
 
 table .additional,
@@ -73,7 +84,8 @@ table .forceModificator
 
 table.addMaterial,
 table.addTechnique,
-table.addItemTypes
+table.addItemTypes,
+table.addBlueprint
 {
 	width: 100%;
 }
@@ -90,7 +102,10 @@ table.addMaterial select,
 table.addMaterial textarea,
 table.addTechnique input,
 table.addTechnique textarea,
-table.addItemTypes input
+table.addItemTypes input,
+table.addBlueprint input:not([type=checkbox]),
+table.addBlueprint select,
+table.addBlueprint textarea
 {
 	width: 100%;
 }
@@ -106,7 +121,8 @@ table.addMaterial .currency
 }
 
 table.addMaterial textarea,
-table.addTechnique textarea
+table.addTechnique textarea,
+table.addBlueprint textarea
 {
 	height: 100px;
 }
@@ -133,4 +149,46 @@ table.addMaterial .materialType select
 table.addTechnique > tbody > tr > td:first-child
 {
 	max-width: 150px;
+}
+
+table.addBlueprint > tbody > tr > td:last-child
+{
+	width: 400px;
+}
+
+table.addBlueprint .currency,
+table.addBlueprint input.baseHitPointsDice,
+table.addBlueprint input.baseHitPoints
+{
+	width: 100px;
+}
+
+table.addBlueprint input.basePrice
+{
+	width: 280px;
+}
+
+table.addBlueprint .baseHitPointsDiceType
+{
+	width: 60px;
+}
+
+table.addBlueprint input.upgradeForceModificator
+{
+	width: 50px;
+}
+
+table.addBlueprint #materialSelect td.material
+{
+	width: 200px;
+}
+
+table.addBlueprint #materialSelect td.percentage input
+{
+	width: calc(100% - 20px);
+}
+
+table#materialSelect .percentage
+{
+	width: 100px;
 }

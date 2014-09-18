@@ -183,7 +183,7 @@ class Translator
 	 */
 	public function getTranslation($key)
 	{
-		if (is_object($key) || is_bool($key))
+		if (is_object($key) || is_bool($key) || is_float($key))
 			return $key;
 
 		if (is_array($key))

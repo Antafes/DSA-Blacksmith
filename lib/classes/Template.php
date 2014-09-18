@@ -30,6 +30,11 @@ class Template
 		$this->smarty = new Smarty();
 		$this->smarty->setTemplateDir('templates/');
 
+		if (file_exists(__DIR__.'/../plugins/'))
+		{
+			$this->smarty->addPluginsDir(__DIR__.'/../plugins/');
+		}
+
 		$translator = Translator::getInstance();
 		$this->translator = $translator;
 		$this->smarty->assign('translator', $translator);

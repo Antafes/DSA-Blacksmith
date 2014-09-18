@@ -40,7 +40,7 @@ $DB_MIGRATION = array(
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "forceModifikator", "Wuchtmodifikator", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "forceModificator", "Wuchtmodifikator", 0)
 		');
 
 		$results[] = query_raw('

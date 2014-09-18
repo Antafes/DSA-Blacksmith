@@ -8,7 +8,7 @@
 		<thead>
 			<tr>
 				<th class="itemType">{$translator->getTranslation('itemType')}</th>
-				<th class="priceFactor">{$translator->getTranslation('priceFactor')}</th>
+				<th class="talentPoints">{$translator->getTranslation('talentPoints')}</th>
 				<th class="time">{$translator->getTranslation('time')}</th>
 				<th></th>
 			</tr>
@@ -17,8 +17,8 @@
 			{foreach $itemTypeListing->getList() as $itemType}
 				<tr class="{cycle values="odd,even"}">
 					<td class="itemType">{$itemType->getName()}</td>
-					<td class="priceFactor">{$itemType->getPriceFactor()|number_format:2:',':'.'}</td>
-					<td class="time">{$itemType->getTime()|number_format:2:',':'.'} ZE</td>
+					<td class="talentPoints">{$itemType->getTalentPoints()}</td>
+					<td class="time">{$itemType->getTime()|number_format:2:',':'.'} {$translator->getTranslation('tu')}</td>
 					<td>
 						<a href="index.php?page=ItemTypes&remove={$itemType->getItemTypeId()}">X</a>
 					</td>
@@ -35,21 +35,21 @@
 			<table class="addItemTypes collapse">
 				<tbody>
 					<tr class="odd">
-						<td>{$translator->getTranslation('material')}</td>
+						<td>{$translator->getTranslation('itemType')}</td>
 						<td>
 							<input type="text" name="name" />
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('priceFactor')}</td>
+						<td>{$translator->getTranslation('talentPoints')}</td>
 						<td>
-							<input type="number" step="0.01" name="priceFactor">
+							<input type="number" step="0.01" name="talentPoints" />
 						</td>
 					</tr>
 					<tr class="odd">
 						<td>{$translator->getTranslation('time')}</td>
 						<td>
-							<input type="number" step="0.01" name="time">
+							<input type="number" step="0.01" name="time" />
 						</td>
 					</tr>
 					<tr>

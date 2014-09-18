@@ -21,6 +21,11 @@ class Material extends \Model
 	/**
 	 * @var float
 	 */
+	protected $timeFactor;
+
+	/**
+	 * @var float
+	 */
 	protected $priceFactor;
 
 	/**
@@ -43,7 +48,17 @@ class Material extends \Model
 	/**
 	 * @var integer
 	 */
+	protected $hitPoints;
+
+	/**
+	 * @var integer
+	 */
 	protected $armor;
+
+	/**
+	 * @var string
+	 */
+	protected $forceModificator;
 
 	/**
 	 * A JSON encoded string of additional modifiers
@@ -66,11 +81,14 @@ class Material extends \Model
 				`materialId`,
 				`materialTypeId`,
 				`name`,
+				`timeFactor`,
 				`priceFactor`,
 				`priceWeight`,
 				proof,
 				`breakFactor`,
+				`hitPoints`,
 				armor,
+				`forceModificator`,
 				additional
 			FROM materials
 			WHERE `materialId` = '.sqlval($id).'
@@ -102,6 +120,16 @@ class Material extends \Model
 			}
 		}
 
+		if (stripos($data['timeFactor'], ','))
+		{
+			$data['timeFactor'] = str_replace(',', '.', $data['timeFactor']);
+		}
+
+		if (empty($data['timeFactor']))
+		{
+			$data['timeFactor'] = 1;
+		}
+
 		if (stripos($data['priceFactor'], ','))
 		{
 			$data['priceFactor'] = str_replace(',', '.', $data['priceFactor']);
@@ -114,15 +142,23 @@ class Material extends \Model
 			$priceWeight = $moneyHelper->exchange($data['priceWeight'], $data['currency']);
 		}
 
+		if ($data['forceModificator'])
+		{
+			$forceModificators = \Helper\ForceModificator::getForceModificatorArray($data['forceModificator']);
+		}
+
 		$sql = '
 			INSERT INTO materials
 			SET materialTypeId = '.sqlval($data['materialTypeId']).',
 				name = '.sqlval($data['name']).',
+				timeFactor = '.sqlval($data['timeFactor']).',
 				priceFactor = '.sqlval($data['priceFactor']).',
 				priceWeight = '.sqlval($data['priceWeight']).',
 				proof = '.sqlval($data['proof']).',
 				breakFactor = '.sqlval($data['breakFactor']).',
+				hitPoints = '.sqlval($data['hitPoints']).',
 				armor = '.sqlval($data['armor']).',
+				forceModificator = '.sqlval(json_encode($forceModificators)).',
 				additional = '.sqlval(json_encode($additional)).'
 		';
 		query($sql);
@@ -160,6 +196,11 @@ class Material extends \Model
 		return $this->name;
 	}
 
+	public function getTimeFactor()
+	{
+		return $this->timeFactor;
+	}
+
 	public function getPriceFactor()
 	{
 		return $this->priceFactor;
@@ -180,9 +221,19 @@ class Material extends \Model
 		return $this->breakFactor;
 	}
 
+	public function getHitPoints()
+	{
+		return $this->hitPoints;
+	}
+
 	public function getArmor()
 	{
 		return $this->armor;
+	}
+
+	public function getForceModificator()
+	{
+		return json_decode($this->forceModificator, true);
 	}
 
 	public function getAdditional()
@@ -198,5 +249,26 @@ class Material extends \Model
 			WHERE `materialId` = '.sqlval($this->materialId).'
 		';
 		return query($sql);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getAsArray()
+	{
+		return array(
+			'id' => $this->getMaterialId(),
+			'name' => $this->getName(),
+			'materialType' => $this->getMaterialType(),
+			'timeFactor' => $this->getTimeFactor(),
+			'priceFactor' => $this->getPriceFactor(),
+			'priceWeight' => $this->getPriceWeight(),
+			'proof' => $this->getProof(),
+			'breakFactor' => $this->getBreakFactor(),
+			'hitPoints' => $this->getHitPoints(),
+			'armor' => $this->getArmor(),
+			'forceModificator' => $this->getForceModificator(),
+			'additional' => $this->getAdditional(),
+		);
 	}
 }

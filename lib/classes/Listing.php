@@ -24,4 +24,18 @@ abstract class Listing
 	}
 
 	public abstract function getById($id);
+
+	/**
+	 * @return array
+	 */
+	public function getAsArray()
+	{
+		$list = array();
+		foreach ($this->list as $row)
+		{
+			$list[] = $row->getAsArray();
+		}
+
+		return $list;
+	}
 }

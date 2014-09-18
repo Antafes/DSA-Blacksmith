@@ -21,7 +21,7 @@ class ItemType extends \Model
 	/**
 	 * @var float
 	 */
-	protected $priceFactor;
+	protected $talentPoints;
 
 	/**
 	 * @var float
@@ -39,7 +39,7 @@ class ItemType extends \Model
 			SELECT
 				`itemTypeId`,
 				`name`,
-				`priceFactor`,
+				`talentPoints`,
 				`time`
 			FROM itemtypes
 			WHERE `itemTypeId` = '.sqlval($id).'
@@ -55,16 +55,15 @@ class ItemType extends \Model
 
 	public static function create($data)
 	{
-		if (!$data['name'] && !$data['priceFactor'] && !$data['time'])
+		if (!$data['name'] && !$data['talentPoints'] && !$data['time'])
 			return false;
 
-		$data['priceFactor'] = str_replace(',', '.', $data['priceFactor']);
 		$data['time'] = str_replace(',', '.', $data['time']);
 
 		$sql = '
 			INSERT INTO itemtypes
 			SET name = '.sqlval($data['name']).',
-				priceFactor = '.sqlval($data['priceFactor']).',
+				talentPoints = '.sqlval($data['talentPoints']).',
 				time = '.sqlval($data['time']).'
 		';
 		query($sql);
@@ -82,9 +81,9 @@ class ItemType extends \Model
 		return $this->name;
 	}
 
-	public function getPriceFactor()
+	public function getTalentPoints()
 	{
-		return $this->priceFactor;
+		return $this->talentPoints;
 	}
 
 	public function getTime()

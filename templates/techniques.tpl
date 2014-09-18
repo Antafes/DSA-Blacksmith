@@ -13,7 +13,6 @@
 				<th class="proof">{$translator->getTranslation('proof')}</th>
 				<th class="breakFactor">{$translator->getTranslation('breakFactor')}</th>
 				<th class="hitPoints">{$translator->getTranslation('hitPoints')}</th>
-				<th class="forceModificator">{$translator->getTranslation('forceModifikator')}</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -26,22 +25,13 @@
 					<td class="proof">{$technique->getProof()}</td>
 					<td class="breakFactor">{$technique->getBreakFactor()}</td>
 					<td class="hitPoints">{$technique->getHitPoints()}</td>
-					<td class="forceModificator">
-						{foreach $technique->getForceModificator() as $type => $modificators}
-							{foreach $modificators as $modificator}
-								{$modificator.0} / {$modificator.1}{if $modificator@index < $modificator@total - 1} {$translator->getTranslation('or')} {/if}
-							{/foreach}
-						{foreachelse}
-							-
-						{/foreach}
-					</td>
 					<td>
 						<a href="index.php?page=Techniques&amp;remove={$technique->getTechniqueId()}">X</a>
 					</td>
 				</tr>
 			{foreachelse}
 				<tr>
-					<td colspan="8">{$translator->getTranslation('noTechniquesFound')}</td>
+					<td colspan="7">{$translator->getTranslation('noTechniquesFound')}</td>
 				</tr>
 			{/foreach}
 		</tbody>
@@ -59,40 +49,43 @@
 					<tr class="even">
 						<td>{$translator->getTranslation('timeFactor')}</td>
 						<td>
-							<input type="number" step="0.01" name="timeFactor">
+							<input type="number" step="0.01" name="timeFactor" />
 						</td>
 					</tr>
 					<tr class="odd">
 						<td>{$translator->getTranslation('priceFactor')}</td>
 						<td>
-							<input type="number" step="0.01" name="priceFactor">
+							<input type="number" step="0.01" name="priceFactor" />
 						</td>
 					</tr>
 					<tr class="even">
 						<td>{$translator->getTranslation('proof')}</td>
 						<td>
-							<input type="number" name="proof">
+							<input type="number" name="proof" />
 						</td>
 					</tr>
 					<tr class="odd">
 						<td>{$translator->getTranslation('breakFactor')}</td>
 						<td>
-							<input type="number" name="breakFactor">
+							<input type="number" name="breakFactor" />
 						</td>
 					</tr>
 					<tr class="even">
 						<td>{$translator->getTranslation('hitPoints')}</td>
 						<td>
-							<input type="number" name="hitPoints">
+							<input type="number" name="hitPoints" />
 						</td>
 					</tr>
 					<tr class="odd">
+						<td>{$translator->getTranslation('noOtherAllowed')}</td>
 						<td>
-							{$translator->getTranslation('forceModificator')}<br />
-							<span class="help">{$translator->getTranslation('forceModificatorHelp')|nl2br}</span>
+							<input type="checkbox" name="noOtherAllowed" value="1" />
 						</td>
+					</tr>
+					<tr class="even">
+						<td>{$translator->getTranslation('unsellable')}</td>
 						<td>
-							<textarea name="forceModificator"></textarea>
+							<input type="checkbox" name="unsellable" value="1" />
 						</td>
 					</tr>
 					<tr>

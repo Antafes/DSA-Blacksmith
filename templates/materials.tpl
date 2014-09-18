@@ -9,11 +9,14 @@
 			<tr>
 				<th class="material">{$translator->getTranslation('material')}</th>
 				<th class="materialType">{$translator->getTranslation('materialType')}</th>
+				<th class="timeFactor">{$translator->getTranslation('timeFactor')}</th>
 				<th class="priceFactor">{$translator->getTranslation('priceFactor')}</th>
 				<th class="priceWeight">{$translator->getTranslation('priceWeight')}</th>
 				<th class="proof">{$translator->getTranslation('proof')}</th>
 				<th class="breakFactor">{$translator->getTranslation('breakFactor')}</th>
+				<th class="hitPoints">{$translator->getTranslation('hitPoints')}</th>
 				<th class="armor">{$translator->getTranslation('armor')}</th>
+				<th class="forceModificator">{$translator->getTranslation('forceModificator')}</th>
 				<th class="additional">{$translator->getTranslation('additional')}</th>
 				<th></th>
 			</tr>
@@ -23,11 +26,24 @@
 				<tr class="{cycle values="odd,even"}">
 					<td class="material">{$material->getName()}</td>
 					<td class="materialType">{$material->getMaterialType()}</td>
+					<td class="timeFactor">{$material->getTimeFactor()|number_format:2:',':'.'}</td>
 					<td class="priceFactor">{$material->getPriceFactor()|number_format:2:',':'.'}</td>
 					<td class="priceWeight">{$material->getPriceWeight()}</td>
 					<td class="proof">{$material->getProof()}</td>
 					<td class="breakFactor">{$material->getBreakFactor()}</td>
+					<td class="hitPoints">{$material->getHitPoints()}</td>
 					<td class="armor">{$material->getArmor()}</td>
+					<td class="forceModificator">
+						{foreach $material->getForceModificator() as $percentage => $modificators}
+							{$percentage}%:
+							{foreach $modificators as $modificator}
+								{$modificator.attack} / {$modificator.parade}{if $modificator@index < $modificator@total - 1} {$translator->getTranslation('or')} {/if}
+							{/foreach}
+							<br />
+						{foreachelse}
+							-
+						{/foreach}
+					</td>
 					<td class="additional">
 						{foreach $material->getAdditional() as $key => $value}
 							{$key}: {$value}
@@ -70,12 +86,18 @@
 						</td>
 					</tr>
 					<tr class="odd">
-						<td>{$translator->getTranslation('priceFactor')}</td>
+						<td>{$translator->getTranslation('timeFactor')}</td>
 						<td>
-							<input type="number" step="0.01" name="priceFactor">
+							<input type="number" step="0.01" min="1" name="timeFactor" />
 						</td>
 					</tr>
 					<tr class="even">
+						<td>{$translator->getTranslation('priceFactor')}</td>
+						<td>
+							<input type="number" step="0.01" name="priceFactor" />
+						</td>
+					</tr>
+					<tr class="odd">
 						<td>{$translator->getTranslation('priceWeight')}</td>
 						<td>
 							<input class="priceWeight" type="number" name="priceWeight">
@@ -86,25 +108,40 @@
 							</select>
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="even">
 						<td>{$translator->getTranslation('proof')}</td>
 						<td>
-							<input type="number" name="proof">
+							<input type="number" name="proof" />
+						</td>
+					</tr>
+					<tr class="odd">
+						<td>{$translator->getTranslation('breakFactor')}</td>
+						<td>
+							<input type="number" name="breakFactor" />
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('breakFactor')}</td>
+						<td>{$translator->getTranslation('hitPoints')}</td>
 						<td>
-							<input type="number" name="breakFactor">
+							<input type="number" name="hitPoints" />
 						</td>
 					</tr>
 					<tr class="odd">
 						<td>{$translator->getTranslation('armor')}</td>
 						<td>
-							<input type="number" name="armor">
+							<input type="number" name="armor" />
 						</td>
 					</tr>
 					<tr class="even">
+						<td>
+							{$translator->getTranslation('forceModificator')}<br />
+							<span class="help">{$translator->getTranslation('forceModificatorHelp')|nl2br}</span>
+						</td>
+						<td>
+							<textarea name="forceModificator"></textarea>
+						</td>
+					</tr>
+					<tr class="odd">
 						<td>{$translator->getTranslation('additional')}</td>
 						<td>
 							<textarea name="additional"></textarea>

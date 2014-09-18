@@ -44,9 +44,14 @@ class Technique extends \Model
 	protected $hitPoints;
 
 	/**
-	 * @var string
+	 * @var boolean
 	 */
-	protected $forceModificator;
+	protected $noOtherAllowed;
+
+	/**
+	 * @var boolean
+	 */
+	protected $unsellable;
 
 	/**
 	 * @param integer $id
@@ -64,7 +69,8 @@ class Technique extends \Model
 				proof,
 				`breakFactor`,
 				`hitPoints`,
-				`forceModificator`
+				`noOtherAllowed`,
+				unsellable
 			FROM techniques
 			WHERE `techniqueId` = '.sqlval($id).'
 				AND !deleted
@@ -74,6 +80,21 @@ class Technique extends \Model
 		$obj->fill($technique);
 
 		return $obj;
+	}
+
+	public function fill($data)
+	{
+		foreach ($data as $key => $value)
+		{
+			if ($key === 'noOtherAllowed' || $key === 'unsellable')
+			{
+				$this->$key = boolval($value);
+			}
+			elseif (property_exists($this, $key))
+			{
+				$this->$key = $this->castToType($value);
+			}
+		}
 	}
 
 	public function getTechniqueId()
@@ -111,9 +132,14 @@ class Technique extends \Model
 		return $this->hitPoints;
 	}
 
-	public function getForceModificator()
+	public function getNoOtherAllowed()
 	{
-		return json_decode($this->forceModificator, true);
+		return $this->noOtherAllowed;
+	}
+
+	public function getUnsellable()
+	{
+		return $this->unsellable;
 	}
 
 	public static function create($data)
@@ -124,20 +150,6 @@ class Technique extends \Model
 		$data['timeFactor'] = str_replace(',', '.', $data['timeFactor']);
 		$data['priceFactor'] = str_replace(',', '.', $data['priceFactor']);
 
-		if ($data['forceModificator'])
-		{
-			preg_match_all('/([+-]?\d) ?\/ ?([+-]?\d) ?(\|\||or|oder)?/', $data['forceModificator'], $matches, PREG_SET_ORDER);
-			$forceModificators = array();
-
-			foreach ($matches as $match)
-			{
-				$forceModificators['or'][] = array(
-					$match[1],
-					$match[2],
-				);
-			}
-		}
-
 		$sql = '
 			INSERT INTO techniques
 			SET name = '.sqlval($data['name']).',
@@ -146,7 +158,8 @@ class Technique extends \Model
 				proof = '.sqlval($data['proof']).',
 				breakFactor = '.sqlval($data['breakFactor']).',
 				hitPoints = '.sqlval($data['hitPoints']).',
-				forceModificator = '.sqlval(json_encode($forceModificators)).'
+				noOtherAllowed = '.sqlval(intval($data['noOtherAllowed'])).',
+				unsellable = '.sqlval(intval($data['unsellable'])).'
 		';
 		query($sql);
 
@@ -161,5 +174,23 @@ class Technique extends \Model
 			WHERE `techniqueId` = '.sqlval($this->techniqueId).'
 		';
 		return query($sql);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getAsArray()
+	{
+		return array(
+			'id' => $this->getTechniqueId(),
+			'name' => $this->getName(),
+			'timeFactor' => $this->getTimeFactor(),
+			'priceFactor' => $this->getPriceFactor(),
+			'proof' => $this->getProof(),
+			'breakFactor' => $this->getBreakFactor(),
+			'hitPoints' => $this->getHitPoints(),
+			'noOtherAllowed' => $this->getNoOtherAllowed(),
+			'unsellable' => $this->getUnsellable(),
+		);
 	}
 }
