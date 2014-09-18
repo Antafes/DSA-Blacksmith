@@ -198,7 +198,7 @@ $DB_MIGRATION = array(
 		');
 
 		$results[] = query_raw('
-			UPDATE `dsa_blacksmith`.`translations` SET `value`="Werte in folgendem Schema eintragen: TA / PA\r\nWenn zwischen mehreren Modifikatoren gewählt werden soll, können die Wertpaare mit "||", "or" oder "oder" getrennt werden.\r\nFür eine Aktivierung der Modifikatoren ab bestimmten Prozentsätzen, kann der jeweilige Prozentsatz als erster Wert in der Zeile eingetragen und mit "|" von den Modifikatoren getrennt werden." WHERE  `translationId`=73
+			UPDATE `translations` SET `value`="Werte in folgendem Schema eintragen: TA / PA\r\nWenn zwischen mehreren Modifikatoren gewählt werden soll, können die Wertpaare mit \"||\", \"or\" oder \"oder\" getrennt werden.\r\nFür eine Aktivierung der Modifikatoren ab bestimmten Prozentsätzen, kann der jeweilige Prozentsatz als erster Wert in der Zeile eingetragen und mit \"|\" von den Modifikatoren getrennt werden." WHERE  `translationId`=73
 		');
 
 		$results[] = query_raw('
@@ -262,7 +262,7 @@ $DB_MIGRATION = array(
 			ALTER TABLE `materials`
 				CHANGE COLUMN `breakFactor` `breakFactor` INT(11) NOT NULL AFTER `proof`
 		');
-
+		var_dump($results);
 		return !in_array(false, $results);
 
 	},
