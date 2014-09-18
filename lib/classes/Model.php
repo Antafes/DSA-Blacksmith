@@ -25,11 +25,11 @@ abstract class Model
 		{
 			if (stripos($value, '.') !== false)
 			{
-				return floatval($value);
+				return \floatval($value);
 			}
 			else
 			{
-				return intval($value);
+				return \intval($value);
 			}
 		}
 

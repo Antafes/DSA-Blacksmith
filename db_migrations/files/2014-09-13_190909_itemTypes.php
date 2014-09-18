@@ -11,7 +11,7 @@ $DB_MIGRATION = array(
 		$results = array();
 
 		$results[] = query_raw('
-			CREATE TABLE `itemTypes` (
+			CREATE TABLE `itemtypes` (
 				`itemTypeId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 				`name` VARCHAR(255) NOT NULL,
 				`priceFactor` DECIMAL(4,2) NOT NULL,

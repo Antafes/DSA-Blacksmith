@@ -88,7 +88,7 @@ class Technique extends \Model
 		{
 			if ($key === 'noOtherAllowed' || $key === 'unsellable')
 			{
-				$this->$key = boolval($value);
+				$this->$key = \boolval($value);
 			}
 			elseif (property_exists($this, $key))
 			{
