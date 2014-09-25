@@ -8,6 +8,8 @@ abstract class Model
 {
 	public abstract static function loadById($id);
 
+	public abstract function getAsArray();
+
 	public function fill($data)
 	{
 		foreach ($data as $key => $value)

@@ -35,14 +35,14 @@ $DB_MIGRATION = array(
 				`deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT "0",
 				PRIMARY KEY (`blueprintId`),
 				INDEX `blueprints_itemType` (`itemTypeId`),
-				CONSTRAINT `blueprints_itemType` FOREIGN KEY (`itemTypeId`) REFERENCES `itemtypes` (`itemTypeId`) ON UPDATE CASCADE ON DELETE CASCADE
+				CONSTRAINT `blueprints_itemType` FOREIGN KEY (`itemTypeId`) REFERENCES `itemTypes` (`itemTypeId`) ON UPDATE CASCADE ON DELETE CASCADE
 			)
 			COLLATE="utf8_bin"
 			ENGINE=InnoDB
 		');
 
 		$results[] = query_raw('
-			CREATE TABLE `materialstoblueprints` (
+			CREATE TABLE `materialsToBlueprints` (
 				`materialId` INT(10) UNSIGNED NOT NULL,
 				`blueprintId` INT(10) UNSIGNED NOT NULL,
 				`percentage` INT(10) UNSIGNED NOT NULL,
@@ -212,12 +212,12 @@ $DB_MIGRATION = array(
 		');
 
 		$results[] = query_raw('
-			ALTER TABLE `itemtypes`
+			ALTER TABLE `itemTypes`
 			ALTER `priceFactor` DROP DEFAULT
 		');
 
 		$results[] = query_raw('
-			ALTER TABLE `itemtypes`
+			ALTER TABLE `itemTypes`
 				CHANGE COLUMN `priceFactor` `talentPoints` INT NOT NULL AFTER `name`
 		');
 

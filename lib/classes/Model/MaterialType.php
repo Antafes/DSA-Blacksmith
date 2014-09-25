@@ -22,7 +22,7 @@ class MaterialType extends \Model
 			SELECT
 				`materialTypeId`,
 				`name`
-			FROM materialtypes
+			FROM materialTypes
 			WHERE `materialTypeId` = '.sqlval($id).'
 				AND !deleted
 		';
@@ -39,7 +39,7 @@ class MaterialType extends \Model
 			return false;
 
 		$sql = '
-			INSERT INTO materialtypes
+			INSERT INTO materialTypes
 			SET name = '.sqlval(trim($data['name'])).'
 		';
 		$id = query($sql);
@@ -58,5 +58,9 @@ class MaterialType extends \Model
 	function getName()
 	{
 		return $this->name;
+	}
+
+	public function getAsArray()
+	{
 	}
 }

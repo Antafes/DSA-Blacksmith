@@ -92,4 +92,8 @@ class Language extends \Model
 	{
 		return $this->iso2code;
 	}
+
+	public function getAsArray()
+	{
+	}
 }

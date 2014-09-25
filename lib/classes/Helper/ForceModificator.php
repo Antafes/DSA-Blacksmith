@@ -17,18 +17,14 @@ class ForceModificator
 	 */
 	public static function getForceModificatorArray($forceModificator)
 	{
-		preg_match_all('/(?:(\d{0,3})\%? *\| *)?([+-]?\d) ?\/ ?([+-]?\d) ?(?:\|\||or|oder)?/', $forceModificator, $matches, PREG_SET_ORDER);
+		preg_match_all('/([+-]?\d) ?\/ ?([+-]?\d) ?(?:\|\||or|oder)?/', $forceModificator, $matches, PREG_SET_ORDER);
 		$forceModificators = array();
 
-		$percentage = 0;
 		foreach ($matches as $match)
 		{
-			if (!$percentage || (intval($match[1]) && $percentage != intval($match[1])))
-				$percentage = intval($match[1]);
-
-			$forceModificators[$percentage][] = array(
-				'attack'     => intval($match[2]),
-				'parade'     => intval($match[3]),
+			$forceModificators[] = array(
+				'attack'     => intval($match[1]),
+				'parade'     => intval($match[2]),
 			);
 		}
 

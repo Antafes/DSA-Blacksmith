@@ -58,7 +58,7 @@ $DB_MIGRATION = array(
 		$results[] = query_raw('
 			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "or", "oder", 0)
 		');
-		var_dump($results);
+
 		return !in_array(false, $results);
 
 	},

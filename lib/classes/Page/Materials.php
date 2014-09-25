@@ -16,6 +16,7 @@ class Materials extends \Page
 	public function process()
 	{
 		$this->template->loadJs('addMaterial');
+		$this->template->loadJs('jquery.materialAsset');
 
 		$materialListing = \Listing\Materials::loadList();
 		$materialTypeListing = \Listing\MaterialTypes::loadList();
@@ -28,7 +29,7 @@ class Materials extends \Page
 		$moneyHelper = new \Helper\Money();
 		$this->getTemplate()->assign('materialListing', $materialListing);
 		$this->getTemplate()->assign('materialTypeListing', $materialTypeListing);
-		$this->getTemplate()->assign('currencyList', $moneyHelper->getCurrencyList());
+		$this->getTemplate()->assign('currencyList', json_encode($moneyHelper->getCurrencyList()));
 	}
 
 	/**

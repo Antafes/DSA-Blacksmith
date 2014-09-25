@@ -15,7 +15,7 @@ class ItemTypes extends \Listing
 	{
 		$sql = '
 			SELECT `itemTypeId`
-			FROM itemtypes
+			FROM itemTypes
 			WHERE !deleted
 			ORDER BY `name`
 		';

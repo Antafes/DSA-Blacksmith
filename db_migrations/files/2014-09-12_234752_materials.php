@@ -11,7 +11,7 @@ $DB_MIGRATION = array(
 		$results = array();
 
 		$results[] = query_raw('
-			CREATE TABLE `materialtypes` (
+			CREATE TABLE `materialTypes` (
 				`materialTypeId` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 				`name` VARCHAR(255) NOT NULL COLLATE "utf8_bin",
 				`deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT "0",
@@ -35,7 +35,7 @@ $DB_MIGRATION = array(
 				`deleted` TINYINT(1) NOT NULL DEFAULT "0",
 				PRIMARY KEY (`materialId`),
 				INDEX `materialType` (`materialTypeId`),
-				CONSTRAINT `materialType` FOREIGN KEY (`materialTypeId`) REFERENCES `materialtypes` (`materialTypeId`) ON UPDATE CASCADE ON DELETE CASCADE
+				CONSTRAINT `materialType` FOREIGN KEY (`materialTypeId`) REFERENCES `materialTypes` (`materialTypeId`) ON UPDATE CASCADE ON DELETE CASCADE
 			)
 			COLLATE="utf8_bin"
 			ENGINE=InnoDB

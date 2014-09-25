@@ -82,12 +82,28 @@ table .forceModificator
 	margin-top: 20px;
 }
 
-table.addMaterial,
 table.addTechnique,
 table.addItemTypes,
-table.addBlueprint
+table.addBlueprint,
+table.addMaterialAsset
 {
 	width: 100%;
+}
+
+table.addMaterial
+{
+	width: 300px;
+	margin-bottom: 20px;
+}
+
+table.addMaterial tr > td:first-child
+{
+	width: 100px;
+}
+
+table.addMaterial tr > td
+{
+	width: 200px;
 }
 
 table.addMaterial .buttonArea,
@@ -143,7 +159,7 @@ table.addMaterial .materialType a
 
 table.addMaterial .materialType select
 {
-	width: 210px;
+	width: 170px;
 }
 
 table.addTechnique > tbody > tr > td:first-child
@@ -191,4 +207,37 @@ table.addBlueprint #materialSelect td.percentage input
 table#materialSelect .percentage
 {
 	width: 100px;
+}
+
+table.addMaterialAsset td
+{
+	width: 100px;
+}
+
+table.addMaterialAsset tr > td:last-child
+{
+	width: 10px;
+}
+
+table.addMaterialAsset td input,
+table.addMaterialAsset td textarea,
+table.addMaterialAsset td select
+{
+	width: 100px;
+}
+
+table.addMaterialAsset td textarea
+{
+	height: 80px;
+	width: 140px;
+}
+
+table.addMaterialAsset td.percentage input
+{
+	width: 60px;
+}
+
+.no-close .ui-dialog-titlebar-close
+{
+  display: none;
 }

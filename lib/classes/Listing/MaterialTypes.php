@@ -15,7 +15,7 @@ class MaterialTypes extends \Listing
 	{
 		$sql = '
 			SELECT `materialTypeId`
-			FROM materialtypes
+			FROM materialTypes
 			WHERE !deleted
 			ORDER BY `name`
 		';

@@ -9,6 +9,7 @@
 			<tr>
 				<th class="material">{$translator->getTranslation('material')}</th>
 				<th class="materialType">{$translator->getTranslation('materialType')}</th>
+				<th class="percentage">{$translator->getTranslation('percentage')}</th>
 				<th class="timeFactor">{$translator->getTranslation('timeFactor')}</th>
 				<th class="priceFactor">{$translator->getTranslation('priceFactor')}</th>
 				<th class="priceWeight">{$translator->getTranslation('priceWeight')}</th>
@@ -23,37 +24,64 @@
 		</thead>
 		<tbody>
 			{foreach $materialListing->getList() as $material}
-				<tr class="{cycle values="odd,even"}">
-					<td class="material">{$material->getName()}</td>
-					<td class="materialType">{$material->getMaterialType()}</td>
-					<td class="timeFactor">{$material->getTimeFactor()|number_format:2:',':'.'}</td>
-					<td class="priceFactor">{$material->getPriceFactor()|number_format:2:',':'.'}</td>
-					<td class="priceWeight">{$material->getPriceWeight()}</td>
-					<td class="proof">{$material->getProof()}</td>
-					<td class="breakFactor">{$material->getBreakFactor()}</td>
-					<td class="hitPoints">{$material->getHitPoints()}</td>
-					<td class="armor">{$material->getArmor()}</td>
-					<td class="forceModificator">
-						{foreach $material->getForceModificator() as $percentage => $modificators}
-							{$percentage}%:
-							{foreach $modificators as $modificator}
+				{cycle values="odd,even" assign="rowClass"}
+				<tr class="{$rowClass}">
+					{assign var="assetCount" value=$material->getMaterialAssetArray()|count}
+					<td class="material"{if $assetCount > 1} rowspan="{$assetCount}"{/if}>{$material->getName()}</td>
+					<td class="materialType"{if $assetCount > 1} rowspan="{$assetCount}"{/if}>{$material->getMaterialType()}</td>
+					{foreach $material->getMaterialAssetArray() as $materialAsset}
+						<td class="timeFactor">{$materialAsset.percentage}&nbsp;%</td>
+						<td class="timeFactor">{$materialAsset.timeFactor|number_format:2:',':'.'}</td>
+						<td class="priceFactor">{$materialAsset.priceFactor|number_format:2:',':'.'}</td>
+						<td class="priceWeight">{$materialAsset.priceWeight}</td>
+						<td class="proof">{$materialAsset.proof}</td>
+						<td class="breakFactor">{$materialAsset.breakFactor}</td>
+						<td class="hitPoints">{$materialAsset.hitPoints}</td>
+						<td class="armor">{$materialAsset.armor}</td>
+						<td class="forceModificator">
+							{foreach $materialAsset.forceModificator as $modificator}
 								{$modificator.attack} / {$modificator.parade}{if $modificator@index < $modificator@total - 1} {$translator->getTranslation('or')} {/if}
+							{foreachelse}
+								-
 							{/foreach}
-							<br />
-						{foreachelse}
-							-
-						{/foreach}
-					</td>
-					<td class="additional">
-						{foreach $material->getAdditional() as $key => $value}
-							{$key}: {$value}
-						{foreachelse}
-							-
-						{/foreach}
-					</td>
-					<td>
-						<a href="index.php?page=Materials&remove={$material->getMaterialId()}">X</a>
-					</td>
+						</td>
+						{if $materialAsset@first}
+							<td class="additional"{if $assetCount > 1} rowspan="{$assetCount}"{/if}>
+								{foreach $material->getAdditional() as $key => $value}
+									{$key}: {$value}
+								{foreachelse}
+									-
+								{/foreach}
+							</td>
+							<td{if $assetCount > 1} rowspan="{$assetCount}"{/if}>
+								<a href="index.php?page=Materials&remove={$material->getMaterialId()}">X</a>
+							</td>
+						{/if}
+						{if $materialAsset@last == false}
+							</tr>
+							<tr class="{$rowClass}">
+						{/if}
+					{foreachelse}
+						<td class="timeFactor">-</td>
+						<td class="timeFactor">-</td>
+						<td class="priceFactor">-</td>
+						<td class="priceWeight">-</td>
+						<td class="proof">-</td>
+						<td class="breakFactor">-</td>
+						<td class="hitPoints">-</td>
+						<td class="armor">-</td>
+						<td class="forceModificator">-</td>
+						<td class="additional"{if $assetCount > 1} rowspan="{$assetCount}"{/if}>
+							{foreach $material->getAdditional() as $key => $value}
+								{$key}: {$value}
+							{foreachelse}
+								-
+							{/foreach}
+						</td>
+						<td{if $assetCount > 1} rowspan="{$assetCount}"{/if}>
+							<a href="index.php?page=Materials&remove={$material->getMaterialId()}">X</a>
+						</td>
+					{/foreach}
 				</tr>
 			{foreachelse}
 				<tr>
@@ -85,75 +113,38 @@
 							</a>
 						</td>
 					</tr>
-					<tr class="odd">
-						<td>{$translator->getTranslation('timeFactor')}</td>
-						<td>
-							<input type="number" step="0.01" min="1" name="timeFactor" />
-						</td>
-					</tr>
-					<tr class="even">
-						<td>{$translator->getTranslation('priceFactor')}</td>
-						<td>
-							<input type="number" step="0.01" name="priceFactor" />
-						</td>
-					</tr>
-					<tr class="odd">
-						<td>{$translator->getTranslation('priceWeight')}</td>
-						<td>
-							<input class="priceWeight" type="number" name="priceWeight">
-							<select class="currency" name="currency">
-								{foreach $currencyList as $currencyShort => $currency}
-									<option value="{$currencyShort}">{$currency.name}</option>
-								{/foreach}
-							</select>
-						</td>
-					</tr>
-					<tr class="even">
-						<td>{$translator->getTranslation('proof')}</td>
-						<td>
-							<input type="number" name="proof" />
-						</td>
-					</tr>
-					<tr class="odd">
-						<td>{$translator->getTranslation('breakFactor')}</td>
-						<td>
-							<input type="number" name="breakFactor" />
-						</td>
-					</tr>
-					<tr class="even">
-						<td>{$translator->getTranslation('hitPoints')}</td>
-						<td>
-							<input type="number" name="hitPoints" />
-						</td>
-					</tr>
-					<tr class="odd">
-						<td>{$translator->getTranslation('armor')}</td>
-						<td>
-							<input type="number" name="armor" />
-						</td>
-					</tr>
-					<tr class="even">
-						<td>
-							{$translator->getTranslation('forceModificator')}<br />
-							<span class="help">{$translator->getTranslation('forceModificatorHelp')|nl2br}</span>
-						</td>
-						<td>
-							<textarea name="forceModificator"></textarea>
-						</td>
-					</tr>
-					<tr class="odd">
+					<tr>
 						<td>{$translator->getTranslation('additional')}</td>
 						<td>
 							<textarea name="additional"></textarea>
 						</td>
 					</tr>
-					<tr>
-						<td colspan="2" class="buttonArea">
-							<input type="submit" value="{$translator->getTranslation('addMaterial')}" />
-						</td>
-					</tr>
 				</tbody>
 			</table>
+			<a href="#" id="addMaterialAssetRow">
+				{$translator->getTranslation('addMaterialAssetRow')}
+			</a>
+			<table id="materialAssets" class="addMaterialAsset collapse">
+				<thead>
+					<tr>
+						<td class="percentage">{$translator->getTranslation('percentage')}</td>
+						<td class="timeFactor">{$translator->getTranslation('timeFactor')}</td>
+						<td class="priceFactor">{$translator->getTranslation('priceFactor')}</td>
+						<td class="priceWeight">{$translator->getTranslation('priceWeight')}</td>
+						<td class="proof">{$translator->getTranslation('proof')}</td>
+						<td class="breakFactor">{$translator->getTranslation('breakFactor')}</td>
+						<td class="hitPoints">{$translator->getTranslation('hitPoints')}</td>
+						<td class="armor">{$translator->getTranslation('armor')}</td>
+						<td class="forceModificator">
+							{$translator->getTranslation('forceModificator')}<br />
+							<span class="help" title="{$translator->getTranslation('forceModificatorHelp')}"></span>
+						</td>
+						<td></td>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+			<input type="submit" value="{$translator->getTranslation('addMaterial')}" />
 		</form>
 	</div>
 	<div id="addMaterialTypePopup" style="display: none;" data-title="{$translator->getTranslation('addMaterialType')}">
@@ -163,5 +154,8 @@
 			<input type="submit" value="{$translator->getTranslation('addMaterialType')}" />
 		</form>
 	</div>
+	<script type="text/javascript">
+		window.currencies = {$currencyList};
+	</script>
 </div>
 {include file="footer.tpl"}

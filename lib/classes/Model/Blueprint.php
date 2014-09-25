@@ -212,7 +212,7 @@ class Blueprint extends \Model
 		foreach ($data['material'] as $key => $material)
 		{
 			$sql = '
-				INSERT INTO materialstoblueprints
+				INSERT INTO materialsToBlueprints
 				SET materialId = '.sqlval($material).',
 					blueprintId = '.sqlval($blueprintId).',
 					percentage = '.sqlval($data['percentage'][$key]).'
@@ -225,7 +225,7 @@ class Blueprint extends \Model
 			foreach ($data['technique'] as $technique)
 			{
 				$sql = '
-					INSERT INTO techniquestoblueprints
+					INSERT INTO techniquesToBlueprints
 					SET techniqueId = '.sqlval($technique).',
 						blueprintId = '.sqlval($blueprintId).'
 				';
@@ -261,7 +261,7 @@ class Blueprint extends \Model
 			SELECT
 				`materialId`,
 				percentage
-			FROM materialstoblueprints
+			FROM materialsToBlueprints
 			WHERE `blueprintId` = '.sqlval($this->blueprintId).'
 				AND !deleted
 		';
@@ -283,7 +283,7 @@ class Blueprint extends \Model
 	{
 		$sql = '
 			SELECT `techniqueId`
-			FROM techniquestoblueprints
+			FROM techniquesToBlueprints
 			WHERE `blueprintId` = '.sqlval($this->blueprintId).'
 				AND !deleted
 		';
@@ -422,28 +422,40 @@ class Blueprint extends \Model
 		{
 			/* @var $material \Model\Material */
 			$material = $item['material'];
+			$materialAssets = $material->getMaterialAssetListing()->getList();
+			krsort($materialAssets);
+			$materialPriceCalculated = false;
 
-			if ($material->getPriceFactor())
+			/* @var $materialAsset \Model\MaterialAsset */
+			foreach ($materialAssets as $materialAsset)
 			{
-				if ($material->getPriceFactor() >= 1)
+				if (!$materialPriceCalculated)
 				{
-					$priceFactor += $material->getPriceFactor();
-				}
-				else
-				{
-					if (!$priceFactorBelowOne)
+					if ($materialAsset->getPriceFactor())
 					{
-						$priceFactorBelowOne = $material->getPriceFactor();
+						if ($materialAsset->getPriceFactor() >= 1)
+						{
+							$priceFactor += $materialAsset->getPriceFactor();
+						}
+						else
+						{
+							if (!$priceFactorBelowOne)
+							{
+								$priceFactorBelowOne = $materialAsset->getPriceFactor();
+							}
+							else
+							{
+								$priceFactorBelowOne *= $materialAsset->getPriceFactor();
+							}
+						}
 					}
-					else
+					elseif ($materialAsset->getPriceWeight())
 					{
-						$priceFactorBelowOne *= $material->getPriceFactor();
+						$price += $this->weight * ($item['percentage'] / 100) * $materialAsset->getPriceWeight();
 					}
+
+					$materialPriceCalculated = true;
 				}
-			}
-			elseif ($material->getPriceWeight())
-			{
-				$price += $this->weight * ($item['percentage'] / 100) * $material->getPriceWeight();
 			}
 		}
 
@@ -534,10 +546,21 @@ class Blueprint extends \Model
 		{
 			/* @var $material \Model\Material */
 			$material = $item['material'];
+			$materialAssetList = $material->getMaterialAssetListing()->getList();
+			krsort($materialAssetList);
 
-			$time *= $material->getTimeFactor();
-			$hitPoints += $material->getHitPoints();
-			$breakFactor += $material->getBreakFactor();
+			/* @var $materialAsset \Model\MaterialAsset */
+			foreach ($materialAssetList as $materialAsset)
+			{
+				if ($materialAsset->getPercentage() > $item['percentage'])
+				{
+					continue;
+				}
+
+				$time *= $materialAsset->getTimeFactor();
+				$hitPoints += $materialAsset->getHitPoints();
+				$breakFactor += $materialAsset->getBreakFactor();
+			}
 		}
 
 		/* @var $technique \Model\Technique */
@@ -579,10 +602,40 @@ class Blueprint extends \Model
 	public function remove()
 	{
 		$sql = '
-			UPDATE blueprints
-			SET deleted = 1
-			WHERE `blueprintId` = '.sqlval($this->blueprintId).'
+			UPDATE blueprints, materialsToBlueprints, techniquesToBlueprints
+			SET blueprints.deleted = 1,
+				materialsToBlueprints.deleted = 1,
+				techniquesToBlueprints.deleted = 1
+			WHERE blueprints.`blueprintId` = '.sqlval($this->blueprintId).'
+				AND materialsToBlueprints.`blueprintId` = blueprints.`blueprintId`
+				AND techniquesToBlueprints.`blueprintId` = blueprints.`blueprintId`
 		';
 		return query($sql);
+	}
+
+	public function getAsArray()
+	{
+		return array(
+			'id' => $this->getBlueprintId(),
+			'name' => $this->getName(),
+			'itemType' => $this->getItemType(),
+			'basePrice' => $this->getBasePrice(),
+			'twoHanded' => $this->getTwoHanded(),
+			'improvisational' => $this->getImprovisational(),
+			'baseHitPointsDice' => $this->getBaseHitPointsDice(),
+			'baseHitPointsDiceType' => $this->getBaseHitPointsDiceType(),
+			'baseHitPoints' => $this->getBaseHitPoints(),
+			'baseBreakFactor' => $this->getBaseBreakFactor(),
+			'baseInitiative' => $this->getBaseInitiative(),
+			'baseForceModificator' => $this->getBaseForceModificator(),
+			'weight' => $this->getWeight(),
+			'toolsProofModificator' => $this->getToolsProofModificator(),
+			'planProofModificator' => $this->getPlanProofModificator(),
+			'materialForceModificator' => $this->getMaterialForceModificator(),
+			'upgradeHitPoints' => $this->getUpgradeHitPoints(),
+			'upgradeBreakFactor' => $this->getUpgradeBreakFactor(),
+			'upgradeInitiative' => $this->getUpgradeInitiative(),
+			'upgradeForceModificator' => $this->getUpgradeForceModificator(),
+		);
 	}
 }

@@ -41,7 +41,7 @@ class ItemType extends \Model
 				`name`,
 				`talentPoints`,
 				`time`
-			FROM itemtypes
+			FROM itemTypes
 			WHERE `itemTypeId` = '.sqlval($id).'
 				AND !deleted
 		';
@@ -61,7 +61,7 @@ class ItemType extends \Model
 		$data['time'] = str_replace(',', '.', $data['time']);
 
 		$sql = '
-			INSERT INTO itemtypes
+			INSERT INTO itemTypes
 			SET name = '.sqlval($data['name']).',
 				talentPoints = '.sqlval($data['talentPoints']).',
 				time = '.sqlval($data['time']).'
@@ -94,10 +94,20 @@ class ItemType extends \Model
 	public function remove()
 	{
 		$sql = '
-			UPDATE itemtypes
+			UPDATE itemTypes
 			SET deleted = 1
 			WHERE `itemTypeId` = '.sqlval($this->itemTypeId).'
 		';
 		return query($sql);
+	}
+
+	public function getAsArray()
+	{
+		return array(
+			'itemTypeId' => $this->getItemTypeId(),
+			'name' => $this->getName(),
+			'talentPoints' => $this->getTalentPoints(),
+			'time' => $this->getTime(),
+		);
 	}
 }
