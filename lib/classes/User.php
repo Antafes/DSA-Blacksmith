@@ -63,7 +63,7 @@ class User
 		$sql = '
 			SELECT *
 			FROM users
-			WHERE name = '.sqlval($name).'
+			WHERE name = '.\sqlval($name).'
 				AND !deleted
 		';
 		$userData = query($sql);
@@ -100,7 +100,7 @@ class User
 		$sql = '
 			SELECT *
 			FROM users
-			WHERE userId = '.sqlval($userId).'
+			WHERE userId = '.\sqlval($userId).'
 				AND !deleted
 		';
 		$userData = query($sql);
@@ -130,10 +130,10 @@ class User
 		$salt = uniqid();
 		$sql = '
 			INSERT INTO users
-			SET name = '.sqlval($name).',
-				password = '.sqlval(self::encryptPassword($password, $salt)).',
-				salt = '.sqlval($salt).',
-				email = '.sqlval($email).'
+			SET name = '.\sqlval($name).',
+				password = '.\sqlval(self::encryptPassword($password, $salt)).',
+				salt = '.\sqlval($salt).',
+				email = '.\sqlval($email).'
 		';
 		return query($sql);
 	}
@@ -149,7 +149,7 @@ class User
 		$sql = '
 			SELECT COUNT(*)
 			FROM users
-			WHERE name = '.sqlval($name).'
+			WHERE name = '.\sqlval($name).'
 		';
 		return query($sql);
 	}
@@ -230,8 +230,8 @@ class User
 		$this->name = $name;
 		$sql = '
 			UPDATE users
-			SET name = '.sqlval($this->name).'
-			WHERE userId = '.sqlval($this->userId).'
+			SET name = '.\sqlval($this->name).'
+			WHERE userId = '.\sqlval($this->userId).'
 		';
 		query($sql);
 	}
@@ -246,8 +246,8 @@ class User
 		$this->password = self::encryptPassword($password, $this->salt);
 		$sql = '
 			UPDATE users
-			SET password = '.sqlval($this->password).'
-			WHERE userId = '.sqlval($this->userId).'
+			SET password = '.\sqlval($this->password).'
+			WHERE userId = '.\sqlval($this->userId).'
 		';
 		query($sql);
 	}
@@ -260,8 +260,8 @@ class User
 		$this->email = $email;
 		$sql = '
 			UPDATE users
-			SET email = '.sqlval($this->email).'
-			WHERE userId = '.sqlval($this->userId).'
+			SET email = '.\sqlval($this->email).'
+			WHERE userId = '.\sqlval($this->userId).'
 		';
 		query($sql);
 	}
@@ -274,7 +274,7 @@ class User
 		$sql = '
 			UPDATE users
 			SET active = 1
-			WHERE userId = '.sqlval($this->userId).'
+			WHERE userId = '.\sqlval($this->userId).'
 		';
 		query($sql);
 		$this->active = true;
@@ -288,8 +288,8 @@ class User
 		$this->admin = $admin;
 		$sql = '
 			UPDATE users
-			SET admin = '.sqlval($admin ? 1 : 0).'
-			WHERE userId = '.sqlval($this->userId).'
+			SET admin = '.\sqlval($admin ? 1 : 0).'
+			WHERE userId = '.\sqlval($this->userId).'
 		';
 		query($sql);
 	}
@@ -302,8 +302,8 @@ class User
 		$this->orderDuration = $orderDuration;
 		$sql = '
 			UPDATE users
-			SET orderDuration = '.sqlval($orderDuration).'
-			WHERE userId = '.sqlval($this->userId).'
+			SET orderDuration = '.\sqlval($orderDuration).'
+			WHERE userId = '.\sqlval($this->userId).'
 		';
 		query($sql);
 	}
@@ -316,8 +316,8 @@ class User
 		$this->languageId = $languageId;
 		$sql = '
 			UPDATE users
-			SET `languageId` = '.sqlval($languageId).'
-			WHERE `userId` = '.sqlval($this->userId).'
+			SET `languageId` = '.\sqlval($languageId).'
+			WHERE `userId` = '.\sqlval($this->userId).'
 		';
 		query($sql);
 	}

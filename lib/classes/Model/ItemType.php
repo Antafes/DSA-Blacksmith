@@ -42,7 +42,7 @@ class ItemType extends \Model
 				`talentPoints`,
 				`time`
 			FROM itemTypes
-			WHERE `itemTypeId` = '.sqlval($id).'
+			WHERE `itemTypeId` = '.\sqlval($id).'
 				AND !deleted
 		';
 		$itemType = query($sql);
@@ -62,9 +62,9 @@ class ItemType extends \Model
 
 		$sql = '
 			INSERT INTO itemTypes
-			SET name = '.sqlval($data['name']).',
-				talentPoints = '.sqlval($data['talentPoints']).',
-				time = '.sqlval($data['time']).'
+			SET name = '.\sqlval($data['name']).',
+				talentPoints = '.\sqlval($data['talentPoints']).',
+				time = '.\sqlval($data['time']).'
 		';
 		query($sql);
 
@@ -96,7 +96,7 @@ class ItemType extends \Model
 		$sql = '
 			UPDATE itemTypes
 			SET deleted = 1
-			WHERE `itemTypeId` = '.sqlval($this->itemTypeId).'
+			WHERE `itemTypeId` = '.\sqlval($this->itemTypeId).'
 		';
 		return query($sql);
 	}

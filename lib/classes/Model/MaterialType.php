@@ -23,7 +23,7 @@ class MaterialType extends \Model
 				`materialTypeId`,
 				`name`
 			FROM materialTypes
-			WHERE `materialTypeId` = '.sqlval($id).'
+			WHERE `materialTypeId` = '.\sqlval($id).'
 				AND !deleted
 		';
 		$materialType = query($sql);
@@ -40,7 +40,7 @@ class MaterialType extends \Model
 
 		$sql = '
 			INSERT INTO materialTypes
-			SET name = '.sqlval(trim($data['name'])).'
+			SET name = '.\sqlval(trim($data['name'])).'
 		';
 		$id = query($sql);
 

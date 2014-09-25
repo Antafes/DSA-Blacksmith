@@ -72,7 +72,7 @@ class Technique extends \Model
 				`noOtherAllowed`,
 				unsellable
 			FROM techniques
-			WHERE `techniqueId` = '.sqlval($id).'
+			WHERE `techniqueId` = '.\sqlval($id).'
 				AND !deleted
 		';
 		$technique = query($sql);
@@ -152,14 +152,14 @@ class Technique extends \Model
 
 		$sql = '
 			INSERT INTO techniques
-			SET name = '.sqlval($data['name']).',
-				timeFactor = '.sqlval($data['timeFactor']).',
-				priceFactor = '.sqlval($data['priceFactor']).',
-				proof = '.sqlval($data['proof']).',
-				breakFactor = '.sqlval($data['breakFactor']).',
-				hitPoints = '.sqlval($data['hitPoints']).',
-				noOtherAllowed = '.sqlval(intval($data['noOtherAllowed'])).',
-				unsellable = '.sqlval(intval($data['unsellable'])).'
+			SET name = '.\sqlval($data['name']).',
+				timeFactor = '.\sqlval($data['timeFactor']).',
+				priceFactor = '.\sqlval($data['priceFactor']).',
+				proof = '.\sqlval($data['proof']).',
+				breakFactor = '.\sqlval($data['breakFactor']).',
+				hitPoints = '.\sqlval($data['hitPoints']).',
+				noOtherAllowed = '.\sqlval(intval($data['noOtherAllowed'])).',
+				unsellable = '.\sqlval(intval($data['unsellable'])).'
 		';
 		query($sql);
 
@@ -171,7 +171,7 @@ class Technique extends \Model
 		$sql = '
 			UPDATE techniques
 			SET deleted = 1
-			WHERE `techniqueId` = '.sqlval($this->techniqueId).'
+			WHERE `techniqueId` = '.\sqlval($this->techniqueId).'
 		';
 		return query($sql);
 	}

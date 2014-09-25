@@ -47,7 +47,7 @@ class MaterialAssets extends \Listing
 		$sql = '
 			SELECT `materialAssetId`
 			FROM materialAssets
-			WHERE `materialId` = '.sqlval($materialId).'
+			WHERE `materialId` = '.\sqlval($materialId).'
 				AND !deleted
 			ORDER BY percentage
 		';

@@ -34,7 +34,7 @@ class Language extends \Model
 		$sql = '
 			SELECT languageId, language, iso2code
 			FROM languages
-			WHERE iso2code = '.sqlval($iso2code).'
+			WHERE iso2code = '.\sqlval($iso2code).'
 		';
 		$data = query($sql);
 
@@ -57,7 +57,7 @@ class Language extends \Model
 		$sql = '
 			SELECT languageId, language, iso2code
 			FROM languages
-			WHERE languageId = '.sqlval($id).'
+			WHERE languageId = '.\sqlval($id).'
 		';
 		$data = query($sql);
 

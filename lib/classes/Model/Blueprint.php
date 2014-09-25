@@ -148,7 +148,7 @@ class Blueprint extends \Model
 				`upgradeInitiative`,
 				`upgradeForceModificator`
 			FROM blueprints
-			WHERE `blueprintId` = '.sqlval($id).'
+			WHERE `blueprintId` = '.\sqlval($id).'
 				AND !deleted
 		';
 		$blueprint = query($sql);
@@ -187,25 +187,26 @@ class Blueprint extends \Model
 
 		$sql = '
 			INSERT INTO blueprints
-			SET name = '.sqlval($data['name']).',
-				itemTypeId = '.sqlval($data['itemTypeId']).',
-				basePrice = '.sqlval($basePrice).',
-				twoHanded = '.sqlval($data['twoHanded']).',
-				improvisational = '.sqlval($data['improvisational']).',
-				baseHitPointsDice = '.sqlval($data['baseHitPointsDice']).',
-				baseHitPointsDiceType = '.sqlval($data['baseHitPointsDiceType']).',
-				baseHitPoints = '.sqlval($data['baseHitPoints']).',
-				baseBreakFactor = '.sqlval($data['baseBreakFactor']).',
-				baseInitiative = '.sqlval($data['baseInitiative']).',
-				baseForceModificator = '.sqlval(json_encode($baseForceModificators)).',
-				weight = '.sqlval($data['weight']).',
-				toolsProofModificator = '.sqlval($data['toolsProofModificator']).',
-				planProofModificator = '.sqlval($data['planProofModificator']).',
-				materialForceModificator = '.sqlval(json_encode($materialForceModificators)).',
-				upgradeHitPoints = '.sqlval($data['upgradeHitPoints']).',
-				upgradeBreakFactor = '.sqlval($data['upgradeBreakFactor']).',
-				upgradeInitiative = '.sqlval($data['upgradeInitiative']).',
-				upgradeForceModificator = '.sqlval(json_encode($upgradeForceModificator)).'
+			SET name = '.\sqlval($data['name']).',
+				userId = '.\sqlval($data['userId']).',
+				itemTypeId = '.\sqlval($data['itemTypeId']).',
+				basePrice = '.\sqlval($basePrice).',
+				twoHanded = '.\sqlval($data['twoHanded']).',
+				improvisational = '.\sqlval($data['improvisational']).',
+				baseHitPointsDice = '.\sqlval($data['baseHitPointsDice']).',
+				baseHitPointsDiceType = '.\sqlval($data['baseHitPointsDiceType']).',
+				baseHitPoints = '.\sqlval($data['baseHitPoints']).',
+				baseBreakFactor = '.\sqlval($data['baseBreakFactor']).',
+				baseInitiative = '.\sqlval($data['baseInitiative']).',
+				baseForceModificator = '.\sqlval(json_encode($baseForceModificators)).',
+				weight = '.\sqlval($data['weight']).',
+				toolsProofModificator = '.\sqlval($data['toolsProofModificator']).',
+				planProofModificator = '.\sqlval($data['planProofModificator']).',
+				materialForceModificator = '.\sqlval(json_encode($materialForceModificators)).',
+				upgradeHitPoints = '.\sqlval($data['upgradeHitPoints']).',
+				upgradeBreakFactor = '.\sqlval($data['upgradeBreakFactor']).',
+				upgradeInitiative = '.\sqlval($data['upgradeInitiative']).',
+				upgradeForceModificator = '.\sqlval(json_encode($upgradeForceModificator)).'
 		';
 		$blueprintId = query($sql);
 
@@ -213,9 +214,9 @@ class Blueprint extends \Model
 		{
 			$sql = '
 				INSERT INTO materialsToBlueprints
-				SET materialId = '.sqlval($material).',
-					blueprintId = '.sqlval($blueprintId).',
-					percentage = '.sqlval($data['percentage'][$key]).'
+				SET materialId = '.\sqlval($material).',
+					blueprintId = '.\sqlval($blueprintId).',
+					percentage = '.\sqlval($data['percentage'][$key]).'
 			';
 			query($sql);
 		}
@@ -226,8 +227,8 @@ class Blueprint extends \Model
 			{
 				$sql = '
 					INSERT INTO techniquesToBlueprints
-					SET techniqueId = '.sqlval($technique).',
-						blueprintId = '.sqlval($blueprintId).'
+					SET techniqueId = '.\sqlval($technique).',
+						blueprintId = '.\sqlval($blueprintId).'
 				';
 				query($sql);
 			}
@@ -262,7 +263,7 @@ class Blueprint extends \Model
 				`materialId`,
 				percentage
 			FROM materialsToBlueprints
-			WHERE `blueprintId` = '.sqlval($this->blueprintId).'
+			WHERE `blueprintId` = '.\sqlval($this->blueprintId).'
 				AND !deleted
 		';
 		$materialIds = query($sql, true);
@@ -284,7 +285,7 @@ class Blueprint extends \Model
 		$sql = '
 			SELECT `techniqueId`
 			FROM techniquesToBlueprints
-			WHERE `blueprintId` = '.sqlval($this->blueprintId).'
+			WHERE `blueprintId` = '.\sqlval($this->blueprintId).'
 				AND !deleted
 		';
 		$techniqueIds = query($sql, true);
@@ -606,7 +607,7 @@ class Blueprint extends \Model
 			SET blueprints.deleted = 1,
 				materialsToBlueprints.deleted = 1,
 				techniquesToBlueprints.deleted = 1
-			WHERE blueprints.`blueprintId` = '.sqlval($this->blueprintId).'
+			WHERE blueprints.`blueprintId` = '.\sqlval($this->blueprintId).'
 				AND materialsToBlueprints.`blueprintId` = blueprints.`blueprintId`
 				AND techniquesToBlueprints.`blueprintId` = blueprints.`blueprintId`
 		';

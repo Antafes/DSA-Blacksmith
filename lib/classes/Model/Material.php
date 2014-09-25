@@ -46,7 +46,7 @@ class Material extends \Model
 				`name`,
 				additional
 			FROM materials
-			WHERE `materialId` = '.sqlval($id).'
+			WHERE `materialId` = '.\sqlval($id).'
 				AND !deleted
 		';
 		$material = query($sql);
@@ -84,9 +84,9 @@ class Material extends \Model
 
 		$sql = '
 			INSERT INTO materials
-			SET materialTypeId = '.sqlval($data['materialTypeId']).',
-				name = '.sqlval($data['name']).',
-				additional = '.sqlval(json_encode($additional)).'
+			SET materialTypeId = '.\sqlval($data['materialTypeId']).',
+				name = '.\sqlval($data['name']).',
+				additional = '.\sqlval(json_encode($additional)).'
 		';
 		$id = query($sql);
 
@@ -171,7 +171,7 @@ class Material extends \Model
 			UPDATE materials, materialAssets
 			SET materials.deleted = 1,
 				materialAssets.deleted = 1
-			WHERE materials.`materialId` = '.sqlval($this->materialId).'
+			WHERE materials.`materialId` = '.\sqlval($this->materialId).'
 				AND materialAssets.`materialId` = materials.`materialId`
 		';
 		return query($sql);

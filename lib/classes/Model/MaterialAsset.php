@@ -78,7 +78,7 @@ class MaterialAsset extends \Model
 				armor,
 				`forceModificator`
 			FROM materialAssets
-			WHERE `materialAssetId` = '.sqlval($id).'
+			WHERE `materialAssetId` = '.\sqlval($id).'
 				AND !deleted
 		';
 		$materialAsset = query($sql);
@@ -109,16 +109,16 @@ class MaterialAsset extends \Model
 
 		$sql = '
 			INSERT INTO materialassets
-			SET materialId = '.sqlval($data['materialId']).',
-				percentage = '.sqlval($data['percentage']).',
-				timeFactor = '.sqlval($data['timeFactor']).',
-				priceFactor = '.sqlval($data['priceFactor']).',
-				priceWeight = '.sqlval($data['priceWeight']).',
-				proof = '.sqlval($data['proof']).',
-				breakFactor = '.sqlval($data['breakFactor']).',
-				hitPoints = '.sqlval($data['hitPoints']).',
-				armor = '.sqlval($data['armor']).',
-				forceModificator = '.sqlval(json_encode($forceModificators)).'
+			SET materialId = '.\sqlval($data['materialId']).',
+				percentage = '.\sqlval($data['percentage']).',
+				timeFactor = '.\sqlval($data['timeFactor']).',
+				priceFactor = '.\sqlval($data['priceFactor']).',
+				priceWeight = '.\sqlval($data['priceWeight']).',
+				proof = '.\sqlval($data['proof']).',
+				breakFactor = '.\sqlval($data['breakFactor']).',
+				hitPoints = '.\sqlval($data['hitPoints']).',
+				armor = '.\sqlval($data['armor']).',
+				forceModificator = '.\sqlval(json_encode($forceModificators)).'
 		';
 		query($sql);
 

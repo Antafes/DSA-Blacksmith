@@ -71,9 +71,9 @@ class Translator
 
 		$sql = '
 			INSERT INTO translations
-			SET languageId = '.sqlval($language).',
-				`key` = '.sqlval($key).',
-				`value` = '.sqlval($value).'
+			SET languageId = '.\sqlval($language).',
+				`key` = '.\sqlval($key).',
+				`value` = '.\sqlval($value).'
 		';
 		$translationId = query($sql);
 
@@ -114,7 +114,7 @@ class Translator
 			$sql = '
 				SELECT `key`, `value`
 				FROM translations
-				WHERE languageId = '.sqlval($language->getLanguageId()).'
+				WHERE languageId = '.\sqlval($language->getLanguageId()).'
 					AND !deleted
 			';
 			$translations = query($sql, true);

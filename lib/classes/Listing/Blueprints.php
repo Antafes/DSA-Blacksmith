@@ -13,7 +13,8 @@ class Blueprints extends \Listing
 		$sql = '
 			SELECT `blueprintId`
 			FROM blueprints
-			WHERE !deleted
+			WHERE userid = '.\sqlval($_SESSION['userId']).'
+				AND !deleted
 		';
 		$blueprintIds = query($sql, true);
 		$obj = new self();
