@@ -108,7 +108,7 @@ class MaterialAsset extends \Model
 		}
 
 		$sql = '
-			INSERT INTO materialassets
+			INSERT INTO materialAssets
 			SET materialId = '.\sqlval($data['materialId']).',
 				percentage = '.\sqlval($data['percentage']).',
 				timeFactor = '.\sqlval($data['timeFactor']).',
