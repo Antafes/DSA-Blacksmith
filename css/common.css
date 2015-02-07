@@ -27,6 +27,11 @@ a.button
 	border-radius: 3px;
 }
 
+a.active
+{
+	background-color: #ffff99;
+}
+
 .left
 {
 	float: left;
