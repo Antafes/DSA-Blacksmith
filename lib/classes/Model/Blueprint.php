@@ -538,7 +538,6 @@ class Blueprint extends \Model
 		$breakFactor = $this->getBaseBreakFactor();
 		$initiative = $this->getBaseInitiative();
 		$forceModificatorList = array_merge(
-			$this->getBaseForceModificator(),
 			$this->getMaterialForceModificator(),
 			$this->getUpgradeForceModificator()
 		);
@@ -572,10 +571,7 @@ class Blueprint extends \Model
 			$hitPoints += $technique->getHitPoints();
 		}
 
-		$forceModificator = array(
-			'attack' => 0,
-			'parade' => 0,
-		);
+		$forceModificator = array_pop($this->getBaseForceModificator());
 
 		foreach ($forceModificatorList as $forceMod)
 		{

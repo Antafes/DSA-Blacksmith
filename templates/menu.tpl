@@ -5,6 +5,7 @@
 		<a class="button" href="index.php?page=Materials">{$translator->getTranslation('materials')}</a>
 		<a class="button" href="index.php?page=Techniques">{$translator->getTranslation('techniques')}</a>
 		<a class="button" href="index.php?page=ItemTypes">{$translator->getTranslation('itemTypes')}</a>
+		<a class="button" href="index.php?page=Characters">{$translator->getTranslation('characters')}</a>
 		<a class="button" href="index.php?page=Options">{$translator->getTranslation('options')}</a>
 		{if $isAdmin}
 			<a class="button" href="index.php?page=Admin">{$translator->getTranslation('admin')}</a>

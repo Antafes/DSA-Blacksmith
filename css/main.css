@@ -44,7 +44,11 @@ table .timeFactor,
 table .hitPoints,
 table .notes,
 table .price,
-table .weight
+table .weight,
+table .characterBowMaking,
+table .characterPrecisionMechanics,
+table .characterBlacksmith,
+table .characterTailoring
 {
 	width: 100px;
 }
@@ -67,9 +71,22 @@ table.showBlueprint .forceModificator
 }
 
 table .additional,
-table .forceModificator
+table .forceModificator,
+table .characterName
 {
 	width: 300px;
+}
+
+table .characterLastUpdate
+{
+	width: 150px;
+}
+
+
+table .characterWoodworking,
+table .characterLeatherworking
+{
+	width: 125px;
 }
 
 .submenu
