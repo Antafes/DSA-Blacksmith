@@ -23,8 +23,8 @@ class ForceModificator
 		foreach ($matches as $match)
 		{
 			$forceModificators[] = array(
-				'attack'     => intval($match[1]),
-				'parade'     => intval($match[2]),
+				'attack' => intval($match[1]),
+				'parade' => intval($match[2]),
 			);
 		}
 
@@ -45,11 +45,9 @@ class ForceModificator
 			return array();
 
 		return array(
-			0 => array(
-				array(
-					'attack' => $attack,
-					'parade' => $parade,
-				),
+			array(
+				'attack' => $attack,
+				'parade' => $parade,
 			),
 		);
 	}

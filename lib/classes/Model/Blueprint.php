@@ -213,9 +213,30 @@ class Blueprint extends \Model
 		foreach ($data['material'] as $key => $material)
 		{
 			$sql = '
+				SELECT
+					`materialAssetId`,
+					percentage
+				FROM materialassets
+				WHERE `materialId` = '.\sqlval($material).'
+					AND !deleted
+				ORDER BY percentage DESC
+			';
+			$materialAssets = \query($sql, true);
+
+			foreach ($materialAssets as $materialAsset)
+			{
+				if ($data['percentage'][$key] >= $materialAsset['percentage'])
+				{
+					$materialAssetId = $materialAsset['materialAssetId'];
+					break;
+				}
+			}
+
+			$sql = '
 				INSERT INTO materialsToBlueprints
 				SET materialId = '.\sqlval($material).',
 					blueprintId = '.\sqlval($blueprintId).',
+					materialAssetId = '.\sqlval($materialAssetId).',
 					percentage = '.\sqlval($data['percentage'][$key]).'
 			';
 			query($sql);
@@ -261,6 +282,7 @@ class Blueprint extends \Model
 		$sql = '
 			SELECT
 				`materialId`,
+				`materialAssetId`,
 				percentage
 			FROM materialsToBlueprints
 			WHERE `blueprintId` = '.\sqlval($this->blueprintId).'
@@ -273,6 +295,7 @@ class Blueprint extends \Model
 		{
 			$list[$material['materialId']] = array(
 				'material' => \Model\Material::loadById($material['materialId']),
+				'materialAsset' => \Model\MaterialAsset::loadById($material['materialAssetId']),
 				'percentage' => intval($material['percentage']),
 			);
 		}
@@ -397,16 +420,25 @@ class Blueprint extends \Model
 		return $this->upgradeInitiative;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getUpgradeForceModificator()
 	{
 		return json_decode($this->upgradeForceModificator, true);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getMaterialList()
 	{
 		return $this->materialList;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getTechniqueList()
 	{
 		return $this->techniqueList;
@@ -527,14 +559,38 @@ class Blueprint extends \Model
 		return trim($notes);
 	}
 
+	public function getTimeUnits()
+	{
+		$time = $this->getItemType()->getTime();
+
+		foreach ($this->getMaterialList() as $item)
+		{
+			$materialAssetList = $item['material']->getMaterialAssetListing()->getList();
+			krsort($materialAssetList);
+
+			/* @var $materialAsset \Model\MaterialAsset */
+			foreach ($materialAssetList as $materialAsset)
+			{
+				$time *= $materialAsset->getTimeFactor();
+			}
+		}
+
+		/* @var $technique \Model\Technique */
+		foreach ($this->getTechniqueList() as $technique)
+		{
+			$time *= $technique->getTimeFactor();
+		}
+
+		return round($time);
+	}
+
+	/**
+	 * @return array
+	 */
 	public function getResultingStats()
 	{
 		$translator = \Translator::getInstance();
 
-		$time = $this->getItemType()->getTime();
-		$hitPointsString = $this->getBaseHitPointsDice();
-		$hitPointsString .= $translator->getTranslation($this->getBaseHitPointsDiceType());
-		$hitPoints = $this->getBaseHitPoints();
 		$breakFactor = $this->getBaseBreakFactor();
 		$initiative = $this->getBaseInitiative();
 		$forceModificatorList = array_merge(
@@ -557,7 +613,6 @@ class Blueprint extends \Model
 					continue;
 				}
 
-				$time *= $materialAsset->getTimeFactor();
 				$hitPoints += $materialAsset->getHitPoints();
 				$breakFactor += $materialAsset->getBreakFactor();
 			}
@@ -566,7 +621,6 @@ class Blueprint extends \Model
 		/* @var $technique \Model\Technique */
 		foreach ($this->getTechniqueList() as $technique)
 		{
-			$time *= $technique->getTimeFactor();
 			$breakFactor += $technique->getBreakFactor();
 			$hitPoints += $technique->getHitPoints();
 		}
@@ -575,39 +629,49 @@ class Blueprint extends \Model
 
 		foreach ($forceModificatorList as $forceMod)
 		{
-			$forceModificator['attack'] += $forceMod[0]['attack'];
-			$forceModificator['parade'] += $forceMod[0]['parade'];
+			$forceModificator['attack'] += $forceMod['attack'];
+			$forceModificator['parade'] += $forceMod['parade'];
 		}
 
-		$hitPoints += $this->getUpgradeHitPoints();
+		$hitPoints = $this->getEndHitPoints();
+		$hitPointsString = $hitPoints['dices']
+			.$translator->getTranslation($hitPoints['diceType']);
 		$initiative += $this->getUpgradeInitiative();
 		$breakFactor += $this->getUpgradeBreakFactor();
 
 		return array(
 			'name' => $this->getName(),
-			'hitPoints' => $hitPointsString.sprintf('%+d', $hitPoints),
+			'hitPoints' => $hitPointsString.sprintf('%+d', $hitPoints['add'] + $hitPoints['material']),
 			'weight' => $this->getWeight(),
 			'breakFactor' => $breakFactor,
 			'initiative' => $initiative,
 			'price' => $this->getEndPrice(),
 			'forceModificator' => vsprintf('%+d / %+d', $forceModificator),
 			'notes' => $this->getNotes(),
-			'time' => round($time).' '.$translator->getTranslation('tu'),
+			'time' => $this->getTimeUnits().' '.$translator->getTranslation('tu'),
 		);
 	}
 
 	public function remove()
 	{
 		$sql = '
-			UPDATE blueprints, materialsToBlueprints, techniquesToBlueprints
-			SET blueprints.deleted = 1,
-				materialsToBlueprints.deleted = 1,
-				techniquesToBlueprints.deleted = 1
-			WHERE blueprints.`blueprintId` = '.\sqlval($this->blueprintId).'
-				AND materialsToBlueprints.`blueprintId` = blueprints.`blueprintId`
-				AND techniquesToBlueprints.`blueprintId` = blueprints.`blueprintId`
+			UPDATE materialstoblueprints
+			SET deleted = 1
+			WHERE `blueprintId` = '.\sqlval($this->blueprintId).'
 		';
-		return query($sql);
+		\query($sql);
+		$sql = '
+			UPDATE techniquestoblueprints
+			SET deleted = 1
+			WHERE `blueprintId` = '.\sqlval($this->blueprintId).'
+		';
+		\query($sql);
+		$sql = '
+			UPDATE blueprints
+			SET deleted = 1
+			WHERE `blueprintId` = '.\sqlval($this->blueprintId).'
+		';
+		\query($sql);
 	}
 
 	public function getAsArray()
@@ -634,5 +698,26 @@ class Blueprint extends \Model
 			'upgradeInitiative' => $this->getUpgradeInitiative(),
 			'upgradeForceModificator' => $this->getUpgradeForceModificator(),
 		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getEndHitPoints()
+	{
+		$data = array(
+			'dices' => $this->getBaseHitPointsDice(),
+			'diceType' => $this->getBaseHitPointsDiceType(),
+			'add' => $this->getBaseHitPoints() + $this->getUpgradeHitPoints(),
+			'material' => 0,
+		);
+
+		/* @var $technique \Model\Technique */
+		foreach ($this->getTechniqueList() as $technique)
+		{
+			$data['material'] += $technique->getHitPoints();
+		}
+
+		return $data;
 	}
 }

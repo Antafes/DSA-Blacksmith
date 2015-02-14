@@ -19,6 +19,11 @@ class ItemType extends \Model
 	protected $name;
 
 	/**
+	 * @var string
+	 */
+	protected $type;
+
+	/**
 	 * @var float
 	 */
 	protected $talentPoints;
@@ -39,6 +44,7 @@ class ItemType extends \Model
 			SELECT
 				`itemTypeId`,
 				`name`,
+				`type`,
 				`talentPoints`,
 				`time`
 			FROM itemTypes
@@ -79,6 +85,11 @@ class ItemType extends \Model
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	public function getType()
+	{
+		return $this->type;
 	}
 
 	public function getTalentPoints()

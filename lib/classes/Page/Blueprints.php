@@ -18,6 +18,7 @@ class Blueprints extends \Page
 		$this->getTemplate()->loadJs('addBlueprint');
 		$this->getTemplate()->loadJs('jquery.materialSelect');
 		$this->getTemplate()->loadJs('jquery.techniqueSelect');
+		$this->getTemplate()->loadJs('jquery.blueprint');
 		$this->getTemplate()->loadJs('showBlueprint');
 
 		$blueprintListing = \Listing\Blueprints::loadList();

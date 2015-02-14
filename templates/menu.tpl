@@ -2,6 +2,7 @@
 	{if $smarty.session.userId}
 		<a class="button{if !$smarty.get.page || $smarty.get.page == 'Index'} active{/if}" href="index.php?page=Index">{$translator->getTranslation('index')}</a>
 		<a class="button{if $smarty.get.page == 'Blueprints'} active{/if}" href="index.php?page=Blueprints">{$translator->getTranslation('blueprints')}</a>
+		<a class="button{if $smarty.get.page == 'Craftings'} active{/if}" href="index.php?page=Craftings">{$translator->getTranslation('craftings')}</a>
 		<a class="button{if $smarty.get.page == 'Materials'} active{/if}" href="index.php?page=Materials">{$translator->getTranslation('materials')}</a>
 		<a class="button{if $smarty.get.page == 'Techniques'} active{/if}" href="index.php?page=Techniques">{$translator->getTranslation('techniques')}</a>
 		<a class="button{if $smarty.get.page == 'ItemTypes'} active{/if}" href="index.php?page=ItemTypes">{$translator->getTranslation('itemTypes')}</a>

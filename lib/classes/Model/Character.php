@@ -176,4 +176,54 @@ class Character extends \Model
 		';
 		query($sql);
 	}
+
+	public function getCharacterId()
+	{
+		return $this->characterId;
+	}
+
+	public function getKey()
+	{
+		return $this->key;
+	}
+
+	public function getLastUpdate()
+	{
+		return $this->lastUpdate;
+	}
+
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	public function getBowMaking()
+	{
+		return $this->bowMaking;
+	}
+
+	public function getPrecisionMechanics()
+	{
+		return $this->precisionMechanics;
+	}
+
+	public function getBlacksmith()
+	{
+		return $this->blacksmith;
+	}
+
+	public function getWoodworking()
+	{
+		return $this->woodworking;
+	}
+
+	public function getLeatherworking()
+	{
+		return $this->leatherworking;
+	}
+
+	public function getTailoring()
+	{
+		return $this->tailoring;
+	}
 }

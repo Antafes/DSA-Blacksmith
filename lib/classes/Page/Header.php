@@ -27,6 +27,10 @@ class Header extends \Page
 		// Add JS files
 		$this->template->loadJs('jquery-2.1.1');
 		$this->template->loadJs('jquery-ui-1.11.0.custom');
+		$this->template->loadJs('jquery.popup');
+
+		// Add the language entries for JavaScripts
+		$this->template->assign('translations', json_encode($this->template->getTranslator()->getAsArray()));
 
 		$this->createMenu();
 	}

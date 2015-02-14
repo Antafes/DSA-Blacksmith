@@ -224,4 +224,12 @@ class Translator
 	{
 		setcookie('esLanguage', $languageId, time() + 86400);
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getAsArray()
+	{
+		return $this->translations[$this->getCurrentLanguage()];
+	}
 }

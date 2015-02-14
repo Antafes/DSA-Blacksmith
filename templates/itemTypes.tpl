@@ -31,7 +31,7 @@
 		</tbody>
 	</table>
 	<div id="addItemTypePopup" style="display: none;" data-title="{$translator->getTranslation('addItemType')}">
-		<form method="post" action="ajax/addMaterial.php">
+		<form method="post" action="ajax/addItemType.php">
 			<table class="addItemTypes collapse">
 				<tbody>
 					<tr class="odd">

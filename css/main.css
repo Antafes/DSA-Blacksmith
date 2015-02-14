@@ -27,6 +27,11 @@ table > thead > tr > td
 	text-align: center;
 }
 
+table > tbody > tr.done
+{
+	color: #009933;
+}
+
 table .material,
 table .itemType,
 table .technique,

@@ -196,36 +196,6 @@
 			</table>
 		</form>
 	</div>
-	<div id="showBlueprintPopup" style="display: none;" data-title="{$translator->getTranslation('showBlueprint')}">
-		<table class="showBlueprint collapse">
-			<thead>
-				<tr>
-					<th class="name">{$translator->getTranslation('name')}</th>
-					<th class="hitPoints">{$translator->getTranslation('hp')}</th>
-					<th class="weight">{$translator->getTranslation('weight')}</th>
-					<th class="breakFactor">{$translator->getTranslation('bf')}</th>
-					<th class="initiative">{$translator->getTranslation('ini')}</th>
-					<th class="price">{$translator->getTranslation('price')}</th>
-					<th class="forceModificator">{$translator->getTranslation('fm')}</th>
-					<th class="notes">{$translator->getTranslation('notes')}</th>
-					<th class="time">{$translator->getTranslation('time')}</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td class="name"></td>
-					<td class="hitPoints"></td>
-					<td class="weight"></td>
-					<td class="breakFactor"></td>
-					<td class="initiative"></td>
-					<td class="price"></td>
-					<td class="forceModificator"></td>
-					<td class="notes"></td>
-					<td class="time"></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
 	<script type="text/javascript">
 		$(function() {
 			window.materials = JSON.parse('{$materialList}');
