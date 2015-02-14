@@ -34,7 +34,7 @@ $DB_MIGRATION = array(
 		');
 
 		$results[] = query_raw('
-			ALTER TABLE `itemtypes`
+			ALTER TABLE `itemTypes`
 				ADD COLUMN `type` ENUM("weapon","shield","armor","projectile") NOT NULL AFTER `name`
 		');
 
@@ -59,9 +59,9 @@ $DB_MIGRATION = array(
 		');
 
 		$results[] = query_raw('
-			ALTER TABLE `materialstoblueprints`
+			ALTER TABLE `materialsToBlueprints`
 				ADD COLUMN `materialAssetId` INT UNSIGNED NOT NULL AFTER `blueprintId`,
-				ADD CONSTRAINT `materialsToBlueprints_materialAssetId` FOREIGN KEY (`materialAssetId`) REFERENCES `materialassets` (`materialAssetId`) ON UPDATE CASCADE ON DELETE CASCADE
+				ADD CONSTRAINT `materialsToBlueprints_materialAssetId` FOREIGN KEY (`materialAssetId`) REFERENCES `materialAssets` (`materialAssetId`) ON UPDATE CASCADE ON DELETE CASCADE
 		');
 
 		$results[] = query_raw('
