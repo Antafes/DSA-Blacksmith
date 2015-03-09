@@ -99,7 +99,7 @@
 					<th class="breakFactor">{$translator->getTranslation('bf')}</th>
 					<th class="initiative">{$translator->getTranslation('ini')}</th>
 					<th class="price">{$translator->getTranslation('price')}</th>
-					<th class="forceModificator">{$translator->getTranslation('fm')}</th>
+					<th class="weaponModificator">{$translator->getTranslation('wm')}</th>
 					<th class="notes">{$translator->getTranslation('notes')}</th>
 					<th class="time">{$translator->getTranslation('time')}</th>
 				</tr>
@@ -112,7 +112,7 @@
 					<td class="breakFactor"></td>
 					<td class="initiative"></td>
 					<td class="price"></td>
-					<td class="forceModificator"></td>
+					<td class="weaponModificator"></td>
 					<td class="notes"></td>
 					<td class="time"></td>
 				</tr>

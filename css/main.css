@@ -70,12 +70,14 @@ table.showBlueprint .initiative
 	width: 50px;
 }
 
+table.showBlueprint .weaponModificator,
 table.showBlueprint .forceModificator
 {
 	width: 75px;
 }
 
 table .additional,
+table .weaponModificator,
 table .forceModificator,
 table .characterName
 {

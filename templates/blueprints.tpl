@@ -101,9 +101,9 @@
 						</td>
 					</tr>
 					<tr class="odd">
-						<td>{$translator->getTranslation('baseForceModificator')}</td>
+						<td>{$translator->getTranslation('baseWeaponModificator')}</td>
 						<td>
-							<textarea class="baseForceModificator" name="baseForceModificator"></textarea>
+							<textarea class="baseWeaponModificator" name="baseWeaponModificator"></textarea>
 						</td>
 					</tr>
 					<tr class="even">
@@ -182,9 +182,9 @@
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('upgradeForceModificator')}</td>
+						<td>{$translator->getTranslation('upgradeWeaponModificator')}</td>
 						<td>
-							<input class="upgradeForceModificator" name="upgradeForceModificator[attack]" type="number" min="0" max="1" /> / <input class="upgradeForceModificator" name="upgradeForceModificator[parade]" type="number" type="number" min="0" max="1" />
+							<input class="upgradeWeaponModificator" name="upgradeWeaponModificator[attack]" type="number" min="0" max="1" /> / <input class="upgradeWeaponModificator" name="upgradeWeaponModificator[parade]" type="number" type="number" min="0" max="1" />
 						</td>
 					</tr>
 					<tr>
