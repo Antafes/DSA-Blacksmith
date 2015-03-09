@@ -603,7 +603,7 @@ class Blueprint extends \Model
 			/* @var $material \Model\Material */
 			$material = $item['material'];
 			$materialAssetList = $material->getMaterialAssetListing()->getList();
-			krsort($materialAssetList);
+			usort($materialAssetList, array(__CLASS__, 'compareMaterialAssetsPercentage'));
 
 			/* @var $materialAsset \Model\MaterialAsset */
 			foreach ($materialAssetList as $materialAsset)
@@ -615,6 +615,7 @@ class Blueprint extends \Model
 
 				$hitPoints += $materialAsset->getHitPoints();
 				$breakFactor += $materialAsset->getBreakFactor();
+				break;
 			}
 		}
 
@@ -719,5 +720,21 @@ class Blueprint extends \Model
 		}
 
 		return $data;
+	}
+
+	/**
+	 * @param \Model\MaterialAsset $a
+	 * @param \Model\MaterialAsset $b
+	 *
+	 * @return int
+	 */
+	public static function compareMaterialAssetsPercentage($a, $b)
+	{
+		if ($a->getPercentage() == $b->getPercentage())
+		{
+			return 0;
+		}
+
+		return ($a->getPercentage() < $b->getPercentage()) ? +1 : -1;
 	}
 }
