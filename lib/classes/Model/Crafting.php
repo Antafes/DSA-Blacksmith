@@ -273,4 +273,14 @@ class Crafting extends \Model
 		';
 		\query($sql);
 	}
+
+	public function remove()
+	{
+		$sql = '
+			UPDATE craftings
+			SET deleted = 1
+			WHERE `craftingId` = '.\sqlval($this->craftingId).'
+		';
+		\query($sql);
+	}
 }

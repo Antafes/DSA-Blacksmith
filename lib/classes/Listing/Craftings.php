@@ -13,6 +13,7 @@ class Craftings extends \Listing
 			SELECT `craftingId`
 			FROM craftings
 			WHERE `userId` = '.\sqlval($_SESSION['userId']).'
+				AND !deleted
 			ORDER BY done, `name`
 		';
 		$craftingIds = query($sql, true);
