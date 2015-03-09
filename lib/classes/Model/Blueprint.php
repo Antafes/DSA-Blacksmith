@@ -613,7 +613,6 @@ class Blueprint extends \Model
 					continue;
 				}
 
-				$hitPoints += $materialAsset->getHitPoints();
 				$breakFactor += $materialAsset->getBreakFactor();
 				break;
 			}
@@ -623,7 +622,6 @@ class Blueprint extends \Model
 		foreach ($this->getTechniqueList() as $technique)
 		{
 			$breakFactor += $technique->getBreakFactor();
-			$hitPoints += $technique->getHitPoints();
 		}
 
 		$forceModificator = array_pop($this->getBaseForceModificator());
@@ -717,6 +715,26 @@ class Blueprint extends \Model
 		foreach ($this->getTechniqueList() as $technique)
 		{
 			$data['material'] += $technique->getHitPoints();
+		}
+
+		foreach ($this->getMaterialList() as $item)
+		{
+			/* @var $material \Model\Material */
+			$material = $item['material'];
+			$materialAssetList = $material->getMaterialAssetListing()->getList();
+			usort($materialAssetList, array(__CLASS__, 'compareMaterialAssetsPercentage'));
+
+			/* @var $materialAsset \Model\MaterialAsset */
+			foreach ($materialAssetList as $materialAsset)
+			{
+				if ($materialAsset->getPercentage() > $item['percentage'])
+				{
+					continue;
+				}
+
+				$data['material'] += $materialAsset->getHitPoints();
+				break;
+			}
 		}
 
 		return $data;
