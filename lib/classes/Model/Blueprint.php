@@ -216,7 +216,7 @@ class Blueprint extends \Model
 				SELECT
 					`materialAssetId`,
 					percentage
-				FROM materialassets
+				FROM materialAssets
 				WHERE `materialId` = '.\sqlval($material).'
 					AND !deleted
 				ORDER BY percentage DESC
