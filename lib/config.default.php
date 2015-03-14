@@ -23,6 +23,9 @@ $GLOBALS['config']['dir_ws_index'] = 'http://localhost/index.php';
 $GLOBALS['config']['migrations_dir'] = '';
 $GLOBALS['config']['dir_ws_migrations'] = '';
 
+//mail
+$GLOBALS['mail']['sender'] = 'test@test.org';
+
 //autoloader
 spl_autoload_register('classLoad');
 

@@ -18,9 +18,12 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
+				<td>
 					{add_form_salt formName='login'}
 					<input type="submit" value="{$translator->getTranslation('login')}" />
+				</td>
+				<td>
+					<a href="index.php?page=LostPassword">{$translator->getTranslation('lostPassword')}</a>
 				</td>
 			</tr>
 		</table>

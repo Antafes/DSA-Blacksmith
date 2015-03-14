@@ -44,6 +44,12 @@ class Register extends \Page
 			return;
 		}
 
+		if (\User::checkEmail($email))
+		{
+			$this->template->assign('error', 'emailAlreadyInUse');
+			return;
+		}
+
 		if (\User::createUser($username, $password, $email))
 			$this->template->assign('message', 'registrationSuccessful');
 		else
