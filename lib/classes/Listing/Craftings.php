@@ -7,13 +7,14 @@ namespace Listing;
  */
 class Craftings extends \Listing
 {
-	public static function loadList()
+	public static function loadList($onlyUnfinished = false)
 	{
 		$sql = '
 			SELECT `craftingId`
 			FROM craftings
 			WHERE `userId` = '.\sqlval($_SESSION['userId']).'
 				AND !deleted
+				'.($onlyUnfinished ? 'AND !done' : '').'
 			ORDER BY done, `name`
 		';
 		$craftingIds = query($sql, true);

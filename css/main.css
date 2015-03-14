@@ -4,6 +4,16 @@ a
 	text-decoration: none;
 }
 
+a:hover
+{
+	text-decoration: underline;
+}
+
+a.button:hover
+{
+	text-decoration: none;
+}
+
 .help
 {
 	font-size: 11px;

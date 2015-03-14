@@ -106,3 +106,9 @@ th.centered
 	list-style: none;
 	padding: 0;
 }
+
+.box
+{
+	border: 1px solid #000000;
+	border-radius: 5px;
+}
