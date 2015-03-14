@@ -152,14 +152,14 @@ class Blueprint extends \Model
 	{
 		if (!$data['name'] && !is_numeric($data['basePrice']) && !is_numeric($data['baseHitPointsDice'])
 			&& !is_numeric($data['baseHitPoints']) && !is_numeric($data['baseBreakFactor']) && !is_numeric($data['baseInitiative'])
-			&& !$data['baseForceModificator'] && !is_numeric($data['weight']) && count($data['material']) === 0)
+			&& !$data['baseWeaponModificator'] && !is_numeric($data['weight']) && count($data['material']) === 0)
 		{
 			return false;
 		}
 
 		$moneyHelper = new \Helper\Money();
 		$basePrice = $moneyHelper->exchange($data['basePrice'], $data['currency']);
-		$baseForceModificators = \Helper\ForceModificator::getForceModificatorArray($data['baseForceModificator']);
+		$baseWeaponModificators = \Helper\ForceModificator::getForceModificatorArray($data['baseWeaponModificator']);
 		$materialForceModificatorString = '';
 
 		if (!empty($data['materialForceModificator']))
@@ -171,7 +171,7 @@ class Blueprint extends \Model
 		}
 
 		$materialForceModificators = \Helper\ForceModificator::getForceModificatorArray(substr($materialForceModificatorString, 0, -2));
-		$upgradeForceModificator = \Helper\ForceModificator::toForceModificatorArray($data['upgradeForceModificator']['attack'], $data['upgradeForceModificator']['parade']);
+		$upgradeWeaponModificator = \Helper\ForceModificator::toForceModificatorArray($data['upgradeWeaponModificator']['attack'], $data['upgradeWeaponModificator']['parade']);
 
 		$sql = '
 			INSERT INTO blueprints
@@ -186,13 +186,13 @@ class Blueprint extends \Model
 				baseHitPoints = '.\sqlval($data['baseHitPoints']).',
 				baseBreakFactor = '.\sqlval($data['baseBreakFactor']).',
 				baseInitiative = '.\sqlval($data['baseInitiative']).',
-				baseForceModificator = '.\sqlval(json_encode($baseForceModificators)).',
+				baseForceModificator = '.\sqlval(json_encode($baseWeaponModificators)).',
 				weight = '.\sqlval($data['weight']).',
 				materialForceModificator = '.\sqlval(json_encode($materialForceModificators)).',
 				upgradeHitPoints = '.\sqlval($data['upgradeHitPoints']).',
 				upgradeBreakFactor = '.\sqlval($data['upgradeBreakFactor']).',
 				upgradeInitiative = '.\sqlval($data['upgradeInitiative']).',
-				upgradeForceModificator = '.\sqlval(json_encode($upgradeForceModificator)).'
+				upgradeForceModificator = '.\sqlval(json_encode($upgradeWeaponModificator)).'
 		';
 		$blueprintId = query($sql);
 
