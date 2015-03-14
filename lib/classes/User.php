@@ -276,7 +276,8 @@ class User
 	 */
 	public function setPassword($password)
 	{
-		$this->password = self::encryptPassword($password, $this->salt);
+		$passwordParts = explode('$', $this->password);
+		$this->password = self::encryptPassword($password, $passwordParts[2]);
 		$sql = '
 			UPDATE users
 			SET password = '.\sqlval($this->password).'
