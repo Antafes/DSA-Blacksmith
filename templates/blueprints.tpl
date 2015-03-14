@@ -113,24 +113,6 @@
 						</td>
 					</tr>
 					<tr class="odd">
-						<td>{$translator->getTranslation('toolsProofModificator')}</td>
-						<td>
-							<select name="toolsProofModificator">
-								<option value="-7">{$translator->getTranslation('improvisationalTools')}</option>
-								<option value="-3">{$translator->getTranslation('missingSpecialTools')}</option>
-								<option value="0" selected="selected">{$translator->getTranslation('normalTools')}</option>
-								<option value="3">{$translator->getTranslation('highQualityTools')}</option>
-								<option value="7">{$translator->getTranslation('exceptionallyHighQualityTools')}</option>
-							</select>
-						</td>
-					</tr>
-					<tr class="even">
-						<td>{$translator->getTranslation('planProofModificator')}</td>
-						<td>
-							<input type="number" name="planProofModificator" min="-7" max="7" />
-						</td>
-					</tr>
-					<tr class="odd">
 						<td>{$translator->getTranslation('materials')}</td>
 						<td>
 							<a href="#" id="addMaterialRow">{$translator->getTranslation('addMaterialSelect')}</a>

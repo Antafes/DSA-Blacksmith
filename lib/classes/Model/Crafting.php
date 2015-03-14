@@ -35,6 +35,16 @@ class Crafting extends \Model
 	/**
 	 * @var integer
 	 */
+	protected $toolsProofModificator;
+
+	/**
+	 * @var integer
+	 */
+	protected $planProofModificator;
+
+	/**
+	 * @var integer
+	 */
 	protected $gainedTalentPoints;
 
 	/**
@@ -63,6 +73,8 @@ class Crafting extends \Model
 				`characterId`,
 				`name`,
 				`notes`,
+				`toolsProofModificator`,
+				`planProofModificator`,
 				`gainedTalentPoints`,
 				`done`
 			FROM craftings
@@ -108,6 +120,8 @@ class Crafting extends \Model
 				characterId = '.\sqlval($data['characterId']).',
 				name = '.\sqlval($data['name']).',
 				notes = '.\sqlval($data['notes']).',
+				toolsProofModificator = '.\sqlval($data['toolsProofModificator']).',
+				planProofModificator = '.\sqlval($data['planProofModificator']).',
 				gainedTalentPoints = '.\sqlval($data['gainedTalentPoints']).'
 		';
 		\query($sql);
@@ -123,6 +137,8 @@ class Crafting extends \Model
 			'character' => $this->character,
 			'name' => $this->name,
 			'notes' => $this->notes,
+			'toolsProofModificator' => $this->getToolsProofModificator(),
+			'planProofModificator' => $this->getPlanProofModificator(),
 			'gainedTalentPoints' => $this->gainedTalentPoints,
 			'totalTalentPoints' => $this->getTotalTalentPoints(),
 			'handicap' => $this->getHandicap(),
@@ -149,6 +165,16 @@ class Crafting extends \Model
 	public function getNotes()
 	{
 		return $this->notes;
+	}
+
+	public function getToolsProofModificator()
+	{
+		return $this->toolsProofModificator;
+	}
+
+	public function getPlanProofModificator()
+	{
+		return $this->planProofModificator;
 	}
 
 	public function getGainedTalentPoints()
@@ -214,7 +240,7 @@ class Crafting extends \Model
 			$handicap += $technique->getProof();
 		}
 
-		$handicap -= $this->blueprint->getToolsProofModificator() + $this->blueprint->getPlanProofModificator();
+		$handicap -= $this->getToolsProofModificator() + $this->getPlanProofModificator();
 
 		return $handicap;
 	}

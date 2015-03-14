@@ -152,6 +152,11 @@ class MaterialAsset extends \Model
 		return number_format($moneyHelper->exchange($this->priceWeight, 'K', 'S'), 0, ',', '.').' ST';
 	}
 
+	public function getPriceWeightRaw()
+	{
+		return $this->priceWeight;
+	}
+
 	public function getProof()
 	{
 		return $this->proof;

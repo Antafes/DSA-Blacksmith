@@ -80,6 +80,24 @@
 							<textarea name="notes" cols="60" rows="10"></textarea>
 						</td>
 					</tr>
+					<tr class="odd">
+						<td>{$translator->getTranslation('toolsProofModificator')}</td>
+						<td>
+							<select name="toolsProofModificator">
+								<option value="-7">{$translator->getTranslation('improvisationalTools')}</option>
+								<option value="-3">{$translator->getTranslation('missingSpecialTools')}</option>
+								<option value="0" selected="selected">{$translator->getTranslation('normalTools')}</option>
+								<option value="3">{$translator->getTranslation('highQualityTools')}</option>
+								<option value="7">{$translator->getTranslation('exceptionallyHighQualityTools')}</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="even">
+						<td>{$translator->getTranslation('planProofModificator')}</td>
+						<td>
+							<input type="number" name="planProofModificator" min="-7" max="7" title="{$translator->getTranslation('easing')}" />
+						</td>
+					</tr>
 					<tr>
 						<td colspan="2" class="buttonArea">
 							<input type="submit" value="{$translator->getTranslation('addCrafting')}" />

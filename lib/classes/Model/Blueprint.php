@@ -74,16 +74,6 @@ class Blueprint extends \Model
 	protected $weight;
 
 	/**
-	 * @var integer
-	 */
-	protected $toolsProofModificator;
-
-	/**
-	 * @var integer
-	 */
-	protected $planProofModificator;
-
-	/**
 	 * @var string
 	 */
 	protected $materialForceModificator;
@@ -132,16 +122,14 @@ class Blueprint extends \Model
 				`basePrice`,
 				`itemTypeId`,
 				`twoHanded`,
-				improvisational,
+				`improvisational`,
 				`baseHitPointsDice`,
 				`baseHitPointsDiceType`,
 				`baseHitPoints`,
 				`baseBreakFactor`,
 				`baseInitiative`,
 				`baseForceModificator`,
-				weight,
-				`toolsProofModificator`,
-				`planProofModificator`,
+				`weight`,
 				`materialForceModificator`,
 				`upgradeHitPoints`,
 				`upgradeBreakFactor`,
@@ -149,7 +137,7 @@ class Blueprint extends \Model
 				`upgradeForceModificator`
 			FROM blueprints
 			WHERE `blueprintId` = '.\sqlval($id).'
-				AND !deleted
+				AND !`deleted`
 		';
 		$blueprint = query($sql);
 		$obj = new self();
@@ -200,8 +188,6 @@ class Blueprint extends \Model
 				baseInitiative = '.\sqlval($data['baseInitiative']).',
 				baseForceModificator = '.\sqlval(json_encode($baseForceModificators)).',
 				weight = '.\sqlval($data['weight']).',
-				toolsProofModificator = '.\sqlval($data['toolsProofModificator']).',
-				planProofModificator = '.\sqlval($data['planProofModificator']).',
 				materialForceModificator = '.\sqlval(json_encode($materialForceModificators)).',
 				upgradeHitPoints = '.\sqlval($data['upgradeHitPoints']).',
 				upgradeBreakFactor = '.\sqlval($data['upgradeBreakFactor']).',
@@ -215,7 +201,7 @@ class Blueprint extends \Model
 			$sql = '
 				SELECT
 					`materialAssetId`,
-					percentage
+					`percentage`
 				FROM materialAssets
 				WHERE `materialId` = '.\sqlval($material).'
 					AND !deleted
@@ -390,16 +376,6 @@ class Blueprint extends \Model
 		return $this->weight;
 	}
 
-	public function getToolsProofModificator()
-	{
-		return $this->toolsProofModificator;
-	}
-
-	public function getPlanProofModificator()
-	{
-		return $this->planProofModificator;
-	}
-
 	public function getMaterialForceModificator()
 	{
 		return json_decode($this->materialForceModificator, true);
@@ -484,7 +460,7 @@ class Blueprint extends \Model
 					}
 					elseif ($materialAsset->getPriceWeight())
 					{
-						$price += $this->weight * ($item['percentage'] / 100) * $materialAsset->getPriceWeight();
+						$price += ($this->weight * ($item['percentage'] / 100)) * $materialAsset->getPriceWeightRaw();
 					}
 
 					$materialPriceCalculated = true;
@@ -689,8 +665,6 @@ class Blueprint extends \Model
 			'baseInitiative' => $this->getBaseInitiative(),
 			'baseForceModificator' => $this->getBaseForceModificator(),
 			'weight' => $this->getWeight(),
-			'toolsProofModificator' => $this->getToolsProofModificator(),
-			'planProofModificator' => $this->getPlanProofModificator(),
 			'materialForceModificator' => $this->getMaterialForceModificator(),
 			'upgradeHitPoints' => $this->getUpgradeHitPoints(),
 			'upgradeBreakFactor' => $this->getUpgradeBreakFactor(),
