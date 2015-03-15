@@ -19,59 +19,14 @@ class Blueprint extends \Model
 	protected $name;
 
 	/**
-	 * @var integer
+	 * @var \Model\Item
 	 */
-	protected $basePrice;
+	protected $item;
 
 	/**
 	 * @var \Model\ItemType
 	 */
 	protected $itemType;
-
-	/**
-	 * @var boolean
-	 */
-	protected $twoHanded;
-
-	/**
-	 * @var boolean
-	 */
-	protected $improvisational;
-
-	/**
-	 * @var integer
-	 */
-	protected $baseHitPointsDice;
-
-	/**
-	 * @var string
-	 */
-	protected $baseHitPointsDiceType;
-
-	/**
-	 * @var integer
-	 */
-	protected $baseHitPoints;
-
-	/**
-	 * @var integer
-	 */
-	protected $baseBreakFactor;
-
-	/**
-	 * @var integer
-	 */
-	protected $baseInitiative;
-
-	/**
-	 * @var string
-	 */
-	protected $baseForceModificator;
-
-	/**
-	 * @var integer
-	 */
-	protected $weight;
 
 	/**
 	 * @var string
@@ -119,17 +74,8 @@ class Blueprint extends \Model
 			SELECT
 				`blueprintId`,
 				`name`,
-				`basePrice`,
+				`itemId`,
 				`itemTypeId`,
-				`twoHanded`,
-				`improvisational`,
-				`baseHitPointsDice`,
-				`baseHitPointsDiceType`,
-				`baseHitPoints`,
-				`baseBreakFactor`,
-				`baseInitiative`,
-				`baseForceModificator`,
-				`weight`,
 				`materialForceModificator`,
 				`upgradeHitPoints`,
 				`upgradeBreakFactor`,
@@ -150,16 +96,11 @@ class Blueprint extends \Model
 
 	public static function create($data)
 	{
-		if (!$data['name'] && !is_numeric($data['basePrice']) && !is_numeric($data['baseHitPointsDice'])
-			&& !is_numeric($data['baseHitPoints']) && !is_numeric($data['baseBreakFactor']) && !is_numeric($data['baseInitiative'])
-			&& !$data['baseWeaponModificator'] && !is_numeric($data['weight']) && count($data['material']) === 0)
+		if (!$data['name'] && !$data['itemId'] && count($data['material']) === 0)
 		{
 			return false;
 		}
 
-		$moneyHelper = new \Helper\Money();
-		$basePrice = $moneyHelper->exchange($data['basePrice'], $data['currency']);
-		$baseWeaponModificators = \Helper\ForceModificator::getForceModificatorArray($data['baseWeaponModificator']);
 		$materialForceModificatorString = '';
 
 		if (!empty($data['materialForceModificator']))
@@ -170,24 +111,15 @@ class Blueprint extends \Model
 			}
 		}
 
-		$materialForceModificators = \Helper\ForceModificator::getForceModificatorArray(substr($materialForceModificatorString, 0, -2));
-		$upgradeWeaponModificator = \Helper\ForceModificator::toForceModificatorArray($data['upgradeWeaponModificator']['attack'], $data['upgradeWeaponModificator']['parade']);
+		$materialForceModificators = \Helper\WeaponModificator::getWeaponModificatorArray(substr($materialForceModificatorString, 0, -2));
+		$upgradeWeaponModificator = \Helper\WeaponModificator::toWeaponModificatorArray($data['upgradeWeaponModificator']['attack'], $data['upgradeWeaponModificator']['parade']);
 
 		$sql = '
 			INSERT INTO blueprints
 			SET name = '.\sqlval($data['name']).',
 				userId = '.\sqlval($data['userId']).',
+				itemId = '.\sqlval($data['itemId']).',
 				itemTypeId = '.\sqlval($data['itemTypeId']).',
-				basePrice = '.\sqlval($basePrice).',
-				twoHanded = '.\sqlval($data['twoHanded']).',
-				improvisational = '.\sqlval($data['improvisational']).',
-				baseHitPointsDice = '.\sqlval($data['baseHitPointsDice']).',
-				baseHitPointsDiceType = '.\sqlval($data['baseHitPointsDiceType']).',
-				baseHitPoints = '.\sqlval($data['baseHitPoints']).',
-				baseBreakFactor = '.\sqlval($data['baseBreakFactor']).',
-				baseInitiative = '.\sqlval($data['baseInitiative']).',
-				baseForceModificator = '.\sqlval(json_encode($baseWeaponModificators)).',
-				weight = '.\sqlval($data['weight']).',
 				materialForceModificator = '.\sqlval(json_encode($materialForceModificators)).',
 				upgradeHitPoints = '.\sqlval($data['upgradeHitPoints']).',
 				upgradeBreakFactor = '.\sqlval($data['upgradeBreakFactor']).',
@@ -248,7 +180,11 @@ class Blueprint extends \Model
 	{
 		foreach ($data as $key => $value)
 		{
-			if ($key === 'itemTypeId')
+			if ($key === 'itemId')
+			{
+				$this->item = \Model\Item::loadById($value);
+			}
+			elseif ($key === 'itemTypeId')
 			{
 				$this->itemType = \Model\ItemType::loadById($value);
 			}
@@ -321,59 +257,20 @@ class Blueprint extends \Model
 		return $this->name;
 	}
 
-	public function getBasePrice()
+	/**
+	 * @return \Model\Item
+	 */
+	public function getItem()
 	{
-		return $this->basePrice;
+		return $this->item;
 	}
 
+	/**
+	 * @return \Model\ItemType
+	 */
 	public function getItemType()
 	{
 		return $this->itemType;
-	}
-
-	public function getTwoHanded()
-	{
-		return $this->twoHanded;
-	}
-
-	public function getImprovisational()
-	{
-		return $this->improvisational;
-	}
-
-	public function getBaseHitPointsDice()
-	{
-		return $this->baseHitPointsDice;
-	}
-
-	public function getBaseHitPointsDiceType()
-	{
-		return $this->baseHitPointsDiceType;
-	}
-
-	public function getBaseHitPoints()
-	{
-		return $this->baseHitPoints;
-	}
-
-	public function getBaseBreakFactor()
-	{
-		return $this->baseBreakFactor;
-	}
-
-	public function getBaseInitiative()
-	{
-		return $this->baseInitiative;
-	}
-
-	public function getBaseForceModificator()
-	{
-		return json_decode($this->baseForceModificator, true);
-	}
-
-	public function getWeight()
-	{
-		return $this->weight;
 	}
 
 	public function getMaterialForceModificator()
@@ -422,7 +319,7 @@ class Blueprint extends \Model
 
 	public function getEndPrice()
 	{
-		$price = $this->basePrice;
+		$price = $this->getItem()->getPrice();
 		$priceFactor = 0;
 		$priceFactorBelowOne = 0;
 		$moneyHelper = new \Helper\Money();
@@ -518,23 +415,6 @@ class Blueprint extends \Model
 		return number_format($moneyHelper->exchange($price, 'K', 'S'), 0, ',', '.') . ' S';
 	}
 
-	public function getNotes()
-	{
-		$notes = '';
-
-		if ($this->improvisational)
-			$notes .= 'i ';
-
-		if ($this->twoHanded)
-			$notes .= 'z ';
-
-		$upgradeForceModificator = $this->getUpgradeForceModificator();
-		if ($this->upgradeInitiative || !empty($upgradeForceModificator))
-			$notes .= 'p';
-
-		return trim($notes);
-	}
-
 	public function getTimeUnits()
 	{
 		$time = $this->getItemType()->getTime();
@@ -567,8 +447,8 @@ class Blueprint extends \Model
 	{
 		$translator = \Translator::getInstance();
 
-		$breakFactor = $this->getBaseBreakFactor();
-		$initiative = $this->getBaseInitiative();
+		$breakFactor = $this->item->getBreakFactor();
+		$initiative = $this->item->getInitiative();
 		$forceModificatorList = array_merge(
 			$this->getMaterialForceModificator(),
 			$this->getUpgradeForceModificator()
@@ -600,7 +480,7 @@ class Blueprint extends \Model
 			$breakFactor += $technique->getBreakFactor();
 		}
 
-		$forceModificator = array_pop($this->getBaseForceModificator());
+		$forceModificator = array_pop($this->item->getWeaponModificator());
 
 		foreach ($forceModificatorList as $forceMod)
 		{
@@ -615,14 +495,14 @@ class Blueprint extends \Model
 		$breakFactor += $this->getUpgradeBreakFactor();
 
 		return array(
-			'name' => $this->getName(),
+			'name' => $this->getName().' ('.$this->item->getName().')',
 			'hitPoints' => $hitPointsString.sprintf('%+d', $hitPoints['add'] + $hitPoints['material']),
-			'weight' => $this->getWeight(),
+			'weight' => $this->item->getWeight(),
 			'breakFactor' => $breakFactor,
 			'initiative' => $initiative,
 			'price' => $this->getEndPrice(),
-			'forceModificator' => vsprintf('%+d / %+d', $forceModificator),
-			'notes' => $this->getNotes(),
+			'forceModificator' => \Helper\WeaponModificator::format($forceModificator),
+			'notes' => $this->item->getNotes(),
 			'time' => $this->getTimeUnits().' '.$translator->getTranslation('tu'),
 		);
 	}
@@ -654,17 +534,8 @@ class Blueprint extends \Model
 		return array(
 			'id' => $this->getBlueprintId(),
 			'name' => $this->getName(),
+			'item' => $this->getItem(),
 			'itemType' => $this->getItemType(),
-			'basePrice' => $this->getBasePrice(),
-			'twoHanded' => $this->getTwoHanded(),
-			'improvisational' => $this->getImprovisational(),
-			'baseHitPointsDice' => $this->getBaseHitPointsDice(),
-			'baseHitPointsDiceType' => $this->getBaseHitPointsDiceType(),
-			'baseHitPoints' => $this->getBaseHitPoints(),
-			'baseBreakFactor' => $this->getBaseBreakFactor(),
-			'baseInitiative' => $this->getBaseInitiative(),
-			'baseForceModificator' => $this->getBaseForceModificator(),
-			'weight' => $this->getWeight(),
 			'materialForceModificator' => $this->getMaterialForceModificator(),
 			'upgradeHitPoints' => $this->getUpgradeHitPoints(),
 			'upgradeBreakFactor' => $this->getUpgradeBreakFactor(),
@@ -679,9 +550,9 @@ class Blueprint extends \Model
 	public function getEndHitPoints()
 	{
 		$data = array(
-			'dices' => $this->getBaseHitPointsDice(),
-			'diceType' => $this->getBaseHitPointsDiceType(),
-			'add' => $this->getBaseHitPoints() + $this->getUpgradeHitPoints(),
+			'dices' => $this->item->getHitPointsDice(),
+			'diceType' => $this->item->getHitPointsDiceType(),
+			'add' => $this->item->getHitPoints() + $this->getUpgradeHitPoints(),
 			'material' => 0,
 		);
 

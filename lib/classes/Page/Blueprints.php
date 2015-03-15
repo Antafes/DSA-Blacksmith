@@ -22,6 +22,7 @@ class Blueprints extends \Page
 		$this->getTemplate()->loadJs('showBlueprint');
 
 		$blueprintListing = \Listing\Blueprints::loadList();
+		$itemListing = \Listing\Items::loadList();
 		$itemTypeListing = \Listing\ItemTypes::loadList();
 		$materialListing = \Listing\Materials::loadList();
 		$techniqueListing = \Listing\Techniques::loadList();
@@ -33,6 +34,7 @@ class Blueprints extends \Page
 		}
 
 		$this->getTemplate()->assign('blueprintListing', $blueprintListing);
+		$this->getTemplate()->assign('itemListing', $itemListing);
 		$this->getTemplate()->assign('itemTypeListing', $itemTypeListing);
 		$this->getTemplate()->assign('materialListing', $materialListing);
 		$this->getTemplate()->assign('materialList', json_encode($materialListing->getAsArray()));

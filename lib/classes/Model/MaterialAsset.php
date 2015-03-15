@@ -98,7 +98,7 @@ class MaterialAsset extends \Model
 		$forceModificators = array();
 		if (!empty($data['forceModificator']))
 		{
-			$forceModificators = \Helper\ForceModificator::getForceModificatorArray($data['forceModificator']);
+			$forceModificators = \Helper\WeaponModificator::getWeaponModificatorArray($data['forceModificator']);
 		}
 
 		if (!empty($data['priceWeight']))

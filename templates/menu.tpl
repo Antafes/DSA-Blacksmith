@@ -5,6 +5,7 @@
 		<a class="button{if $smarty.get.page == 'Craftings'} active{/if}" href="index.php?page=Craftings">{$translator->getTranslation('craftings')}</a>
 		<a class="button{if $smarty.get.page == 'Materials'} active{/if}" href="index.php?page=Materials">{$translator->getTranslation('materials')}</a>
 		<a class="button{if $smarty.get.page == 'Techniques'} active{/if}" href="index.php?page=Techniques">{$translator->getTranslation('techniques')}</a>
+		<a class="button{if $smarty.get.page == 'Items'} active{/if}" href="index.php?page=Items">{$translator->getTranslation('items')}</a>
 		<a class="button{if $smarty.get.page == 'ItemTypes'} active{/if}" href="index.php?page=ItemTypes">{$translator->getTranslation('itemTypes')}</a>
 		<a class="button{if $smarty.get.page == 'Characters'} active{/if}" href="index.php?page=Characters">{$translator->getTranslation('characters')}</a>
 		<a class="button{if $smarty.get.page == 'Options'} active{/if}" href="index.php?page=Options">{$translator->getTranslation('options')}</a>
