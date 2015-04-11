@@ -17,7 +17,7 @@
 				<th class="breakFactor">{$translator->getTranslation('breakFactor')}</th>
 				<th class="hitPoints">{$translator->getTranslation('hitPoints')}</th>
 				<th class="armor">{$translator->getTranslation('armor')}</th>
-				<th class="forceModificator">{$translator->getTranslation('forceModificator')}</th>
+				<th class="weaponModificator">{$translator->getTranslation('weaponModificator')}</th>
 				<th class="additional">{$translator->getTranslation('additional')}</th>
 				<th></th>
 			</tr>
@@ -38,8 +38,8 @@
 						<td class="breakFactor">{$materialAsset.breakFactor}</td>
 						<td class="hitPoints">{$materialAsset.hitPoints}</td>
 						<td class="armor">{$materialAsset.armor}</td>
-						<td class="forceModificator">
-							{foreach $materialAsset.forceModificator as $modificator}
+						<td class="weaponModificator">
+							{foreach $materialAsset.weaponModificator as $modificator}
 								{$modificator.attack} / {$modificator.parade}{if $modificator@index < $modificator@total - 1} {$translator->getTranslation('or')} {/if}
 							{foreachelse}
 								-
@@ -70,7 +70,7 @@
 						<td class="breakFactor">-</td>
 						<td class="hitPoints">-</td>
 						<td class="armor">-</td>
-						<td class="forceModificator">-</td>
+						<td class="weaponModificator">-</td>
 						<td class="additional"{if $assetCount > 1} rowspan="{$assetCount}"{/if}>
 							{foreach $material->getAdditional() as $key => $value}
 								{$key}: {$value}
@@ -135,9 +135,9 @@
 						<td class="breakFactor">{$translator->getTranslation('breakFactor')}</td>
 						<td class="hitPoints">{$translator->getTranslation('hitPoints')}</td>
 						<td class="armor">{$translator->getTranslation('armor')}</td>
-						<td class="forceModificator">
-							{$translator->getTranslation('forceModificator')}<br />
-							<span class="help" title="{$translator->getTranslation('forceModificatorHelp')}"></span>
+						<td class="weaponModificator">
+							{$translator->getTranslation('weaponModificator')}<br />
+							<span class="help" title="{$translator->getTranslation('weaponModificatorHelp')}"></span>
 						</td>
 						<td></td>
 					</tr>

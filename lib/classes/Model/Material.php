@@ -103,7 +103,7 @@ class Material extends \Model
 				'breakFactor' => $data['breakFactor'][$key],
 				'hitPoints' => $data['hitPoints'][$key],
 				'armor' => $data['armor'][$key],
-				'forceModificator' => $data['forceModificator'][$key],
+				'weaponModificator' => $data['weaponModificator'][$key],
 			));
 		}
 

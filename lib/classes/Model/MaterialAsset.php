@@ -56,7 +56,7 @@ class MaterialAsset extends \Model
 	/**
 	 * @var string
 	 */
-	protected $forceModificator;
+	protected $weaponModificator;
 
 	/**
 	 * @param integer $id
@@ -76,7 +76,7 @@ class MaterialAsset extends \Model
 				`breakFactor`,
 				`hitPoints`,
 				armor,
-				`forceModificator`
+				`weaponModificator`
 			FROM materialAssets
 			WHERE `materialAssetId` = '.\sqlval($id).'
 				AND !deleted
@@ -95,10 +95,10 @@ class MaterialAsset extends \Model
 			return false;
 		}
 
-		$forceModificators = array();
-		if (!empty($data['forceModificator']))
+		$weaponModificators = array();
+		if (!empty($data['weaponModificator']))
 		{
-			$forceModificators = \Helper\WeaponModificator::getWeaponModificatorArray($data['forceModificator']);
+			$weaponModificators = \Helper\WeaponModificator::getWeaponModificatorArray($data['weaponModificator']);
 		}
 
 		if (!empty($data['priceWeight']))
@@ -118,7 +118,7 @@ class MaterialAsset extends \Model
 				breakFactor = '.\sqlval($data['breakFactor']).',
 				hitPoints = '.\sqlval($data['hitPoints']).',
 				armor = '.\sqlval($data['armor']).',
-				forceModificator = '.\sqlval(json_encode($forceModificators)).'
+				weaponModificator = '.\sqlval(json_encode($weaponModificators)).'
 		';
 		query($sql);
 
@@ -177,9 +177,9 @@ class MaterialAsset extends \Model
 		return $this->armor;
 	}
 
-	public function getForceModificator()
+	public function getWeaponModificator()
 	{
-		return json_decode($this->forceModificator, true);
+		return json_decode($this->weaponModificator, true);
 	}
 
 	public function getAsArray()
@@ -194,7 +194,7 @@ class MaterialAsset extends \Model
 			'breakFactor' => $this->getBreakFactor(),
 			'hitPoints' => $this->getHitPoints(),
 			'armor' => $this->getArmor(),
-			'forceModificator' => $this->getForceModificator(),
+			'weaponModificator' => $this->getWeaponModificator(),
 		);
 	}
 }

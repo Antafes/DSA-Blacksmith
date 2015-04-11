@@ -135,7 +135,7 @@ class Crafting extends \Model
 			'craftingId' => $this->craftingId,
 			'blueprint' => $this->blueprint,
 			'character' => $this->character,
-			'name' => $this->name,
+			'name' => $this->getName(),
 			'notes' => $this->notes,
 			'toolsProofModificator' => $this->getToolsProofModificator(),
 			'planProofModificator' => $this->getPlanProofModificator(),
@@ -159,7 +159,14 @@ class Crafting extends \Model
 
 	public function getName()
 	{
-		return $this->name;
+		$name = $this->name;
+
+		if (empty($name))
+		{
+			$name = $this->blueprint->getName();
+		}
+
+		return $name;
 	}
 
 	public function getNotes()
@@ -200,8 +207,8 @@ class Crafting extends \Model
 				$modificator += 0.5 * $this->blueprint->getUpgradeHitPoints();
 				$modificator += 0.5 * $this->blueprint->getUpgradeBreakFactor() * -1;
 				$modificator += 0.5 * $this->blueprint->getUpgradeInitiative();
-				$forceModificator = $this->blueprint->getUpgradeForceModificator();
-				$modificator += 0.5 * ($forceModificator[0]['attack'] + $forceModificator[0]['parade']);
+				$weaponModificator = $this->blueprint->getUpgradeWeaponModificator();
+				$modificator += 0.5 * ($weaponModificator[0]['attack'] + $weaponModificator[0]['parade']);
 				break;
 			case 'shield':
 				break;
@@ -223,9 +230,9 @@ class Crafting extends \Model
 		$handicap += $this->blueprint->getUpgradeHitPoints() * 3;
 		$handicap += $this->blueprint->getUpgradeBreakFactor() * -2;
 		$handicap += $this->blueprint->getUpgradeInitiative() ? 5 : 0;
-		$forceModificator = $this->blueprint->getUpgradeForceModificator();
-		$handicap += $forceModificator[0]['attack'] ? 5 : 0;
-		$handicap += $forceModificator[0]['parade'] ? 5 : 0;
+		$weaponModificator = $this->blueprint->getUpgradeWeaponModificator();
+		$handicap += $weaponModificator[0]['attack'] ? 5 : 0;
+		$handicap += $weaponModificator[0]['parade'] ? 5 : 0;
 
 		foreach ($this->blueprint->getMaterialList() as $material)
 		{

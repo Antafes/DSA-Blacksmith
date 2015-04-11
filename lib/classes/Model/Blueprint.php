@@ -31,7 +31,7 @@ class Blueprint extends \Model
 	/**
 	 * @var string
 	 */
-	protected $materialForceModificator;
+	protected $materialWeaponModificator;
 
 	/**
 	 * @var integer
@@ -51,7 +51,7 @@ class Blueprint extends \Model
 	/**
 	 * @var string
 	 */
-	protected $upgradeForceModificator;
+	protected $upgradeWeaponModificator;
 
 	/**
 	 * @var array
@@ -76,11 +76,11 @@ class Blueprint extends \Model
 				`name`,
 				`itemId`,
 				`itemTypeId`,
-				`materialForceModificator`,
+				`materialWeaponModificator`,
 				`upgradeHitPoints`,
 				`upgradeBreakFactor`,
 				`upgradeInitiative`,
-				`upgradeForceModificator`
+				`upgradeWeaponModificator`
 			FROM blueprints
 			WHERE `blueprintId` = '.\sqlval($id).'
 				AND !`deleted`
@@ -101,17 +101,17 @@ class Blueprint extends \Model
 			return false;
 		}
 
-		$weaponForceModificatorString = '';
+		$weaponModificatorString = '';
 
-		if (!empty($data['materialForceModificator']))
+		if (!empty($data['materialWeaponModificator']))
 		{
-			foreach ($data['materialForceModificator'] as $materialForceModificator)
+			foreach ($data['materialWeaponModificator'] as $materialWeaponModificator)
 			{
-				$weaponForceModificatorString .= $materialForceModificator . ' || ';
+				$weaponModificatorString .= $materialWeaponModificator . ' || ';
 			}
 		}
 
-		$weaponForceModificators = \Helper\WeaponModificator::getWeaponModificatorArray(substr($weaponForceModificatorString, 0, -2));
+		$weaponModificators = \Helper\WeaponModificator::getWeaponModificatorArray(substr($weaponModificatorString, 0, -2));
 		$upgradeWeaponModificator = \Helper\WeaponModificator::toWeaponModificatorArray($data['upgradeWeaponModificator']['attack'], $data['upgradeWeaponModificator']['parade']);
 
 		$sql = '
@@ -120,11 +120,11 @@ class Blueprint extends \Model
 				userId = '.\sqlval($data['userId']).',
 				itemId = '.\sqlval($data['itemId']).',
 				itemTypeId = '.\sqlval($data['itemTypeId']).',
-				materialForceModificator = '.\sqlval(json_encode($weaponForceModificators)).',
+				materialWeaponModificator = '.\sqlval(json_encode($weaponModificators)).',
 				upgradeHitPoints = '.\sqlval($data['upgradeHitPoints']).',
 				upgradeBreakFactor = '.\sqlval($data['upgradeBreakFactor']).',
 				upgradeInitiative = '.\sqlval($data['upgradeInitiative']).',
-				upgradeForceModificator = '.\sqlval(json_encode($upgradeWeaponModificator)).'
+				upgradeWeaponModificator = '.\sqlval(json_encode($upgradeWeaponModificator)).'
 		';
 		$blueprintId = query($sql);
 
@@ -148,6 +148,11 @@ class Blueprint extends \Model
 					$materialAssetId = $materialAsset['materialAssetId'];
 					break;
 				}
+			}
+
+			if (empty($materialAssetId))
+			{
+				$materialAssetId = $materialAssets[0]['materialAssetId'];
 			}
 
 			$sql = '
@@ -187,10 +192,6 @@ class Blueprint extends \Model
 			elseif ($key === 'itemTypeId')
 			{
 				$this->itemType = \Model\ItemType::loadById($value);
-			}
-			elseif ($key === 'twoHanded' || $key === 'improvisational')
-			{
-				$this->$key = (bool) $value;
 			}
 			elseif (property_exists($this, $key))
 			{
@@ -273,9 +274,9 @@ class Blueprint extends \Model
 		return $this->itemType;
 	}
 
-	public function getMaterialForceModificator()
+	public function getMaterialWeaponModificator()
 	{
-		return json_decode($this->materialForceModificator, true);
+		return json_decode($this->materialWeaponModificator, true);
 	}
 
 	public function getUpgradeHitPoints()
@@ -296,9 +297,9 @@ class Blueprint extends \Model
 	/**
 	 * @return array
 	 */
-	public function getUpgradeForceModificator()
+	public function getUpgradeWeaponModificator()
 	{
-		return json_decode($this->upgradeForceModificator, true);
+		return json_decode($this->upgradeWeaponModificator, true);
 	}
 
 	/**
@@ -320,6 +321,7 @@ class Blueprint extends \Model
 	public function getEndPrice()
 	{
 		$price = $this->getItem()->getPrice();
+		$materialPrice = 0;
 		$priceFactor = 0;
 		$priceFactorBelowOne = 0;
 		$moneyHelper = new \Helper\Money();
@@ -328,40 +330,30 @@ class Blueprint extends \Model
 		{
 			/* @var $material \Model\Material */
 			$material = $item['material'];
-			$materialAssets = $material->getMaterialAssetListing()->getList();
-			krsort($materialAssets);
-			$materialPriceCalculated = false;
-
 			/* @var $materialAsset \Model\MaterialAsset */
-			foreach ($materialAssets as $materialAsset)
-			{
-				if (!$materialPriceCalculated)
-				{
-					if ($materialAsset->getPriceFactor())
-					{
-						if ($materialAsset->getPriceFactor() >= 1)
-						{
-							$priceFactor += $materialAsset->getPriceFactor();
-						}
-						else
-						{
-							if (!$priceFactorBelowOne)
-							{
-								$priceFactorBelowOne = $materialAsset->getPriceFactor();
-							}
-							else
-							{
-								$priceFactorBelowOne *= $materialAsset->getPriceFactor();
-							}
-						}
-					}
-					elseif ($materialAsset->getPriceWeight())
-					{
-						$price += ($this->weight * ($item['percentage'] / 100)) * $materialAsset->getPriceWeightRaw();
-					}
+			$materialAsset = $item['materialAsset'];
 
-					$materialPriceCalculated = true;
+			if ($materialAsset->getPriceFactor())
+			{
+				if ($materialAsset->getPriceFactor() >= 1)
+				{
+					$priceFactor += $materialAsset->getPriceFactor();
 				}
+				else
+				{
+					if (!$priceFactorBelowOne)
+					{
+						$priceFactorBelowOne = $materialAsset->getPriceFactor();
+					}
+					else
+					{
+						$priceFactorBelowOne *= $materialAsset->getPriceFactor();
+					}
+				}
+			}
+			elseif ($materialAsset->getPriceWeight())
+			{
+				$materialPrice += ($this->item->getWeight() * ($item['percentage'] / 100)) * $materialAsset->getPriceWeightRaw();
 			}
 		}
 
@@ -395,11 +387,11 @@ class Blueprint extends \Model
 		$priceFactor += $this->getUpgradeBreakFactor() * -2;
 		$priceFactor += $this->getUpgradeInitiative() * 5;
 
-		if ($this->getUpgradeForceModificator())
+		if ($this->getUpgradeWeaponModificator())
 		{
-			$upgradeForceModificator = $this->getUpgradeForceModificator();
+			$upgradeWeaponModificator = $this->getUpgradeWeaponModificator();
 
-			$priceFactor += ($upgradeForceModificator[0][0]['attack'] + $upgradeForceModificator[0][0]['parade']) * 5;
+			$priceFactor += ($upgradeWeaponModificator[0]['attack'] + $upgradeWeaponModificator[0]['parade']) * 5;
 		}
 
 		if ($priceFactor > 0)
@@ -411,6 +403,8 @@ class Blueprint extends \Model
 		{
 			$price *= $priceFactorBelowOne;
 		}
+
+		$price += $materialPrice;
 
 		return number_format($moneyHelper->exchange($price, 'K', 'S'), 0, ',', '.') . ' S';
 	}
@@ -449,9 +443,9 @@ class Blueprint extends \Model
 
 		$breakFactor = $this->item->getBreakFactor();
 		$initiative = $this->item->getInitiative();
-		$forceModificatorList = array_merge(
-			$this->getMaterialForceModificator(),
-			$this->getUpgradeForceModificator()
+		$weaponModificatorList = array_merge(
+			$this->getMaterialWeaponModificator(),
+			$this->getUpgradeWeaponModificator()
 		);
 
 		foreach ($this->getMaterialList() as $item)
@@ -480,12 +474,12 @@ class Blueprint extends \Model
 			$breakFactor += $technique->getBreakFactor();
 		}
 
-		$forceModificator = array_pop($this->item->getWeaponModificator());
+		$weaponModificator = array_pop($this->item->getWeaponModificator());
 
-		foreach ($forceModificatorList as $forceMod)
+		foreach ($weaponModificatorList as $weaponMod)
 		{
-			$forceModificator['attack'] += $forceMod['attack'];
-			$forceModificator['parade'] += $forceMod['parade'];
+			$weaponModificator['attack'] += $weaponMod['attack'];
+			$weaponModificator['parade'] += $weaponMod['parade'];
 		}
 
 		$hitPoints = $this->getEndHitPoints();
@@ -501,7 +495,7 @@ class Blueprint extends \Model
 			'breakFactor' => $breakFactor,
 			'initiative' => $initiative,
 			'price' => $this->getEndPrice(),
-			'forceModificator' => \Helper\WeaponModificator::format($forceModificator),
+			'weaponModificator' => \Helper\WeaponModificator::format($weaponModificator),
 			'notes' => $this->item->getNotes(),
 			'time' => $this->getTimeUnits().' '.$translator->getTranslation('tu'),
 		);
@@ -536,11 +530,11 @@ class Blueprint extends \Model
 			'name' => $this->getName(),
 			'item' => $this->getItem(),
 			'itemType' => $this->getItemType(),
-			'materialForceModificator' => $this->getMaterialForceModificator(),
+			'materialWeaponModificator' => $this->getMaterialWeaponModificator(),
 			'upgradeHitPoints' => $this->getUpgradeHitPoints(),
 			'upgradeBreakFactor' => $this->getUpgradeBreakFactor(),
 			'upgradeInitiative' => $this->getUpgradeInitiative(),
-			'upgradeForceModificator' => $this->getUpgradeForceModificator(),
+			'upgradeWeaponModificator' => $this->getUpgradeWeaponModificator(),
 		);
 	}
 
