@@ -101,17 +101,17 @@ class Blueprint extends \Model
 			return false;
 		}
 
-		$materialForceModificatorString = '';
+		$weaponForceModificatorString = '';
 
 		if (!empty($data['materialForceModificator']))
 		{
 			foreach ($data['materialForceModificator'] as $materialForceModificator)
 			{
-				$materialForceModificatorString .= $materialForceModificator . ' || ';
+				$weaponForceModificatorString .= $materialForceModificator . ' || ';
 			}
 		}
 
-		$materialForceModificators = \Helper\WeaponModificator::getWeaponModificatorArray(substr($materialForceModificatorString, 0, -2));
+		$weaponForceModificators = \Helper\WeaponModificator::getWeaponModificatorArray(substr($weaponForceModificatorString, 0, -2));
 		$upgradeWeaponModificator = \Helper\WeaponModificator::toWeaponModificatorArray($data['upgradeWeaponModificator']['attack'], $data['upgradeWeaponModificator']['parade']);
 
 		$sql = '
@@ -120,7 +120,7 @@ class Blueprint extends \Model
 				userId = '.\sqlval($data['userId']).',
 				itemId = '.\sqlval($data['itemId']).',
 				itemTypeId = '.\sqlval($data['itemTypeId']).',
-				materialForceModificator = '.\sqlval(json_encode($materialForceModificators)).',
+				materialForceModificator = '.\sqlval(json_encode($weaponForceModificators)).',
 				upgradeHitPoints = '.\sqlval($data['upgradeHitPoints']).',
 				upgradeBreakFactor = '.\sqlval($data['upgradeBreakFactor']).',
 				upgradeInitiative = '.\sqlval($data['upgradeInitiative']).',
