@@ -49,9 +49,9 @@
 					<tr class="even">
 						<td>{$translator->getTranslation('item')}</td>
 						<td>
-							<select name="itemId">
+							<select id="itemSelect" name="itemId">
 								{foreach $itemListing->getList() as $item}
-									<option value="{$item->getItemId()}">{$item->getName()}</option>
+									<option value="{$item->getItemId()}" data-damagetype="{$item->getDamageType()}">{$item->getName()}</option>
 								{/foreach}
 							</select>
 						</td>
@@ -67,6 +67,15 @@
 						</td>
 					</tr>
 					<tr class="even">
+						<td>{$translator->getTranslation('damageType')}</td>
+						<td>
+							<select id="damageTypeSelect" class="damageType" name="damageType">
+								<option value="damage">{$translator->getTranslation('damage')}</option>
+								<option value="stamina">{$translator->getTranslation('stamina')}</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="odd">
 						<td>{$translator->getTranslation('materials')}</td>
 						<td>
 							<a href="#" id="addMaterialRow">{$translator->getTranslation('addMaterialSelect')}</a>
@@ -83,7 +92,7 @@
 							</table>
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="even">
 						<td>{$translator->getTranslation('techniques')}</td>
 						<td>
 							<a href="#" id="addTechniqueRow">{$translator->getTranslation('addTechniqueSelect')}</a>
@@ -99,25 +108,25 @@
 							</table>
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="odd">
 						<td>{$translator->getTranslation('upgradeHitPoints')}</td>
 						<td>
 							<input name="upgradeHitPoints" type="number" min="0" max="3" />
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="even">
 						<td>{$translator->getTranslation('upgradeBreakFactor')}</td>
 						<td>
 							<input name="upgradeBreakFactor" type="number" min="-7" max="0" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="odd">
 						<td>{$translator->getTranslation('upgradeInitiative')}</td>
 						<td>
 							<input name="upgradeInitiative" type="number" min="0" max="1" />
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="even">
 						<td>{$translator->getTranslation('upgradeWeaponModificator')}</td>
 						<td>
 							<input class="upgradeWeaponModificator" name="upgradeWeaponModificator[attack]" type="number" min="0" max="1" /> / <input class="upgradeWeaponModificator" name="upgradeWeaponModificator[parade]" type="number" type="number" min="0" max="1" />

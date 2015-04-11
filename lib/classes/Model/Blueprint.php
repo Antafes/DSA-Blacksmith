@@ -31,6 +31,11 @@ class Blueprint extends \Model
 	/**
 	 * @var string
 	 */
+	protected $damageType;
+
+	/**
+	 * @var string
+	 */
 	protected $materialWeaponModificator;
 
 	/**
@@ -76,6 +81,7 @@ class Blueprint extends \Model
 				`name`,
 				`itemId`,
 				`itemTypeId`,
+				`damageType`,
 				`materialWeaponModificator`,
 				`upgradeHitPoints`,
 				`upgradeBreakFactor`,
@@ -120,6 +126,7 @@ class Blueprint extends \Model
 				userId = '.\sqlval($data['userId']).',
 				itemId = '.\sqlval($data['itemId']).',
 				itemTypeId = '.\sqlval($data['itemTypeId']).',
+				damageType = '.\sqlval($data['damageType']).',
 				materialWeaponModificator = '.\sqlval(json_encode($weaponModificators)).',
 				upgradeHitPoints = '.\sqlval($data['upgradeHitPoints']).',
 				upgradeBreakFactor = '.\sqlval($data['upgradeBreakFactor']).',
@@ -272,6 +279,11 @@ class Blueprint extends \Model
 	public function getItemType()
 	{
 		return $this->itemType;
+	}
+
+	public function getDamageType()
+	{
+		return $this->damageType;
 	}
 
 	public function getMaterialWeaponModificator()
@@ -487,10 +499,21 @@ class Blueprint extends \Model
 			.$translator->getTranslation($hitPoints['diceType']);
 		$initiative += $this->getUpgradeInitiative();
 		$breakFactor += $this->getUpgradeBreakFactor();
+		$damageType = 'damage';
+
+		if ($this->item->getDamageType() == 'stamina' || $this->getDamageType() == 'stamina')
+		{
+			$damageType = 'stamina';
+		}
 
 		return array(
 			'name' => $this->getName().' ('.$this->item->getName().')',
-			'hitPoints' => $hitPointsString.sprintf('%+d', $hitPoints['add'] + $hitPoints['material']),
+			'hitPoints' => \Helper\HitPoints::getHitPointsString(array(
+				'hitPointsDice' => $hitPoints['dices'],
+				'hitPointsDiceType' => $hitPoints['diceType'],
+				'hitPoints' => $hitPoints['add'] + $hitPoints['material'],
+				'damageType' => $damageType,
+			)),
 			'weight' => $this->item->getWeight(),
 			'breakFactor' => $breakFactor,
 			'initiative' => $initiative,

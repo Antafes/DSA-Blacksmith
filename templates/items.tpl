@@ -62,24 +62,33 @@
 						</td>
 					</tr>
 					<tr class="odd">
+						<td>{$translator->getTranslation('damageType')}</td>
+						<td>
+							<select class="damageType" name="damageType">
+								<option value="damage">{$translator->getTranslation('damage')}</option>
+								<option value="stamina">{$translator->getTranslation('stamina')}</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="even">
 						<td>{$translator->getTranslation('weight')}</td>
 						<td>
 							<input type="number" name="weight" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="odd">
 						<td>{$translator->getTranslation('breakFactor')}</td>
 						<td>
 							<input type="number" name="breakFactor" />
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="even">
 						<td>{$translator->getTranslation('initiative')}</td>
 						<td>
 							<input type="number" name="initiative" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="odd">
 						<td>{$translator->getTranslation('price')}</td>
 						<td>
 							<input class="Price" type="number" name="price" />
@@ -90,25 +99,25 @@
 							</select>
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="even">
 						<td>{$translator->getTranslation('weaponModificator')}</td>
 						<td>
 							<textarea class="weaponModificator" name="weaponModificator"></textarea>
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="odd">
 						<td>{$translator->getTranslation('twoHanded')}</td>
 						<td>
 							<input type="checkbox" name="twoHanded" value="1" />
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="even">
 						<td>{$translator->getTranslation('improvisational')}</td>
 						<td>
 							<input type="checkbox" name="improvisational" value="1" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="odd">
 						<td>{$translator->getTranslation('privileged')}</td>
 						<td>
 							<input type="checkbox" name="privileged" value="1" />

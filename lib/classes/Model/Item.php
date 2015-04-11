@@ -54,6 +54,11 @@ class Item extends \Model
 	protected $hitPoints;
 
 	/**
+	 * @var string
+	 */
+	protected $damageType;
+
+	/**
 	 * @var integer
 	 */
 	protected $breakFactor;
@@ -91,6 +96,7 @@ class Item extends \Model
 				`hitPointsDice`,
 				`hitPointsDiceType`,
 				`hitPoints`,
+				`damageType`,
 				`breakFactor`,
 				`initiative`,
 				`weaponModificator`,
@@ -127,6 +133,7 @@ class Item extends \Model
 				hitPointsDice = '.\sqlval($data['hitPointsDice']).',
 				hitPointsDiceType = '.\sqlval($data['hitPointsDiceType']).',
 				hitPoints = '.\sqlval($data['hitPoints']).',
+				damageType = '.\sqlval($data['damageType']).',
 				breakFactor = '.\sqlval($data['breakFactor']).',
 				initiative = '.\sqlval($data['initiative']).',
 				weaponModificator = '.\sqlval(json_encode($weaponModificator)).',
@@ -214,12 +221,17 @@ class Item extends \Model
 
 	public function getHitPointsString()
 	{
-		$translator = \Translator::getInstance();
-		$hitPointsString = $this->hitPointsDice;
-		$hitPointsString .=$translator->getTranslation($this->hitPointsDiceType);
-		$hitPointsString .= sprintf('%+d', $this->hitPoints);
+		return \Helper\HitPoints::getHitPointsString(array(
+			'hitPointsDice' => $this->getHitPointsDice(),
+			'hitPointsDiceType' => $this->getHitPointsDiceType(),
+			'hitPoints' => $this->getHitPoints(),
+			'damageType' => $this->getDamageType(),
+		));
+	}
 
-		return $hitPointsString;
+	public function getDamageType()
+	{
+		return $this->damageType;
 	}
 
 	public function getBreakFactor()
@@ -270,6 +282,7 @@ class Item extends \Model
 			'hitPointsDice' => $this->getHitPointsDice(),
 			'hitPointsDiceType' => $this->getHitPointsDiceType(),
 			'hitPoints' => $this->getHitPoints(),
+			'damageType' => $this->getDamageType(),
 			'breakFactor' => $this->getBreakFactor(),
 			'initiative' => $this->getInitiative(),
 			'weaponModificator' => $this->getWeaponModificator(),
