@@ -1,10 +1,19 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Model;
 
 /**
- * Description of Item
+ * Model class for Items.
  *
- * @author Neithan
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Item extends \SmartWork\Model
 {
@@ -79,6 +88,8 @@ class Item extends \SmartWork\Model
 	protected $weight;
 
 	/**
+	 * Load an item by its id.
+	 *
 	 * @param integer $id
 	 *
 	 * @return \self
@@ -113,6 +124,29 @@ class Item extends \SmartWork\Model
 		return $obj;
 	}
 
+	/**
+	 * Create a new item from the given array.
+	 * array(
+	 *     'name' => 'test',
+	 *     'price' => 100,
+	 *     'currency' => 'S',
+	 *     'twoHanded' => 1, // may be 1 or 0
+	 *     'improvisational' => 1, // may be 1 or 0
+	 *     'privileged' => 1, // may be 1 or 0
+	 *     'hitPointsDice' => 2,
+	 *     'hitPointsDiceType' => 'd6',
+	 *     'hitPoints' => 2,
+	 *     'damageType' => 'damage',
+	 *     'breakFactor' => 1,
+	 *     'initiative' => -1,
+	 *     'weaponModificator' => '0/-1',
+	 *     'weight' => 150,
+	 * )
+	 *
+	 * @param array $data
+	 *
+	 * @return boolean
+	 */
 	public static function create($data)
 	{
 		if (!$data['name'] && !isset($data['price']) && !$data['hitPointsDice']
@@ -144,6 +178,13 @@ class Item extends \SmartWork\Model
 		return true;
 	}
 
+	/**
+	 * Fill the data from the array into the object and cast them to the nearest possible type.
+	 *
+	 * @param array $data
+	 *
+	 * @return void
+	 */
 	public function fill($data)
 	{
 		foreach ($data as $key => $value)
@@ -159,21 +200,41 @@ class Item extends \SmartWork\Model
 		}
 	}
 
+	/**
+	 * Get the items id.
+	 *
+	 * @return integer
+	 */
 	public function getItemId()
 	{
 		return $this->itemId;
 	}
 
+	/**
+	 * Get the items name.
+	 *
+	 * @return string
+	 */
 	public function getName()
 	{
 		return $this->name;
 	}
 
+	/**
+	 * Get the price in Kreuzer.
+	 *
+	 * @return integer
+	 */
 	public function getPrice()
 	{
 		return $this->price;
 	}
 
+	/**
+	 * Get the price formatted as Silbertaler.
+	 *
+	 * @return string
+	 */
 	public function getPriceFormatted()
 	{
 		$moneyHelper = new \Helper\Money();
@@ -189,36 +250,71 @@ class Item extends \SmartWork\Model
 		}
 	}
 
+	/**
+	 * If the item is two handed or not.
+	 *
+	 * @return boolean
+	 */
 	public function getTwoHanded()
 	{
 		return $this->twoHanded;
 	}
 
+	/**
+	 * If the item is an improvisational weapon.
+	 *
+	 * @return boolean
+	 */
 	public function getImprovisational()
 	{
 		return $this->improvisational;
 	}
 
+	/**
+	 * If the item is only available for privileged people.
+	 *
+	 * @return boolean
+	 */
 	public function getPrivileged()
 	{
 		return $this->privileged;
 	}
 
+	/**
+	 * Get the amount of dice.
+	 *
+	 * @return integer
+	 */
 	public function getHitPointsDice()
 	{
 		return $this->hitPointsDice;
 	}
 
+	/**
+	 * Get the dice type.
+	 *
+	 * @return string
+	 */
 	public function getHitPointsDiceType()
 	{
 		return $this->hitPointsDiceType;
 	}
 
+	/**
+	 * Get the hit points after the dice.
+	 *
+	 * @return integer
+	 */
 	public function getHitPoints()
 	{
 		return $this->hitPoints;
 	}
 
+	/**
+	 * Get a formatted string for the hit points, i.e. 1D6+1.
+	 *
+	 * @return string
+	 */
 	public function getHitPointsString()
 	{
 		return \Helper\HitPoints::getHitPointsString(array(
@@ -229,37 +325,72 @@ class Item extends \SmartWork\Model
 		));
 	}
 
+	/**
+	 * Get the damage type of the item. May be on of 'damage' or 'stamina'.
+	 *
+	 * @return string
+	 */
 	public function getDamageType()
 	{
 		return $this->damageType;
 	}
 
+	/**
+	 * Get the break factor of the item.
+	 *
+	 * @return integer
+	 */
 	public function getBreakFactor()
 	{
 		return $this->breakFactor;
 	}
 
+	/**
+	 * Get the initiative modificator of the item.
+	 *
+	 * @return integer
+	 */
 	public function getInitiative()
 	{
 		return $this->initiative;
 	}
 
+	/**
+	 * Get the weapon modificator.
+	 *
+	 * @return array
+	 */
 	public function getWeaponModificator()
 	{
 		return json_decode($this->weaponModificator, true);
 	}
 
+	/**
+	 * Get the weapon modificator string, i.e. 0/-1
+	 *
+	 * @return string
+	 */
 	public function getWeaponModificatorFormatted()
 	{
 		$weaponModificator = $this->getWeaponModificator();
 		return \Helper\WeaponModificator::format($weaponModificator[0]);
 	}
 
+	/**
+	 * Get the weight in ounzes.
+	 *
+	 * @return integer
+	 */
 	public function getWeight()
 	{
 		return $this->weight;
 	}
 
+	/**
+	 * Remove the item.
+	 *
+	 * @return void
+	 */
 	public function remove()
 	{
 		$sql = '
@@ -267,9 +398,14 @@ class Item extends \SmartWork\Model
 			SET deleted = 1
 			WHERE `itemId` = '.\sqlval($this->itemId).'
 		';
-		return query($sql);
+		\query($sql);
 	}
 
+	/**
+	 * Get the properties of the item as an array.
+	 *
+	 * @return array
+	 */
 	public function getAsArray()
 	{
 		return array(
@@ -290,6 +426,14 @@ class Item extends \SmartWork\Model
 		);
 	}
 
+	/**
+	 * Get the notes for the item. May consist of any or all of the following:
+	 * - 'i' for improvisational
+	 * - 'z' for two handed
+	 * - 'p' for privileged
+	 *
+	 * @return string
+	 */
 	public function getNotes()
 	{
 		$notes = '';

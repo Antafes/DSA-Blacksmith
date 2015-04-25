@@ -1,17 +1,34 @@
 <?php
+/**
+ * Part of the dsa blacksmith
+ *
+ * @package Helper
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Helper;
 
 /**
- * Description of WeaponModificator
+ * Helper class for parsing the weaponmodificator.
  *
- * @author Neithan
+ * @package Helper
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class WeaponModificator
 {
 	/**
-	 * Takes a weapon modificator string and parses it into an array
+	 * Takes a weapon modificator string and parses it into an array.
+	 * String: 1/-1
+	 * Array:
+	 * array(
+	 *     array(
+	 *         'attack' => 1,
+	 *         'parade' => -1,
+	 *     )
+	 * )
 	 *
-	 * @param string $weaponModificator
+	 * @param string $weaponModificator The weapon modificator as a string
 	 *
 	 * @return array
 	 */
@@ -34,8 +51,8 @@ class WeaponModificator
 	/**
 	 * Takes the attack and parade weapon modifiers and returns them as an array
 	 *
-	 * @param type $attack
-	 * @param type $parade
+	 * @param integer $attack
+	 * @param integer $parade
 	 *
 	 * @return array
 	 */

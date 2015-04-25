@@ -1,13 +1,25 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Page;
 
 /**
- * Description of EsHeader
+ * Class for the page headers
  *
- * @author Neithan
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Header extends \SmartWork\Page\Header
 {
+	/**
+	 * Add additional css and javascript files.
+	 */
 	public function process()
 	{
 		// Add CSS files

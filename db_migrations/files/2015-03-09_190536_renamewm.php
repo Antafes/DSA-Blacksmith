@@ -1,4 +1,11 @@
 <?php
+/**
+ * First sql statements for renaming the force modificator to weapon modificator.
+ *
+ * @package sql
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 
 $DB_MIGRATION = array(
 

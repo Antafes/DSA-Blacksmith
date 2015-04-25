@@ -1,10 +1,19 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Helper
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Helper;
 
 /**
  * Import a hero created with the program Heldensoftware
  *
- * @author Neithan
+ * @package Helper
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class HeroImport
 {
@@ -13,6 +22,11 @@ class HeroImport
 	 */
 	protected $xml;
 
+	/**
+	 * Mapping for the talents of the Helden Software xml export.
+	 *
+	 * @var array
+	 */
 	protected $talentMapping = array(
 		'Bogenbau' => 'bowMaking',
 		'Feinmechanik' => 'precisionMechanics',
@@ -30,6 +44,11 @@ class HeroImport
 		$this->xml = $xml;
 	}
 
+	/**
+	 * Import a character from the Helden Software xml export.
+	 *
+	 * @return \Model\Character
+	 */
 	public function import()
 	{
 		$simplexml = simplexml_load_string($this->xml);

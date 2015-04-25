@@ -1,21 +1,35 @@
 <?php
+/**
+ * Part of the dsa blacksmith
+ *
+ * @package Helper
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Helper;
 
 /**
- * Description of Mail
+ * Helper class for handling mails.
  *
- * @author Neithan
+ * @package Helper
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Mail
 {
 	/**
 	 * Send an email
 	 *
-	 * @param array  $recipient
-	 * @param string $subject
-	 * @param string $message
+	 * @param array  $recipient The recipient to send the mail to
+	 *                          Format:
+	 *                          array(
+	 *                              'test@example.org',
+	 *                              'test',
+	 *                          )
+	 * @param string $subject   The mail subjet
+	 * @param string $message   The mail message, may be html
 	 *
-	 * @return type
+	 * @return boolean
 	 */
 	public static function send($recipient, $subject, $message)
 	{

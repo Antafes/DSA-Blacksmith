@@ -1,18 +1,35 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Page;
 
 /**
- * Description of LostPassword
+ * Class for the lost password page.
  *
- * @author Neithan
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class LostPassword extends \SmartWork\Page
 {
+	/**
+	 * Set the used template.
+	 */
 	function __construct()
 	{
 		parent::__construct('lostPassword');
 	}
 
+	/**
+	 * Show the lost password form and init the lost password process.
+	 *
+	 * @return void
+	 */
 	public function process()
 	{
 		if (!$_POST['lostPassword'] || $_POST['lostPassword'] != $_SESSION['formSalts']['lostPassword'])

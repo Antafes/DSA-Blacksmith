@@ -1,18 +1,35 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Page;
 
 /**
- * Description of Plans
+ * Class for the blueprints page.
  *
- * @author Neithan
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Blueprints extends \SmartWork\Page
 {
+	/**
+	 * Set the used template.
+	 */
 	public function __construct()
 	{
 		parent::__construct('blueprints');
 	}
 
+	/**
+	 * Add javascripts, handle the removing of blueprints and show the blueprints list.
+	 *
+	 * @return void
+	 */
 	public function process()
 	{
 		$this->getTemplate()->loadJs('addBlueprint');
@@ -44,7 +61,11 @@ class Blueprints extends \SmartWork\Page
 	}
 
 	/**
+	 * Remove a blueprint.
+	 *
 	 * @param \Model\Blueprint $blueprint
+	 *
+	 * @return void
 	 */
 	protected function removeBlueprint($blueprint)
 	{

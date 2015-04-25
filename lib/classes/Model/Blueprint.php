@@ -1,10 +1,19 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Model;
 
 /**
- * Description of Blueprint
+ * Model class for the blueprints.
  *
- * @author Neithan
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Blueprint extends \SmartWork\Model
 {
@@ -69,6 +78,8 @@ class Blueprint extends \SmartWork\Model
 	protected $techniqueList;
 
 	/**
+	 * Load the blueprint for the given id.
+	 *
 	 * @param integer $id
 	 *
 	 * @return \self
@@ -100,6 +111,34 @@ class Blueprint extends \SmartWork\Model
 		return $obj;
 	}
 
+	/**
+	 * Create a new blueprint from the given array.
+	 * array(
+	 *     'name' => 'test',
+	 *     'userId' => 1,
+	 *     'itemId' => 1,
+	 *     'itemTypeId => 1,
+	 *     'damageType' => 'damage',
+	 *     'material' => array(
+	 *         0 => 1,
+	 *     ),
+	 *     'percentage' => array(
+	 *         0 => 100
+	 *     ),
+	 *     'materialWeaponModificator' => '0/0',
+	 *     'technique' => array(
+	 *         0 => 1,
+	 *     )
+	 *     'upgradeHitPoints' => 0,
+	 *     'upgradeBreakFactor' => 0,
+	 *     'upgradeInitiative' => 0,
+	 *     'upgradeWeaponModificator' => '0/0',
+	 * )
+	 *
+	 * @param array $data
+	 *
+	 * @return boolean
+	 */
 	public static function create($data)
 	{
 		if (!$data['name'] && !$data['itemId'] && count($data['material']) === 0)
@@ -188,6 +227,13 @@ class Blueprint extends \SmartWork\Model
 		return true;
 	}
 
+	/**
+	 * Fill the data from the array into the object and cast them to the nearest possible type.
+	 *
+	 * @param array $data
+	 *
+	 * @return void
+	 */
 	public function fill($data)
 	{
 		foreach ($data as $key => $value)
@@ -207,6 +253,11 @@ class Blueprint extends \SmartWork\Model
 		}
 	}
 
+	/**
+	 * Load the materials for the blueprint.
+	 *
+	 * @return void
+	 */
 	public function loadMaterials()
 	{
 		$sql = '
@@ -233,6 +284,11 @@ class Blueprint extends \SmartWork\Model
 		$this->materialList = $list;
 	}
 
+	/**
+	 * Load the techniques for the blueprint.
+	 *
+	 * @return void
+	 */
 	public function loadTechniques()
 	{
 		$sql = '
@@ -255,17 +311,29 @@ class Blueprint extends \SmartWork\Model
 		$this->techniqueList = $list;
 	}
 
+	/**
+	 * Get the id of the blueprint.
+	 *
+	 * @return integer
+	 */
 	public function getBlueprintId()
 	{
 		return $this->blueprintId;
 	}
 
+	/**
+	 * Get the name of the blueprint.
+	 *
+	 * @return string
+	 */
 	public function getName()
 	{
 		return $this->name;
 	}
 
 	/**
+	 * Get the item which the blueprint is based on.
+	 *
 	 * @return \Model\Item
 	 */
 	public function getItem()
@@ -274,6 +342,8 @@ class Blueprint extends \SmartWork\Model
 	}
 
 	/**
+	 * Get the item type of the blueprint.
+	 *
 	 * @return \Model\ItemType
 	 */
 	public function getItemType()
@@ -281,32 +351,59 @@ class Blueprint extends \SmartWork\Model
 		return $this->itemType;
 	}
 
+	/**
+	 * Get the damage type, may be damage or stamina.
+	 *
+	 * @return string
+	 */
 	public function getDamageType()
 	{
 		return $this->damageType;
 	}
 
+	/**
+	 * Get the material weapon modificator as an array.
+	 *
+	 * @return array
+	 */
 	public function getMaterialWeaponModificator()
 	{
 		return json_decode($this->materialWeaponModificator, true);
 	}
 
+	/**
+	 * Get the upgrad hit points value.
+	 *
+	 * @return integer
+	 */
 	public function getUpgradeHitPoints()
 	{
 		return $this->upgradeHitPoints;
 	}
 
+	/**
+	 * Get the upgrade break factor value.
+	 *
+	 * @return integer
+	 */
 	public function getUpgradeBreakFactor()
 	{
 		return $this->upgradeBreakFactor;
 	}
 
+	/**
+	 * Get the upgrade initiative value.
+	 *
+	 * @return integer
+	 */
 	public function getUpgradeInitiative()
 	{
 		return $this->upgradeInitiative;
 	}
 
 	/**
+	 * Get the upgrade weapon modificator values.
+	 *
 	 * @return array
 	 */
 	public function getUpgradeWeaponModificator()
@@ -315,6 +412,8 @@ class Blueprint extends \SmartWork\Model
 	}
 
 	/**
+	 * Get the material list.
+	 *
 	 * @return array
 	 */
 	public function getMaterialList()
@@ -323,6 +422,8 @@ class Blueprint extends \SmartWork\Model
 	}
 
 	/**
+	 * Get the techniques list.
+	 *
 	 * @return array
 	 */
 	public function getTechniqueList()
@@ -330,6 +431,11 @@ class Blueprint extends \SmartWork\Model
 		return $this->techniqueList;
 	}
 
+	/**
+	 * Calculate the end price for the blueprint.
+	 *
+	 * @return string
+	 */
 	public function getEndPrice()
 	{
 		$price = $this->getItem()->getPrice();
@@ -421,6 +527,11 @@ class Blueprint extends \SmartWork\Model
 		return number_format($moneyHelper->exchange($price, 'K', 'S'), 0, ',', '.') . ' S';
 	}
 
+	/**
+	 * Get the time units for each proof.
+	 *
+	 * @return integer
+	 */
 	public function getTimeUnits()
 	{
 		$time = $this->getItemType()->getTime();
@@ -447,6 +558,8 @@ class Blueprint extends \SmartWork\Model
 	}
 
 	/**
+	 * Get the resulting stats for the blueprint.
+	 *
 	 * @return array
 	 */
 	public function getResultingStats()
@@ -524,6 +637,11 @@ class Blueprint extends \SmartWork\Model
 		);
 	}
 
+	/**
+	 * Remove the blueprint.
+	 *
+	 * @return void
+	 */
 	public function remove()
 	{
 		$sql = '
@@ -546,6 +664,11 @@ class Blueprint extends \SmartWork\Model
 		\query($sql);
 	}
 
+	/**
+	 * Get the blueprint as array.
+	 *
+	 * @return array
+	 */
 	public function getAsArray()
 	{
 		return array(
@@ -562,6 +685,9 @@ class Blueprint extends \SmartWork\Model
 	}
 
 	/**
+	 * Get the end hit points consisting of the item hit points, the upgrade hit points, the
+	 * material hit points and the technique hit points.
+	 *
 	 * @return array
 	 */
 	public function getEndHitPoints()
@@ -603,6 +729,8 @@ class Blueprint extends \SmartWork\Model
 	}
 
 	/**
+	 * Compare method for sorting the material assets along their percentages
+	 *
 	 * @param \Model\MaterialAsset $a
 	 * @param \Model\MaterialAsset $b
 	 *

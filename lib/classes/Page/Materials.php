@@ -1,18 +1,35 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Page;
 
 /**
- * Description of Materials
+ * Class for the materials page.
  *
- * @author Neithan
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Materials extends \SmartWork\Page
 {
+	/**
+	 * Set the used template.
+	 */
 	public function __construct()
 	{
 		parent::__construct('materials');
 	}
 
+	/**
+	 * Add javascripts, handle removing of materials and show the list of them.
+	 *
+	 * @return void
+	 */
 	public function process()
 	{
 		$this->template->loadJs('addMaterial');
@@ -33,7 +50,11 @@ class Materials extends \SmartWork\Page
 	}
 
 	/**
+	 * Remove a material.
+	 *
 	 * @param \Model\Material $material
+	 *
+	 * @return void
 	 */
 	protected function removeMaterial($material)
 	{

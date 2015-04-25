@@ -1,14 +1,25 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Listing
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Listing;
 
 /**
- * Description of ItemTypes
+ * List class for the items.
  *
- * @author Neithan
+ * @package Listing
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Items extends \SmartWork\Listing
 {
 	/**
+	 * Load all items.
+	 *
 	 * @return \self
 	 */
 	public static function loadList()
@@ -39,6 +50,8 @@ class Items extends \SmartWork\Listing
 	}
 
 	/**
+	 * Get a single item by the given id.
+	 *
 	 * @param integer $id
 	 *
 	 * @return \Model\Item

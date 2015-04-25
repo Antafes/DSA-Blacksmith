@@ -1,6 +1,20 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Model;
 
+/**
+ * Model class for materials.
+ *
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 class Material extends \SmartWork\Model
 {
 	/**
@@ -49,7 +63,7 @@ class Material extends \SmartWork\Model
 			WHERE `materialId` = '.\sqlval($id).'
 				AND !deleted
 		';
-		$material = query($sql);
+		$material = \query($sql);
 		$obj = new self();
 		$obj->fill($material);
 		$obj->loadMaterialAssets();
@@ -57,13 +71,63 @@ class Material extends \SmartWork\Model
 		return $obj;
 	}
 
+	/**
+	 * Load the material assets for this material.
+	 *
+	 * @return void
+	 */
 	public function loadMaterialAssets()
 	{
 		$this->materialAssetListing = \Listing\MaterialAssets::loadListMaterial($this->getMaterialId());
 	}
 
 	/**
+	 * Create a new material and the material assets from the given array.
+	 * array(
+	 *     'name' => 'test',
+	 *     'materialTypeId' => 1,
+	 *     'additional' => 'one additional',
+	 *     'percentage' => array(
+	 *         0 => 50,
+	 *         1 => 100,
+	 *     ),
+	 *     'timeFactor' => array(
+	 *         0 => 1,
+	 *         1 => 1,
+	 *     ),
+	 *     'priceFactor' => array(
+	 *         0 => 2,
+	 *         0 => 1.5,
+	 *     ),
+	 *     'priceWeight' => array(),
+	 *     'currency' => array(
+	 *         0 => 'S',
+	 *         1 => 'D',
+	 *     ),
+	 *     'proof' => array(
+	 *         0 => 0,
+	 *         1 => -1,
+	 *     ),
+	 *     'breakFactor' => array(
+	 *         0 => 1,
+	 *         1 => -1,
+	 *     ),
+	 *     'hitPoints' => array(
+	 *         0 => 0,
+	 *         1 => 1,
+	 *     ),
+	 *     'armor' => array(
+	 *         0 => 0,
+	 *         1 => 0,
+	 *     ),
+	 *     'weaponModificator' => array(
+	 *         0 => '0/0',
+	 *         1 => '-1/0',
+	 *     ),
+	 * )
+	 *
 	 * @param array $data
+	 *
 	 * @return boolean
 	 */
 	public static function create($data)
@@ -88,7 +152,7 @@ class Material extends \SmartWork\Model
 				name = '.\sqlval($data['name']).',
 				additional = '.\sqlval(json_encode($additional)).'
 		';
-		$id = query($sql);
+		$id = \query($sql);
 
 		foreach ($data['percentage'] as $key => $value)
 		{
@@ -110,6 +174,14 @@ class Material extends \SmartWork\Model
 		return true;
 	}
 
+	/**
+	 * Fill the objects properties with the given data and cast them if possible to the best
+	 * matching type. Only existing properties are filled.
+	 *
+	 * @param type $data
+	 *
+	 * @return void
+	 */
 	public function fill($data)
 	{
 		foreach ($data as $key => $value)
@@ -125,22 +197,39 @@ class Material extends \SmartWork\Model
 		}
 	}
 
+	/**
+	 * Get the material id.
+	 *
+	 * @return integer
+	 */
 	public function getMaterialId()
 	{
 		return $this->materialId;
 	}
 
+	/**
+	 * Get the material type.
+	 *
+	 * @return string
+	 */
 	public function getMaterialType()
 	{
 		return $this->materialType->getName();
 	}
 
+	/**
+	 * Get the material name.
+	 *
+	 * @return string
+	 */
 	public function getName()
 	{
 		return $this->name;
 	}
 
 	/**
+	 * Get the material asset list object.
+	 *
 	 * @return \Listing\MaterialAssets
 	 */
 	public function getMaterialAssetListing()
@@ -148,6 +237,11 @@ class Material extends \SmartWork\Model
 		return $this->materialAssetListing;
 	}
 
+	/**
+	 * Get the material assets as an array.
+	 *
+	 * @return array
+	 */
 	public function getMaterialAssetArray()
 	{
 		if ($this->materialAssetListing)
@@ -160,11 +254,21 @@ class Material extends \SmartWork\Model
 		}
 	}
 
+	/**
+	 * Get the additional modificators as an array.
+	 *
+	 * @return array
+	 */
 	public function getAdditional()
 	{
 		return json_decode($this->additional, true);
 	}
 
+	/**
+	 * Remove the material and its assets.
+	 *
+	 * @return void
+	 */
 	public function remove()
 	{
 		$sql = '
@@ -174,10 +278,12 @@ class Material extends \SmartWork\Model
 			WHERE materials.`materialId` = '.\sqlval($this->materialId).'
 				AND materialAssets.`materialId` = materials.`materialId`
 		';
-		return query($sql);
+		\query($sql);
 	}
 
 	/**
+	 * Get the objects properties as an array.
+	 *
 	 * @return array
 	 */
 	public function getAsArray()

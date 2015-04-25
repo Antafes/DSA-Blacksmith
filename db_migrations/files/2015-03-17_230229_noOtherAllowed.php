@@ -1,4 +1,11 @@
 <?php
+/**
+ * SQL statements for the no other technique allowed translations.
+ *
+ * @package sql
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 
 $DB_MIGRATION = array(
 

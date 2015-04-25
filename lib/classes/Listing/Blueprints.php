@@ -1,13 +1,27 @@
 <?php
+/**
+ * Part of the dsa blacksmith
+ *
+ * @package Listing
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Listing;
 
 /**
- * Description of Blueprints
+ * List class for blueprints.
  *
- * @author Neithan
+ * @package Listing
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Blueprints extends \SmartWork\Listing
 {
+	/**
+	 * Load all available blueprints for the logged in user.
+	 *
+	 * @return \self
+	 */
 	public static function loadList()
 	{
 		$sql = '
@@ -36,6 +50,8 @@ class Blueprints extends \SmartWork\Listing
 	}
 
 	/**
+	 * Get a single blueprint by its id.
+	 *
 	 * @param integer $id
 	 *
 	 * @return \Model\Blueprint

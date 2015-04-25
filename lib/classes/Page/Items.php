@@ -1,18 +1,35 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Page;
 
 /**
- * Description of Items
+ * Class for the items page.
  *
- * @author Neithan
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Items extends \SmartWork\Page
 {
+	/**
+	 * Set the used template.
+	 */
 	public function __construct()
 	{
 		parent::__construct('items');
 	}
 
+	/**
+	 * Add javascripts, handle removing of items and show the item list.
+	 *
+	 * @return void
+	 */
 	public function process()
 	{
 		$this->template->loadJs('addItem');
@@ -30,7 +47,11 @@ class Items extends \SmartWork\Page
 	}
 
 	/**
+	 * Remove an item.
+	 *
 	 * @param \Model\Item $item
+	 *
+	 * @return void
 	 */
 	protected function removeItem($item)
 	{

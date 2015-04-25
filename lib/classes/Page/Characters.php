@@ -1,18 +1,35 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Page;
 
 /**
- * Description of Characters
+ * Class for the characters page.
  *
- * @author Neithan
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Characters extends \SmartWork\Page
 {
+	/**
+	 * Set the used template.
+	 */
 	public function __construct()
 	{
 		parent::__construct('characters');
 	}
 
+	/**
+	 * Process uploaded files and removing of characters, as well as showing of the characters list.
+	 *
+	 * @return void
+	 */
 	public function process()
 	{
 		if ($_FILES['fileupload']) {
@@ -37,7 +54,11 @@ class Characters extends \SmartWork\Page
 	}
 
 	/**
+	 * Remove a character.
+	 *
 	 * @param \Model\Character $character
+	 *
+	 * @return void
 	 */
 	protected function removeCharacter($character)
 	{

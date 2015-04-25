@@ -1,18 +1,35 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Page;
 
 /**
- * Description of EsRegister
+ * Class for the registration page.
  *
- * @author Neithan
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Register extends \SmartWork\Page
 {
+	/**
+	 * Set the used template.
+	 */
 	public function __construct()
 	{
 		parent::__construct('register');
 	}
 
+	/**
+	 * Process the registration.
+	 *
+	 * @return void
+	 */
 	public function process()
 	{
 		$this->register(
@@ -21,6 +38,17 @@ class Register extends \SmartWork\Page
 		);
 	}
 
+	/**
+	 * Handle the registration process includign the form salt check.
+	 *
+	 * @param string $username
+	 * @param string $password
+	 * @param string $repeatPassword
+	 * @param string $email
+	 * @param string $salt
+	 *
+	 * @return void
+	 */
 	protected function register($username, $password, $repeatPassword, $email, $salt)
 	{
 		if (!$salt || $salt != $_SESSION['formSalts']['register'])

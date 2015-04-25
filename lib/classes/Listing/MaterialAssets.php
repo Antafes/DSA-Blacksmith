@@ -1,14 +1,25 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Listing
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Listing;
 
 /**
- * Description of MaterialAssets
+ * List class for the material assets.
  *
- * @author Neithan
+ * @package Listing
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class MaterialAssets extends \SmartWork\Listing
 {
 	/**
+	 * Load all available material assets.
+	 *
 	 * @return \self
 	 */
 	public static function loadList()
@@ -38,6 +49,8 @@ class MaterialAssets extends \SmartWork\Listing
 	}
 
 	/**
+	 * Load all assets for the given material.
+	 *
 	 * @param integer $materialId
 	 *
 	 * @return \self
@@ -71,6 +84,8 @@ class MaterialAssets extends \SmartWork\Listing
 	}
 
 	/**
+	 * Get a single material asset by the given id.
+	 *
 	 * @param integer $id
 	 *
 	 * @return \Model\MaterialAsset

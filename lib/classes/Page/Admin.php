@@ -1,17 +1,34 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Page;
 /**
- * Description of Admin
+ * Class for the admin page.
  *
- * @author Neithan
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Admin extends \SmartWork\Page
 {
+	/**
+	 * Set the template.
+	 */
 	public function __construct()
 	{
 		parent::__construct('admin');
 	}
 
+	/**
+	 * Process the activate, setAdmin and removeAdmin options and show the user list.
+	 *
+	 * @return void
+	 */
 	public function process()
 	{
 		if ($_GET['activate'])
@@ -77,6 +94,8 @@ class Admin extends \SmartWork\Page
 	 *
 	 * @param integer $userId
 	 * @param boolean $status
+	 *
+	 * @return void
 	 */
 	protected function changeAdminStatus($userId, $status)
 	{

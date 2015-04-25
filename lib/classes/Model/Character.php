@@ -1,10 +1,19 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Model;
 
 /**
- * Description of Character
+ * Model class for characters.
  *
- * @author Neithan
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Character extends \SmartWork\Model
 {
@@ -59,6 +68,7 @@ class Character extends \SmartWork\Model
 	protected $tailoring;
 
 	/**
+	 * Load a character by the given id.
 	 *
 	 * @param integer $id
 	 *
@@ -90,7 +100,11 @@ class Character extends \SmartWork\Model
 	}
 
 	/**
+	 * Fill the data from the array into the object and cast them to the nearest possible type.
+	 *
 	 * @param array $data
+	 *
+	 * @return void
 	 */
 	public function fill($data)
 	{
@@ -108,6 +122,8 @@ class Character extends \SmartWork\Model
 	}
 
 	/**
+	 * Get the blueprint as array.
+	 *
 	 * @return array
 	 */
 	public function getAsArray()
@@ -127,6 +143,20 @@ class Character extends \SmartWork\Model
 	}
 
 	/**
+	 * Create a new character from the given array.
+	 * array(
+	 *     'user' => a user object,
+	 *     'key' => '1409495635389',
+	 *     'lastUpdate' => datetime object,
+	 *     'name' => 'test',
+	 *     'bowMaking' => 4,
+	 *     'precisionMechanics' => 2,
+	 *     'blacksmith' => 4,
+	 *     'woodworking' => 3,
+	 *     'leatherworking' => 4,
+	 *     'tailoring' => 4,
+	 * )
+	 *
 	 * @param array $data
 	 *
 	 * @return boolean
@@ -167,6 +197,11 @@ class Character extends \SmartWork\Model
 		return true;
 	}
 
+	/**
+	 * Remove the current character.
+	 *
+	 * @return void
+	 */
 	public function remove()
 	{
 		$sql = '
@@ -177,51 +212,101 @@ class Character extends \SmartWork\Model
 		query($sql);
 	}
 
+	/**
+	 * The characters id.
+	 *
+	 * @return integer
+	 */
 	public function getCharacterId()
 	{
 		return $this->characterId;
 	}
 
+	/**
+	 * The Helden Software character key.
+	 *
+	 * @return string
+	 */
 	public function getKey()
 	{
 		return $this->key;
 	}
 
+	/**
+	 * Get the last time the character was updated in the Helden Software.
+	 *
+	 * @return \DateTime
+	 */
 	public function getLastUpdate()
 	{
 		return $this->lastUpdate;
 	}
 
+	/**
+	 * Get the name of the character.
+	 *
+	 * @return string
+	 */
 	public function getName()
 	{
 		return $this->name;
 	}
 
+	/**
+	 * Get the bow making talent value.
+	 *
+	 * @return integer
+	 */
 	public function getBowMaking()
 	{
 		return $this->bowMaking;
 	}
 
+	/**
+	 * Get the precision mechanics talent value.
+	 *
+	 * @return integer
+	 */
 	public function getPrecisionMechanics()
 	{
 		return $this->precisionMechanics;
 	}
 
+	/**
+	 * Get the blacksmith talent value.
+	 *
+	 * @return integer
+	 */
 	public function getBlacksmith()
 	{
 		return $this->blacksmith;
 	}
 
+	/**
+	 * Get the woodworking talent value.
+	 *
+	 * @return integer
+	 */
 	public function getWoodworking()
 	{
 		return $this->woodworking;
 	}
 
+	/**
+	 * Get the leatherworking talent value.
+	 *
+	 * @return integer
+	 */
 	public function getLeatherworking()
 	{
 		return $this->leatherworking;
 	}
 
+	/**
+	 * Get the tailoring talent value.
+	 *
+	 * @return integer
+	 */
 	public function getTailoring()
 	{
 		return $this->tailoring;

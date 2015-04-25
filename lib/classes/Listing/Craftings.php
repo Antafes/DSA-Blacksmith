@@ -1,12 +1,29 @@
 <?php
-namespace Listing;
 /**
- * Description of Craftings
+ * Part of the dsa blacksmith.
  *
- * @author Neithan
+ * @package Listing
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
+namespace Listing;
+
+/**
+ * List class for craftings.
+ *
+ * @package Listing
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Craftings extends \SmartWork\Listing
 {
+	/**
+	 * Load all craftings for the logged in user.
+	 *
+	 * @param boolean $onlyUnfinished
+	 *
+	 * @return \self
+	 */
 	public static function loadList($onlyUnfinished = false)
 	{
 		$sql = '
@@ -36,6 +53,13 @@ class Craftings extends \SmartWork\Listing
 		return $obj;
 	}
 
+	/**
+	 * Get a single crafting for the given id.
+	 *
+	 * @param integer $id
+	 *
+	 * @return \Model\Crafting
+	 */
 	public function getById($id)
 	{
 		return $this->list[$id];

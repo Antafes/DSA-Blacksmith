@@ -1,14 +1,25 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Listing
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Listing;
 
 /**
- * Description of Techniques
+ * List class for the techniques.
  *
- * @author Neithan
+ * @package Listing
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Techniques extends \SmartWork\Listing
 {
 	/**
+	 * Load all available techniques.
+	 *
 	 * @return \self
 	 */
 	public static function loadList()
@@ -39,6 +50,8 @@ class Techniques extends \SmartWork\Listing
 	}
 
 	/**
+	 * Get a single technique for the given id.
+	 *
 	 * @param integer $id
 	 *
 	 * @return \Model\Technique

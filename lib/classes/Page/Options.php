@@ -1,10 +1,19 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Page;
 
 /**
- * Description of Options
+ * Class for the options page.
  *
- * @author Neithan
+ * @package Page
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Options extends \SmartWork\Page
 {
@@ -13,6 +22,9 @@ class Options extends \SmartWork\Page
 	 */
 	protected $user;
 
+	/**
+	 * Set the used template.
+	 */
 	public function __construct()
 	{
 		parent::__construct('options');
@@ -22,6 +34,8 @@ class Options extends \SmartWork\Page
 
 	/**
 	 * Process possibly entered data of the page.
+	 *
+	 * @return void
 	 */
 	public function process()
 	{
@@ -49,6 +63,8 @@ class Options extends \SmartWork\Page
 
 	/**
 	 * Render and output the template
+	 *
+	 * @return void
 	 */
 	public function render()
 	{
@@ -62,6 +78,8 @@ class Options extends \SmartWork\Page
 	 *
 	 * @param string $username
 	 * @param string $email
+	 *
+	 * @return void
 	 */
 	protected function changeGeneralOptions($username, $email)
 	{
@@ -81,6 +99,8 @@ class Options extends \SmartWork\Page
 	 *
 	 * @param string $password
 	 * @param string $repeatPassword
+	 *
+	 * @return void
 	 */
 	protected function changePassword($password, $repeatPassword)
 	{

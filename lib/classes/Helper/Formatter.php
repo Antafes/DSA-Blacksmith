@@ -1,13 +1,30 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Helper
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Helper;
 
 /**
- * Description of Formatter
+ * Helper class for formatting the time and days.
  *
- * @author Neithan
+ * @package Helper
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Formatter
 {
+	/**
+	 * Format a timestamp according the time format in the translations.
+	 *
+	 * @param integer $time        The timestamp to format
+	 * @param boolean $withSeconds Whether to add seconds to the formatted time or not
+	 *
+	 * @return string
+	 */
 	public static function time($time, $withSeconds = false)
 	{
 		$translator = \SmartWork\Translator::getInstance();
@@ -20,10 +37,5 @@ class Formatter
 		{
 			return date($translator->getTranslation('timeFormatShort'), $time);
 		}
-	}
-
-	public static function days($time)
-	{
-		return $time / (23 * 3600);
 	}
 }

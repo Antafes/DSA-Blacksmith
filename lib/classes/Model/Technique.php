@@ -1,10 +1,19 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Model;
 
 /**
- * Description of Techniques
+ * Model class for the techniques.
  *
- * @author Neithan
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Technique extends \SmartWork\Model
 {
@@ -54,6 +63,8 @@ class Technique extends \SmartWork\Model
 	protected $unsellable;
 
 	/**
+	 * Load a technique by the given id.
+	 *
 	 * @param integer $id
 	 *
 	 * @return \self
@@ -82,6 +93,14 @@ class Technique extends \SmartWork\Model
 		return $obj;
 	}
 
+	/**
+	 * Fill the objects properties with the given data and cast them if possible to the best
+	 * matching type. Only existing properties are filled.
+	 *
+	 * @param array $data
+	 *
+	 * @return void
+	 */
 	public function fill($data)
 	{
 		foreach ($data as $key => $value)
@@ -97,51 +116,113 @@ class Technique extends \SmartWork\Model
 		}
 	}
 
+	/**
+	 * Get the technique id.
+	 *
+	 * @return integer
+	 */
 	public function getTechniqueId()
 	{
 		return $this->techniqueId;
 	}
 
+	/**
+	 * Get the technique name.
+	 *
+	 * @return string
+	 */
 	public function getName()
 	{
 		return $this->name;
 	}
 
+	/**
+	 * Get the time factor that this technique adds to the production time.
+	 *
+	 * @return float
+	 */
 	public function getTimeFactor()
 	{
 		return $this->timeFactor;
 	}
 
+	/**
+	 * Get the price factor that this technique adds to the total price.
+	 *
+	 * @return float
+	 */
 	public function getPriceFactor()
 	{
 		return $this->priceFactor;
 	}
 
+	/**
+	 * Get the proof modificator.
+	 *
+	 * @return integer
+	 */
 	public function getProof()
 	{
 		return $this->proof;
 	}
 
+	/**
+	 * Get the break factor modificator.
+	 *
+	 * @return integer
+	 */
 	public function getBreakFactor()
 	{
 		return $this->breakFactor;
 	}
 
+	/**
+	 * Get the hit points modificator.
+	 *
+	 * @return integer
+	 */
 	public function getHitPoints()
 	{
 		return $this->hitPoints;
 	}
 
+	/**
+	 * Whether other techniques are allowed or not.
+	 *
+	 * @return boolean
+	 */
 	public function getNoOtherAllowed()
 	{
 		return $this->noOtherAllowed;
 	}
 
+	/**
+	 * Whether this technique changes the price of the item to unsellable.
+	 *
+	 * @return boolean
+	 */
 	public function getUnsellable()
 	{
 		return $this->unsellable;
 	}
 
+	/**
+	 * Create a new technique from the given array.
+	 * array(
+	 *     'name' => 'test',
+	 *     'timeFactor' => 1.5,
+	 *     'priceFactor' => 2.0,
+	 *     'proof' => 0,
+	 *     'breakFactor' => 1,
+	 *     'hitPoints' => 0,
+	 *     'noOtherAllowed' => 1,
+	 *     'unsellable' => 0,
+	 * )
+	 *
+	 * @param array $data
+	 *
+	 * @return boolean
+	 */
 	public static function create($data)
 	{
 		if (!$data['name'] && !$data['timeFactor'] && !$data['priceFactor'])
@@ -161,11 +242,16 @@ class Technique extends \SmartWork\Model
 				noOtherAllowed = '.\sqlval(intval($data['noOtherAllowed'])).',
 				unsellable = '.\sqlval(intval($data['unsellable'])).'
 		';
-		query($sql);
+		\query($sql);
 
 		return true;
 	}
 
+	/**
+	 * Remove this technique.
+	 *
+	 * @return void
+	 */
 	public function remove()
 	{
 		$sql = '
@@ -173,10 +259,12 @@ class Technique extends \SmartWork\Model
 			SET deleted = 1
 			WHERE `techniqueId` = '.\sqlval($this->techniqueId).'
 		';
-		return query($sql);
+		\query($sql);
 	}
 
 	/**
+	 * Get the properties of this object as an array.
+	 *
 	 * @return array
 	 */
 	public function getAsArray()

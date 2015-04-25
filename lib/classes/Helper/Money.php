@@ -1,10 +1,19 @@
 <?php
+/**
+ * Part of the dsa blacksmith
+ *
+ * @package Helper
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Helper;
 
 /**
- * Description of Money
+ * Helper class for the currencies.
  *
- * @author Neithan
+ * @package Helper
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Money
 {
@@ -115,20 +124,32 @@ class Money
 		),
 	);
 
+	/**
+	 * Get the base currency.
+	 *
+	 * @return string
+	 */
 	public function getBaseCurrency()
 	{
 		return $this->baseCurrency;
 	}
 
+	/**
+	 * Get the list of currencies.
+	 *
+	 * @return array
+	 */
 	public function getCurrencyList()
 	{
 		return $this->currencyList;
 	}
 
 	/**
-	 * @param integer $value
-	 * @param string $current
-	 * @param string $target
+	 * Exchange the given value to the target currency
+	 *
+	 * @param integer $value   The value to exchange
+	 * @param string  $current The current currency
+	 * @param string  $target  The target currency
 	 *
 	 * @return integer|float
 	 */

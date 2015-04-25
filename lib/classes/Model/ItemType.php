@@ -1,10 +1,19 @@
 <?php
+/**
+ * Part of the dsa blacksmith.
+ *
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
 namespace Model;
 
 /**
- * Description of ItemType
+ * Model class for item types.
  *
- * @author Neithan
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class ItemType extends \SmartWork\Model
 {
@@ -24,7 +33,7 @@ class ItemType extends \SmartWork\Model
 	protected $type;
 
 	/**
-	 * @var float
+	 * @var integer
 	 */
 	protected $talentPoints;
 
@@ -34,6 +43,8 @@ class ItemType extends \SmartWork\Model
 	protected $time;
 
 	/**
+	 * Load an item type by its id.
+	 *
 	 * @param integer $id
 	 *
 	 * @return \self
@@ -59,6 +70,18 @@ class ItemType extends \SmartWork\Model
 		return $obj;
 	}
 
+	/**
+	 * Create a new item type from the given array.
+	 * array(
+	 *     'name' => 'test',
+	 *     'talentPoints' => 3,
+	 *     'time' => 6,
+	 * )
+	 *
+	 * @param array $data
+	 *
+	 * @return boolean
+	 */
 	public static function create($data)
 	{
 		if (!$data['name'] && !$data['talentPoints'] && !$data['time'])
@@ -77,31 +100,61 @@ class ItemType extends \SmartWork\Model
 		return true;
 	}
 
+	/**
+	 * Get the item type id.
+	 *
+	 * @return integer
+	 */
 	public function getItemTypeId()
 	{
 		return $this->itemTypeId;
 	}
 
+	/**
+	 * Get the name of the item type.
+	 *
+	 * @return string
+	 */
 	public function getName()
 	{
 		return $this->name;
 	}
 
+	/**
+	 * Get the general type. May be on of: weapon, shield, armor, projectile
+	 *
+	 * @return string
+	 */
 	public function getType()
 	{
 		return $this->type;
 	}
 
+	/**
+	 * Get the talent points modificator.
+	 *
+	 * @return integer
+	 */
 	public function getTalentPoints()
 	{
 		return $this->talentPoints;
 	}
 
+	/**
+	 * Get the modificator for the time units.
+	 *
+	 * @return float
+	 */
 	public function getTime()
 	{
 		return $this->time;
 	}
 
+	/**
+	 * Remove the item type.
+	 *
+	 * @return void
+	 */
 	public function remove()
 	{
 		$sql = '
@@ -109,9 +162,14 @@ class ItemType extends \SmartWork\Model
 			SET deleted = 1
 			WHERE `itemTypeId` = '.\sqlval($this->itemTypeId).'
 		';
-		return query($sql);
+		\query($sql);
 	}
 
+	/**
+	 * Get the item types properties as an array.
+	 *
+	 * @return array
+	 */
 	public function getAsArray()
 	{
 		return array(

@@ -1,9 +1,19 @@
 <?php
-namespace Model;
 /**
- * Description of Crafting
+ * Part of the dsa blacksmith.
  *
- * @author Neithan
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
+ */
+namespace Model;
+
+/**
+ * Model class for a crafting.
+ *
+ * @package Model
+ * @author  friend8 <map@wafriv.de>
+ * @license https://www.gnu.org/licenses/lgpl.html LGPLv3
  */
 class Crafting extends \SmartWork\Model
 {
@@ -60,6 +70,8 @@ class Crafting extends \SmartWork\Model
 	protected $timeUnitSeconds = 7200;
 
 	/**
+	 * Load a crafting by its id.
+	 *
 	 * @param integer $id
 	 *
 	 * @return \self
@@ -88,6 +100,13 @@ class Crafting extends \SmartWork\Model
 		return $obj;
 	}
 
+	/**
+	 * Fill the data from the array into the object and cast them to the nearest possible type.
+	 *
+	 * @param array $data
+	 *
+	 * @return void
+	 */
 	public function fill($data)
 	{
 		foreach ($data as $key => $value)
@@ -111,6 +130,23 @@ class Crafting extends \SmartWork\Model
 		}
 	}
 
+	/**
+	 * Create a new crafting from the given array.
+	 * array(
+	 *     'userId' => 1,
+	 *     'blueprintId' => 1,
+	 *     'characterId' => 1,
+	 *     'name' => 'test',
+	 *     'notes' => 'these are test notes',
+	 *     'toolsProofModificator' => 0,
+	 *     'planProofModificator' => 0,
+	 *     'gainedTalentPoints' => 0,
+	 * )
+	 *
+	 * @param string $data
+	 *
+	 * @return boolean
+	 */
 	public static function create($data)
 	{
 		$sql = '
@@ -129,6 +165,11 @@ class Crafting extends \SmartWork\Model
 		return true;
 	}
 
+	/**
+	 * Get the craftings properties as array
+	 *
+	 * @return array
+	 */
 	public function getAsArray()
 	{
 		return array(
@@ -147,16 +188,31 @@ class Crafting extends \SmartWork\Model
 		);
 	}
 
+	/**
+	 * Get the blueprint the crafting is based on.
+	 *
+	 * @return \Model\Blueprint
+	 */
 	public function getBlueprint()
 	{
 		return $this->blueprint;
 	}
 
+	/**
+	 * Get the character that is crafting the item.
+	 *
+	 * @return \Model\Character
+	 */
 	public function getCharacter()
 	{
 		return $this->character;
 	}
 
+	/**
+	 * Get the name for the crafting.
+	 *
+	 * @return string
+	 */
 	public function getName()
 	{
 		$name = $this->name;
@@ -169,32 +225,59 @@ class Crafting extends \SmartWork\Model
 		return $name;
 	}
 
+	/**
+	 * Get the multiline note for the crafting.
+	 *
+	 * @return string
+	 */
 	public function getNotes()
 	{
 		return $this->notes;
 	}
 
+	/**
+	 * Get the proof modificator gained via the used tools.
+	 *
+	 * @return integer
+	 */
 	public function getToolsProofModificator()
 	{
 		return $this->toolsProofModificator;
 	}
 
+	/**
+	 * Get the proof modificator gained via the made plan.
+	 *
+	 * @return integer
+	 */
 	public function getPlanProofModificator()
 	{
 		return $this->planProofModificator;
 	}
 
+	/**
+	 * Get the total talent points which are already gained for this crafting.
+	 *
+	 * @return integer
+	 */
 	public function getGainedTalentPoints()
 	{
 		return $this->gainedTalentPoints;
 	}
 
+	/**
+	 * Get whether the item is crafted or not.
+	 *
+	 * @return boolean
+	 */
 	public function getDone()
 	{
 		return $this->done;
 	}
 
 	/**
+	 * Get the total amount of talent points which have to be gained for crafting this item.
+	 *
 	 * @return integer
 	 */
 	public function getTotalTalentPoints()
@@ -222,6 +305,8 @@ class Crafting extends \SmartWork\Model
 	}
 
 	/**
+	 * Get the proof handicap.
+	 *
 	 * @return integer
 	 */
 	public function getHandicap()
@@ -253,6 +338,8 @@ class Crafting extends \SmartWork\Model
 	}
 
 	/**
+	 * Get the estimated finishing time in days or hours.
+	 *
 	 * @return string
 	 */
 	public function getEstimatedFinishingTime()
@@ -283,6 +370,8 @@ class Crafting extends \SmartWork\Model
 	}
 
 	/**
+	 * Add gained talent points.
+	 *
 	 * @param integer $talentPoints
 	 */
 	public function addTalentPoints($talentPoints)
@@ -297,6 +386,11 @@ class Crafting extends \SmartWork\Model
 		$this->gainedTalentPoints += $talentPoints;
 	}
 
+	/**
+	 * Mark the crafting as done.
+	 *
+	 * @return void
+	 */
 	public function done()
 	{
 		$sql = '
@@ -307,6 +401,11 @@ class Crafting extends \SmartWork\Model
 		\query($sql);
 	}
 
+	/**
+	 * Remove the crafting.
+	 *
+	 * @return void
+	 */
 	public function remove()
 	{
 		$sql = '
