@@ -2,3 +2,6 @@
 /templates_c/*
 /lib/config.php
 *.xcf
+index.php
+db_migrations/migrations.php
+db_migrations/transformToMigrations.php
