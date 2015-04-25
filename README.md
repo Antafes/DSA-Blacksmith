@@ -5,6 +5,11 @@ This is a blacksmithing tool for the German pen and paper role playing game DSA 
 under http://dsa.wafriv.de.
 Currently it is only available in German!
 
+Install
+-------
+Create a symlink to lib/system/index.php in the root of this project.
+Create symlinks to db_migrations/*.php in db_migrations.
+
 Features
 --------
 - Crafting of melee weapons
