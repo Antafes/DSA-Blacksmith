@@ -6,7 +6,7 @@ namespace Page;
  *
  * @author Neithan
  */
-class Techniques extends \Page
+class Techniques extends \SmartWork\Page
 {
 	public function __construct()
 	{

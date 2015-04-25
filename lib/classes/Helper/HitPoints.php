@@ -10,7 +10,7 @@ class HitPoints
 {
 	public static function getHitPointsString($hitPointsArray)
 	{
-		$translator = \Translator::getInstance();
+		$translator = \SmartWork\Translator::getInstance();
 		$hitPointsString = $hitPointsArray['hitPointsDice'];
 		$hitPointsString .=$translator->getTranslation($hitPointsArray['hitPointsDiceType']);
 		$hitPointsString .= sprintf('%+d', $hitPointsArray['hitPoints']);

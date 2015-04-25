@@ -6,7 +6,7 @@ namespace Listing;
  *
  * @author Neithan
  */
-class ItemTypes extends \Listing
+class ItemTypes extends \SmartWork\Listing
 {
 	/**
 	 * @return \self

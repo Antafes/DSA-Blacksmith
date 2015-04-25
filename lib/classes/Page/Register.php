@@ -6,7 +6,7 @@ namespace Page;
  *
  * @author Neithan
  */
-class Register extends \Page
+class Register extends \SmartWork\Page
 {
 	public function __construct()
 	{
@@ -38,19 +38,19 @@ class Register extends \Page
 			return;
 		}
 
-		if (\User::checkUsername($username))
+		if (\SmartWork\User::checkUsername($username))
 		{
 			$this->template->assign('error', 'usernameAlreadyInUse');
 			return;
 		}
 
-		if (\User::checkEmail($email))
+		if (\SmartWork\User::checkEmail($email))
 		{
 			$this->template->assign('error', 'emailAlreadyInUse');
 			return;
 		}
 
-		if (\User::createUser($username, $password, $email))
+		if (\SmartWork\User::createUser($username, $password, $email))
 			$this->template->assign('message', 'registrationSuccessful');
 		else
 			$this->template->assign('error', 'registrationUnsuccessful');

@@ -6,7 +6,7 @@ namespace Page;
  *
  * @author Neithan
  */
-class Blueprints extends \Page
+class Blueprints extends \SmartWork\Page
 {
 	public function __construct()
 	{

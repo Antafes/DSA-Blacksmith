@@ -10,13 +10,15 @@ class Formatter
 {
 	public static function time($time, $withSeconds = false)
 	{
+		$translator = \SmartWork\Translator::getInstance();
+
 		if ($withSeconds)
 		{
-			return date(\Translator::getInstance()->getTranslation('timeFormat'), $time);
+			return date($translator->getTranslation('timeFormat'), $time);
 		}
 		else
 		{
-			return date(\Translator::getInstance()->getTranslation('timeFormatShort'), $time);
+			return date($translator->getTranslation('timeFormatShort'), $time);
 		}
 	}
 

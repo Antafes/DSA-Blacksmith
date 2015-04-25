@@ -6,10 +6,10 @@ namespace Page;
  *
  * @author Neithan
  */
-class Options extends \Page
+class Options extends \SmartWork\Page
 {
 	/**
-	 * @var \User
+	 * @var \SmartWork\User
 	 */
 	protected $user;
 
@@ -17,7 +17,7 @@ class Options extends \Page
 	{
 		parent::__construct('options');
 
-		$this->user = \User::getUserById($_SESSION['userId']);
+		$this->user = \SmartWork\User::getUserById($_SESSION['userId']);
 	}
 
 	/**

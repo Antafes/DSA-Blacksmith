@@ -37,7 +37,7 @@ class HeroImport
 		$characterXml = $simplexml->held;
 		$characterAttributes = $characterXml->attributes();
 		$character = array(
-			'user' => \User::getUserById($_SESSION['userId']),
+			'user' => \SmartWork\User::getUserById($_SESSION['userId']),
 			'key' => $characterAttributes['key'],
 			'lastUpdate' => \DateTime::createFromFormat('U', intval(floatval($characterAttributes['stand']) / 1000)),
 			'name' => $characterAttributes['name'],

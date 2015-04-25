@@ -6,7 +6,7 @@ namespace Listing;
  *
  * @author Neithan
  */
-class Materials extends \Listing
+class Materials extends \SmartWork\Listing
 {
 	/**
 	 * @return \self

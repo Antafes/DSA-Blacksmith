@@ -6,7 +6,7 @@ namespace Model;
  *
  * @author Neithan
  */
-class MaterialType extends \Model
+class MaterialType extends \SmartWork\Model
 {
 	protected $materialTypeId;
 	protected $name;

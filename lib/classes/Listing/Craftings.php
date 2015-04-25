@@ -5,7 +5,7 @@ namespace Listing;
  *
  * @author Neithan
  */
-class Craftings extends \Listing
+class Craftings extends \SmartWork\Listing
 {
 	public static function loadList($onlyUnfinished = false)
 	{

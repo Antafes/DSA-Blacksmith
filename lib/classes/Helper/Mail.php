@@ -19,7 +19,7 @@ class Mail
 	 */
 	public static function send($recipient, $subject, $message)
 	{
-		$translator = \Translator::getInstance();
+		$translator = \SmartWork\Translator::getInstance();
 
 		$mailer = new \PHPMailer(true);
 		$mailer->set('CharSet', $GLOBALS['config']['charset']);

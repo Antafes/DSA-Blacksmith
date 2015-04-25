@@ -5,7 +5,7 @@ namespace Page;
  *
  * @author Neithan
  */
-class Admin extends \Page
+class Admin extends \SmartWork\Page
 {
 	public function __construct()
 	{
@@ -32,7 +32,7 @@ class Admin extends \Page
 			redirect('index.php?page=Admin');
 		}
 
-		$user = \User::getUserById($_SESSION['userId']);
+		$user = \SmartWork\User::getUserById($_SESSION['userId']);
 
 		if (!$user->getAdmin())
 			redirect('index.php?page=Index');
@@ -56,7 +56,7 @@ class Admin extends \Page
 
 		$userList = array();
 		foreach ($users as $user)
-			$userList[] = \User::getUserById($user['userId']);
+			$userList[] = \SmartWork\User::getUserById($user['userId']);
 
 		return $userList;
 	}
@@ -68,7 +68,7 @@ class Admin extends \Page
 	 */
 	protected function activateUser($userId)
 	{
-		$user = \User::getUserById($userId);
+		$user = \SmartWork\User::getUserById($userId);
 		$user->activate();
 	}
 
@@ -80,7 +80,7 @@ class Admin extends \Page
 	 */
 	protected function changeAdminStatus($userId, $status)
 	{
-		$user = \User::getUserById($userId);
+		$user = \SmartWork\User::getUserById($userId);
 		$user->setAdmin($status);
 	}
 }

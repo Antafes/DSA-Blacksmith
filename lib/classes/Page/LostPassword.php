@@ -6,7 +6,7 @@ namespace Page;
  *
  * @author Neithan
  */
-class LostPassword extends \Page
+class LostPassword extends \SmartWork\Page
 {
 	function __construct()
 	{
@@ -26,7 +26,7 @@ class LostPassword extends \Page
 			return;
 		}
 
-		$user = \User::getUserByMail($_POST['email']);
+		$user = \SmartWork\User::getUserByMail($_POST['email']);
 
 		if ($user)
 		{

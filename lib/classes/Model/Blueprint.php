@@ -6,7 +6,7 @@ namespace Model;
  *
  * @author Neithan
  */
-class Blueprint extends \Model
+class Blueprint extends \SmartWork\Model
 {
 	/**
 	 * @var integer
@@ -374,7 +374,7 @@ class Blueprint extends \Model
 		{
 			if ($technique->getUnsellable())
 			{
-				$translator = \Translator::getInstance();
+				$translator = \SmartWork\Translator::getInstance();
 				return $translator->getTranslation('unsellable');
 			}
 
@@ -451,7 +451,7 @@ class Blueprint extends \Model
 	 */
 	public function getResultingStats()
 	{
-		$translator = \Translator::getInstance();
+		$translator = \SmartWork\Translator::getInstance();
 
 		$breakFactor = $this->item->getBreakFactor();
 		$initiative = $this->item->getInitiative();

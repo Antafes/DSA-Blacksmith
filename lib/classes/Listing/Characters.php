@@ -6,7 +6,7 @@ namespace Listing;
  *
  * @author Neithan
  */
-class Characters extends \Listing
+class Characters extends \SmartWork\Listing
 {
 	/**
 	 * @return \self

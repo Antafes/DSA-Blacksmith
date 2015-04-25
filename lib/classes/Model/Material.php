@@ -1,7 +1,7 @@
 <?php
 namespace Model;
 
-class Material extends \Model
+class Material extends \SmartWork\Model
 {
 	/**
 	 * @var integer

@@ -6,7 +6,7 @@ namespace Listing;
  *
  * @author Neithan
  */
-class Blueprints extends \Listing
+class Blueprints extends \SmartWork\Listing
 {
 	public static function loadList()
 	{

@@ -6,7 +6,7 @@ namespace Page;
  *
  * @author Neithan
  */
-class ItemTypes extends \Page
+class ItemTypes extends \SmartWork\Page
 {
 	public function __construct()
 	{

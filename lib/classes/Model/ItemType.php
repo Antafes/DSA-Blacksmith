@@ -6,7 +6,7 @@ namespace Model;
  *
  * @author Neithan
  */
-class ItemType extends \Model
+class ItemType extends \SmartWork\Model
 {
 	/**
 	 * @var integer

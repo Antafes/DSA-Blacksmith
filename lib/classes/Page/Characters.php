@@ -6,7 +6,7 @@ namespace Page;
  *
  * @author Neithan
  */
-class Characters extends \Page
+class Characters extends \SmartWork\Page
 {
 	public function __construct()
 	{

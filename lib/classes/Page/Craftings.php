@@ -5,7 +5,7 @@ namespace Page;
  *
  * @author Neithan
  */
-class Craftings extends \Page
+class Craftings extends \SmartWork\Page
 {
 	public function __construct()
 	{

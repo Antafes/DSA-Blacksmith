@@ -6,7 +6,7 @@ namespace Page;
  *
  * @author Neithan
  */
-class Logout extends \Page
+class Logout extends \SmartWork\Page
 {
 	public function __construct()
 	{

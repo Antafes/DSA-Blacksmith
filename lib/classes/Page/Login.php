@@ -6,7 +6,7 @@ namespace Page;
  *
  * @author Neithan
  */
-class Login extends \Page
+class Login extends \SmartWork\Page
 {
 	function __construct()
 	{
@@ -29,12 +29,12 @@ class Login extends \Page
 			return;
 		}
 
-		$user = \User::getUser($username, $password);
+		$user = \SmartWork\User::getUser($username, $password);
 
 		if ($user)
 		{
 			$_SESSION['userId'] = $user->getUserId();
-			$translator = \Translator::getInstance();
+			$translator = \SmartWork\Translator::getInstance();
 			$translator->setCurrentLanguage($user->getLanguageId());
 			redirect('index.php?page=Index');
 		}

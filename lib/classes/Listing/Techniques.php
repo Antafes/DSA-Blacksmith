@@ -6,7 +6,7 @@ namespace Listing;
  *
  * @author Neithan
  */
-class Techniques extends \Listing
+class Techniques extends \SmartWork\Listing
 {
 	/**
 	 * @return \self

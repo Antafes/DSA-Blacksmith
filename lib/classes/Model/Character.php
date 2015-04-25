@@ -6,7 +6,7 @@ namespace Model;
  *
  * @author Neithan
  */
-class Character extends \Model
+class Character extends \SmartWork\Model
 {
 	/**
 	 * @var integer

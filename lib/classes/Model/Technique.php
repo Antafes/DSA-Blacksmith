@@ -6,7 +6,7 @@ namespace Model;
  *
  * @author Neithan
  */
-class Technique extends \Model
+class Technique extends \SmartWork\Model
 {
 	/**
 	 * @var integer
