@@ -26,9 +26,9 @@ class Header extends \SmartWork\Page\Header
 		$this->template->loadCss('header');
 		$this->template->loadCss('main');
 
+		parent::process();
+
 		// Add JS files
 		$this->template->loadJs('jquery.popup');
-
-		parent::process();
 	}
 }
