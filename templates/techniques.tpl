@@ -1,18 +1,18 @@
 {include file="header.tpl"}
 <div id="techniques">
 	<div class="submenu">
-		<a class="button" id="addTechnique" href="#">{$translator->getTranslation('addTechnique')}</a>
+		<a class="button" id="addTechnique" href="#">{$translator->gt('addTechnique')}</a>
 		<div class="clear"></div>
 	</div>
 	<table class="collapse">
 		<thead>
 			<tr>
-				<th class="name">{$translator->getTranslation('technique')}</th>
-				<th class="timeFactor">{$translator->getTranslation('timeFactor')}</th>
-				<th class="priceFactor">{$translator->getTranslation('priceFactor')}</th>
-				<th class="proof">{$translator->getTranslation('proof')}</th>
-				<th class="breakFactor">{$translator->getTranslation('breakFactor')}</th>
-				<th class="hitPoints">{$translator->getTranslation('hitPoints')}</th>
+				<th class="name">{$translator->gt('technique')}</th>
+				<th class="timeFactor">{$translator->gt('timeFactor')}</th>
+				<th class="priceFactor">{$translator->gt('priceFactor')}</th>
+				<th class="proof">{$translator->gt('proof')}</th>
+				<th class="breakFactor">{$translator->gt('breakFactor')}</th>
+				<th class="hitPoints">{$translator->gt('hitPoints')}</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -31,66 +31,66 @@
 				</tr>
 			{foreachelse}
 				<tr>
-					<td colspan="7">{$translator->getTranslation('noTechniquesFound')}</td>
+					<td colspan="7">{$translator->gt('noTechniquesFound')}</td>
 				</tr>
 			{/foreach}
 		</tbody>
 	</table>
-	<div id="addTechniquePopup" style="display: none;" data-title="{$translator->getTranslation('addTechnique')}">
+	<div id="addTechniquePopup" style="display: none;" data-title="{$translator->gt('addTechnique')}">
 		<form method="post" action="ajax/addMaterial.php">
 			<table class="addTechnique collapse">
 				<tbody>
 					<tr class="odd">
-						<td>{$translator->getTranslation('technique')}</td>
+						<td>{$translator->gt('technique')}</td>
 						<td>
 							<input type="text" name="name" />
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('timeFactor')}</td>
+						<td>{$translator->gt('timeFactor')}</td>
 						<td>
 							<input type="number" step="0.01" name="timeFactor" />
 						</td>
 					</tr>
 					<tr class="odd">
-						<td>{$translator->getTranslation('priceFactor')}</td>
+						<td>{$translator->gt('priceFactor')}</td>
 						<td>
 							<input type="number" step="0.01" name="priceFactor" />
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('proof')}</td>
+						<td>{$translator->gt('proof')}</td>
 						<td>
 							<input type="number" name="proof" />
 						</td>
 					</tr>
 					<tr class="odd">
-						<td>{$translator->getTranslation('breakFactor')}</td>
+						<td>{$translator->gt('breakFactor')}</td>
 						<td>
 							<input type="number" name="breakFactor" />
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('hitPoints')}</td>
+						<td>{$translator->gt('hitPoints')}</td>
 						<td>
 							<input type="number" name="hitPoints" />
 						</td>
 					</tr>
 					<tr class="odd">
-						<td>{$translator->getTranslation('noOtherAllowed')}</td>
+						<td>{$translator->gt('noOtherAllowed')}</td>
 						<td>
 							<input type="checkbox" name="noOtherAllowed" value="1" />
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('unsellable')}</td>
+						<td>{$translator->gt('unsellable')}</td>
 						<td>
 							<input type="checkbox" name="unsellable" value="1" />
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2" class="buttonArea">
-							<input type="submit" value="{$translator->getTranslation('addTechnique')}" />
+							<input type="submit" value="{$translator->gt('addTechnique')}" />
 						</td>
 					</tr>
 				</tbody>

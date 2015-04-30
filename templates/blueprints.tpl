@@ -1,17 +1,17 @@
 {include file="header.tpl"}
 <div id="blueprints">
 	<div class="submenu">
-		<a class="button" id="addBlueprint" href="#">{$translator->getTranslation('addBlueprint')}</a>
+		<a class="button" id="addBlueprint" href="#">{$translator->gt('addBlueprint')}</a>
 		<div class="clear"></div>
 	</div>
 	<table class="collapse">
 		<thead>
 			<tr>
-				<th class="blueprint">{$translator->getTranslation('blueprint')}</th>
-				<th class="item">{$translator->getTranslation('item')}</th>
-				<th class="itemType">{$translator->getTranslation('itemType')}</th>
-				<th class="endPrice">{$translator->getTranslation('endPrice')}</th>
-				<th class="notes">{$translator->getTranslation('notes')}</th>
+				<th class="blueprint">{$translator->gt('blueprint')}</th>
+				<th class="item">{$translator->gt('item')}</th>
+				<th class="itemType">{$translator->gt('itemType')}</th>
+				<th class="endPrice">{$translator->gt('endPrice')}</th>
+				<th class="notes">{$translator->gt('notes')}</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -31,23 +31,23 @@
 				</tr>
 			{foreachelse}
 				<tr>
-					<td colspan="5">{$translator->getTranslation('noBlueprintsFound')}</td>
+					<td colspan="5">{$translator->gt('noBlueprintsFound')}</td>
 				</tr>
 			{/foreach}
 		</tbody>
 	</table>
-	<div id="addBlueprintPopup" style="display: none;" data-title="{$translator->getTranslation('addBlueprint')}">
+	<div id="addBlueprintPopup" style="display: none;" data-title="{$translator->gt('addBlueprint')}">
 		<form method="post" action="ajax/addMaterial.php">
 			<table class="addBlueprint collapse">
 				<tbody>
 					<tr class="odd">
-						<td>{$translator->getTranslation('blueprint')}</td>
+						<td>{$translator->gt('blueprint')}</td>
 						<td>
 							<input type="text" name="name" />
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('item')}</td>
+						<td>{$translator->gt('item')}</td>
 						<td>
 							<select id="itemSelect" name="itemId">
 								{foreach $itemListing->getList() as $item}
@@ -57,7 +57,7 @@
 						</td>
 					</tr>
 					<tr class="odd">
-						<td>{$translator->getTranslation('itemType')}</td>
+						<td>{$translator->gt('itemType')}</td>
 						<td>
 							<select name="itemTypeId">
 								{foreach $itemTypeListing->getList() as $itemType}
@@ -67,23 +67,23 @@
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('damageType')}</td>
+						<td>{$translator->gt('damageType')}</td>
 						<td>
 							<select id="damageTypeSelect" class="damageType" name="damageType">
-								<option value="damage">{$translator->getTranslation('damage')}</option>
-								<option value="stamina">{$translator->getTranslation('stamina')}</option>
+								<option value="damage">{$translator->gt('damage')}</option>
+								<option value="stamina">{$translator->gt('stamina')}</option>
 							</select>
 						</td>
 					</tr>
 					<tr class="odd">
-						<td>{$translator->getTranslation('materials')}</td>
+						<td>{$translator->gt('materials')}</td>
 						<td>
-							<a href="#" id="addMaterialRow">{$translator->getTranslation('addMaterialSelect')}</a>
+							<a href="#" id="addMaterialRow">{$translator->gt('addMaterialSelect')}</a>
 							<table id="materialSelect" class="collapse" style="display: none;">
 								<thead>
 									<tr>
-										<td class="material">{$translator->getTranslation('material')}</td>
-										<td class="percentage">{$translator->getTranslation('percentage')}</td>
+										<td class="material">{$translator->gt('material')}</td>
+										<td class="percentage">{$translator->gt('percentage')}</td>
 										<td></td>
 									</tr>
 								</thead>
@@ -93,13 +93,13 @@
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('techniques')}</td>
+						<td>{$translator->gt('techniques')}</td>
 						<td>
-							<a href="#" id="addTechniqueRow">{$translator->getTranslation('addTechniqueSelect')}</a>
+							<a href="#" id="addTechniqueRow">{$translator->gt('addTechniqueSelect')}</a>
 							<table id="techniqueSelect" class="collapse" style="display: none;">
 								<thead>
 									<tr>
-										<td>{$translator->getTranslation('technique')}</td>
+										<td>{$translator->gt('technique')}</td>
 										<td></td>
 									</tr>
 								</thead>
@@ -109,32 +109,32 @@
 						</td>
 					</tr>
 					<tr class="odd">
-						<td>{$translator->getTranslation('upgradeHitPoints')}</td>
+						<td>{$translator->gt('upgradeHitPoints')}</td>
 						<td>
 							<input name="upgradeHitPoints" type="number" min="0" max="3" />
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('upgradeBreakFactor')}</td>
+						<td>{$translator->gt('upgradeBreakFactor')}</td>
 						<td>
 							<input name="upgradeBreakFactor" type="number" min="-7" max="0" />
 						</td>
 					</tr>
 					<tr class="odd">
-						<td>{$translator->getTranslation('upgradeInitiative')}</td>
+						<td>{$translator->gt('upgradeInitiative')}</td>
 						<td>
 							<input name="upgradeInitiative" type="number" min="0" max="1" />
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('upgradeWeaponModificator')}</td>
+						<td>{$translator->gt('upgradeWeaponModificator')}</td>
 						<td>
 							<input class="upgradeWeaponModificator" name="upgradeWeaponModificator[attack]" type="number" min="0" max="1" /> / <input class="upgradeWeaponModificator" name="upgradeWeaponModificator[parade]" type="number" type="number" min="0" max="1" />
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2" class="buttonArea">
-							<input type="submit" value="{$translator->getTranslation('addBlueprint')}" />
+							<input type="submit" value="{$translator->gt('addBlueprint')}" />
 						</td>
 					</tr>
 				</tbody>

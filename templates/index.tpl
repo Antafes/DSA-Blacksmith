@@ -1,17 +1,17 @@
 {include file="header.tpl"}
 <div id="index">
 	<fieldset class="box">
-		<legend>{$translator->getTranslation('runningCraftings')}</legend>
+		<legend>{$translator->gt('runningCraftings')}</legend>
 		<table class="collapse">
 			<thead>
 				<tr>
-					<th class="craftingName">{$translator->getTranslation('name')}</th>
-					<th class="craftingCharacter">{$translator->getTranslation('character')}</th>
-					<th class="craftingBlueprint">{$translator->getTranslation('blueprint')}</th>
-					<th class="craftingHandicap">{$translator->getTranslation('proof')}</th>
-					<th class="craftingGainedTalentPoints">{$translator->getTranslation('gainedTalentPoints')}</th>
-					<th class="craftingTotalTalentPoints">{$translator->getTranslation('totalTalentPoints')}</th>
-					<th class="craftingEstimatedFinishingTime">{$translator->getTranslation('estimatedFinishingTime')}</th>
+					<th class="craftingName">{$translator->gt('name')}</th>
+					<th class="craftingCharacter">{$translator->gt('character')}</th>
+					<th class="craftingBlueprint">{$translator->gt('blueprint')}</th>
+					<th class="craftingHandicap">{$translator->gt('proof')}</th>
+					<th class="craftingGainedTalentPoints">{$translator->gt('gainedTalentPoints')}</th>
+					<th class="craftingTotalTalentPoints">{$translator->gt('totalTalentPoints')}</th>
+					<th class="craftingEstimatedFinishingTime">{$translator->gt('estimatedFinishingTime')}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,7 +37,7 @@
 					</tr>
 				{foreachelse}
 					<tr>
-						<td colspan="7">{$translator->getTranslation('noCraftingRunning')}</td>
+						<td colspan="7">{$translator->gt('noCraftingRunning')}</td>
 					</tr>
 				{/foreach}
 			</tbody>

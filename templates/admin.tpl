@@ -3,10 +3,10 @@
 	<table class="collapse">
 		<thead>
 			<tr>
-				<th>{$translator->getTranslation('userId')}</th>
-				<th>{$translator->getTranslation('username')}</th>
-				<th>{$translator->getTranslation('status')}</th>
-				<th>{$translator->getTranslation('admin')}</th>
+				<th>{$translator->gt('userId')}</th>
+				<th>{$translator->gt('username')}</th>
+				<th>{$translator->gt('status')}</th>
+				<th>{$translator->gt('admin')}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -16,21 +16,21 @@
 					<td>{$user->getName()}</td>
 					<td class="centered">
 						{if $user->getStatus()}
-							{$translator->getTranslation('active')}
+							{$translator->gt('active')}
 						{else}
 							<a href="index.php?page=Admin&amp;activate={$user->getUserId()}">
-								{$translator->getTranslation('activate')}
+								{$translator->gt('activate')}
 							</a>
 						{/if}
 					</td>
 					<td class="centered">
 						{if $user->getAdmin() && $user->getUserId() != $smarty.session.userId}
 							<a href="index.php?page=Admin&amp;removeAdmin={$user->getUserId()}">
-								{$translator->getTranslation('removeAdmin')}
+								{$translator->gt('removeAdmin')}
 							</a>
 						{elseif !$user->getAdmin() && $user->getStatus()}
 							<a href="index.php?page=Admin&amp;setAdmin={$user->getUserId()}">
-								{$translator->getTranslation('setAdmin')}
+								{$translator->gt('setAdmin')}
 							</a>
 						{/if}
 					</td>

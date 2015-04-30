@@ -1,20 +1,20 @@
 {include file="header.tpl"}
 <div id="craftings">
 	<div class="submenu">
-		<a class="button" id="addCrafting" href="#">{$translator->getTranslation('addCrafting')}</a>
+		<a class="button" id="addCrafting" href="#">{$translator->gt('addCrafting')}</a>
 		<div class="clear"></div>
 	</div>
 	<table class="collapse">
 		<thead>
 			<tr>
-				<th class="craftingName">{$translator->getTranslation('name')}</th>
-				<th class="craftingCharacter">{$translator->getTranslation('character')}</th>
-				<th class="craftingBlueprint">{$translator->getTranslation('blueprint')}</th>
-				<th class="item">{$translator->getTranslation('item')}</th>
-				<th class="craftingHandicap">{$translator->getTranslation('proof')}</th>
-				<th class="craftingGainedTalentPoints">{$translator->getTranslation('gainedTalentPoints')}</th>
-				<th class="craftingTotalTalentPoints">{$translator->getTranslation('totalTalentPoints')}</th>
-				<th class="craftingEstimatedFinishingTime">{$translator->getTranslation('estimatedFinishingTime')}</th>
+				<th class="craftingName">{$translator->gt('name')}</th>
+				<th class="craftingCharacter">{$translator->gt('character')}</th>
+				<th class="craftingBlueprint">{$translator->gt('blueprint')}</th>
+				<th class="item">{$translator->gt('item')}</th>
+				<th class="craftingHandicap">{$translator->gt('proof')}</th>
+				<th class="craftingGainedTalentPoints">{$translator->gt('gainedTalentPoints')}</th>
+				<th class="craftingTotalTalentPoints">{$translator->gt('totalTalentPoints')}</th>
+				<th class="craftingEstimatedFinishingTime">{$translator->gt('estimatedFinishingTime')}</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -46,12 +46,12 @@
 			{/foreach}
 		</tbody>
 	</table>
-	<div id="addCraftingPopup" style="display: none;" data-title="{$translator->getTranslation('addCrafting')}">
+	<div id="addCraftingPopup" style="display: none;" data-title="{$translator->gt('addCrafting')}">
 		<form method="post" action="ajax/addCrafting.php">
 			<table class="addItemTypes collapse">
 				<tbody>
 					<tr class="odd">
-						<td>{$translator->getTranslation('character')}</td>
+						<td>{$translator->gt('character')}</td>
 						<td>
 							<select name="characterId">
 								{foreach from=$characters->getAsArray() item='character'}
@@ -61,7 +61,7 @@
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('blueprint')}</td>
+						<td>{$translator->gt('blueprint')}</td>
 						<td>
 							<select name="blueprintId">
 								{foreach from=$blueprints->getAsArray() item='blueprint'}
@@ -71,38 +71,38 @@
 						</td>
 					</tr>
 					<tr class="odd">
-						<td>{$translator->getTranslation('name')}</td>
+						<td>{$translator->gt('name')}</td>
 						<td>
 							<input type="text" name="name" />
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('notes')}</td>
+						<td>{$translator->gt('notes')}</td>
 						<td>
 							<textarea name="notes" cols="60" rows="10"></textarea>
 						</td>
 					</tr>
 					<tr class="odd">
-						<td>{$translator->getTranslation('toolsProofModificator')}</td>
+						<td>{$translator->gt('toolsProofModificator')}</td>
 						<td>
 							<select name="toolsProofModificator">
-								<option value="-7">{$translator->getTranslation('improvisationalTools')}</option>
-								<option value="-3">{$translator->getTranslation('missingSpecialTools')}</option>
-								<option value="0" selected="selected">{$translator->getTranslation('normalTools')}</option>
-								<option value="3">{$translator->getTranslation('highQualityTools')}</option>
-								<option value="7">{$translator->getTranslation('exceptionallyHighQualityTools')}</option>
+								<option value="-7">{$translator->gt('improvisationalTools')}</option>
+								<option value="-3">{$translator->gt('missingSpecialTools')}</option>
+								<option value="0" selected="selected">{$translator->gt('normalTools')}</option>
+								<option value="3">{$translator->gt('highQualityTools')}</option>
+								<option value="7">{$translator->gt('exceptionallyHighQualityTools')}</option>
 							</select>
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('planProofModificator')}</td>
+						<td>{$translator->gt('planProofModificator')}</td>
 						<td>
-							<input type="number" name="planProofModificator" min="-7" max="7" title="{$translator->getTranslation('easing')}" />
+							<input type="number" name="planProofModificator" min="-7" max="7" title="{$translator->gt('easing')}" />
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2" class="buttonArea">
-							<input type="submit" value="{$translator->getTranslation('addCrafting')}" />
+							<input type="submit" value="{$translator->gt('addCrafting')}" />
 						</td>
 					</tr>
 				</tbody>

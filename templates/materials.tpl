@@ -1,24 +1,24 @@
 {include file="header.tpl"}
 <div class="materials">
 	<div class="submenu">
-		<a class="button" id="addMaterial" href="#">{$translator->getTranslation('addMaterial')}</a>
+		<a class="button" id="addMaterial" href="#">{$translator->gt('addMaterial')}</a>
 		<div class="clear"></div>
 	</div>
 	<table class="collapse">
 		<thead>
 			<tr>
-				<th class="material">{$translator->getTranslation('material')}</th>
-				<th class="materialType">{$translator->getTranslation('materialType')}</th>
-				<th class="percentage">{$translator->getTranslation('percentage')}</th>
-				<th class="timeFactor">{$translator->getTranslation('timeFactor')}</th>
-				<th class="priceFactor">{$translator->getTranslation('priceFactor')}</th>
-				<th class="priceWeight">{$translator->getTranslation('priceWeight')}</th>
-				<th class="proof">{$translator->getTranslation('proof')}</th>
-				<th class="breakFactor">{$translator->getTranslation('breakFactor')}</th>
-				<th class="hitPoints">{$translator->getTranslation('hitPoints')}</th>
-				<th class="armor">{$translator->getTranslation('armor')}</th>
-				<th class="weaponModificator">{$translator->getTranslation('weaponModificator')}</th>
-				<th class="additional">{$translator->getTranslation('additional')}</th>
+				<th class="material">{$translator->gt('material')}</th>
+				<th class="materialType">{$translator->gt('materialType')}</th>
+				<th class="percentage">{$translator->gt('percentage')}</th>
+				<th class="timeFactor">{$translator->gt('timeFactor')}</th>
+				<th class="priceFactor">{$translator->gt('priceFactor')}</th>
+				<th class="priceWeight">{$translator->gt('priceWeight')}</th>
+				<th class="proof">{$translator->gt('proof')}</th>
+				<th class="breakFactor">{$translator->gt('breakFactor')}</th>
+				<th class="hitPoints">{$translator->gt('hitPoints')}</th>
+				<th class="armor">{$translator->gt('armor')}</th>
+				<th class="weaponModificator">{$translator->gt('weaponModificator')}</th>
+				<th class="additional">{$translator->gt('additional')}</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -40,7 +40,7 @@
 						<td class="armor">{$materialAsset.armor}</td>
 						<td class="weaponModificator">
 							{foreach $materialAsset.weaponModificator as $modificator}
-								{$modificator.attack} / {$modificator.parade}{if $modificator@index < $modificator@total - 1} {$translator->getTranslation('or')} {/if}
+								{$modificator.attack} / {$modificator.parade}{if $modificator@index < $modificator@total - 1} {$translator->gt('or')} {/if}
 							{foreachelse}
 								-
 							{/foreach}
@@ -85,23 +85,23 @@
 				</tr>
 			{foreachelse}
 				<tr>
-					<td colspan="8">{$translator->getTranslation('noMaterialsFound')}</td>
+					<td colspan="8">{$translator->gt('noMaterialsFound')}</td>
 				</tr>
 			{/foreach}
 		</tbody>
 	</table>
-	<div id="addMaterialPopup" style="display: none;" data-title="{$translator->getTranslation('addMaterial')}">
+	<div id="addMaterialPopup" style="display: none;" data-title="{$translator->gt('addMaterial')}">
 		<form method="post" action="ajax/addMaterial.php">
 			<table class="addMaterial collapse">
 				<tbody>
 					<tr class="odd">
-						<td>{$translator->getTranslation('material')}</td>
+						<td>{$translator->gt('material')}</td>
 						<td>
 							<input type="text" name="name" />
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('materialType')}</td>
+						<td>{$translator->gt('materialType')}</td>
 						<td class="materialType">
 							<select name="materialTypeId">
 								{foreach $materialTypeListing->getList() as $materialType}
@@ -114,7 +114,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td>{$translator->getTranslation('additional')}</td>
+						<td>{$translator->gt('additional')}</td>
 						<td>
 							<textarea name="additional"></textarea>
 						</td>
@@ -122,36 +122,36 @@
 				</tbody>
 			</table>
 			<a href="#" id="addMaterialAssetRow">
-				{$translator->getTranslation('addMaterialAssetRow')}
+				{$translator->gt('addMaterialAssetRow')}
 			</a>
 			<table id="materialAssets" class="addMaterialAsset collapse">
 				<thead>
 					<tr>
-						<td class="percentage">{$translator->getTranslation('percentage')}</td>
-						<td class="timeFactor">{$translator->getTranslation('timeFactor')}</td>
-						<td class="priceFactor">{$translator->getTranslation('priceFactor')}</td>
-						<td class="priceWeight">{$translator->getTranslation('priceWeight')}</td>
-						<td class="proof">{$translator->getTranslation('proof')}</td>
-						<td class="breakFactor">{$translator->getTranslation('breakFactor')}</td>
-						<td class="hitPoints">{$translator->getTranslation('hitPoints')}</td>
-						<td class="armor">{$translator->getTranslation('armor')}</td>
+						<td class="percentage">{$translator->gt('percentage')}</td>
+						<td class="timeFactor">{$translator->gt('timeFactor')}</td>
+						<td class="priceFactor">{$translator->gt('priceFactor')}</td>
+						<td class="priceWeight">{$translator->gt('priceWeight')}</td>
+						<td class="proof">{$translator->gt('proof')}</td>
+						<td class="breakFactor">{$translator->gt('breakFactor')}</td>
+						<td class="hitPoints">{$translator->gt('hitPoints')}</td>
+						<td class="armor">{$translator->gt('armor')}</td>
 						<td class="weaponModificator">
-							{$translator->getTranslation('weaponModificator')}<br />
-							<span class="help" title="{$translator->getTranslation('weaponModificatorHelp')}"></span>
+							{$translator->gt('weaponModificator')}<br />
+							<span class="help" title="{$translator->gt('weaponModificatorHelp')}"></span>
 						</td>
 						<td></td>
 					</tr>
 				</thead>
 				<tbody></tbody>
 			</table>
-			<input type="submit" value="{$translator->getTranslation('addMaterial')}" />
+			<input type="submit" value="{$translator->gt('addMaterial')}" />
 		</form>
 	</div>
-	<div id="addMaterialTypePopup" style="display: none;" data-title="{$translator->getTranslation('addMaterialType')}">
+	<div id="addMaterialTypePopup" style="display: none;" data-title="{$translator->gt('addMaterialType')}">
 		<form method="post" action="ajax/addMaterialType.php">
-			{$translator->getTranslation('materialType')}
+			{$translator->gt('materialType')}
 			<input type="text" name="materialType" /><br />
-			<input type="submit" value="{$translator->getTranslation('addMaterialType')}" />
+			<input type="submit" value="{$translator->gt('addMaterialType')}" />
 		</form>
 	</div>
 	<script type="text/javascript">

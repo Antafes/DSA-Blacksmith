@@ -37,7 +37,7 @@ class Mail
 
 		$mailer = new \PHPMailer(true);
 		$mailer->set('CharSet', $GLOBALS['config']['charset']);
-		$mailer->setFrom($GLOBALS['mail']['sender'], $translator->getTranslation('title'));
+		$mailer->setFrom($GLOBALS['mail']['sender'], $translator->gt('title'));
 		$mailer->addAddress($recipient[0], $recipient[1]);
 		$mailer->set('Subject', $subject);
 		$mailer->set('AltBody', strip_tags($message));

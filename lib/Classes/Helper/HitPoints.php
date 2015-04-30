@@ -35,12 +35,12 @@ class HitPoints
 	{
 		$translator = \SmartWork\Translator::getInstance();
 		$hitPointsString = $hitPointsArray['hitPointsDice'];
-		$hitPointsString .=$translator->getTranslation($hitPointsArray['hitPointsDiceType']);
+		$hitPointsString .=$translator->gt($hitPointsArray['hitPointsDiceType']);
 		$hitPointsString .= sprintf('%+d', $hitPointsArray['hitPoints']);
 
 		if ($hitPointsArray['damageType'] == 'stamina')
 		{
-			$hitPointsString .= ' ' . $translator->getTranslation('(S)');
+			$hitPointsString .= ' ' . $translator->gt('(S)');
 		}
 
 		return $hitPointsString;

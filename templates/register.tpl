@@ -9,25 +9,25 @@
 	<form method="post" action="index.php?page=Register">
 		<table>
 			<tr>
-				<td>{$translator->getTranslation('username')}:</td>
+				<td>{$translator->gt('username')}:</td>
 				<td>
 					<input type="text" name="username" />
 				</td>
 			</tr>
 			<tr>
-				<td>{$translator->getTranslation('password')}:</td>
+				<td>{$translator->gt('password')}:</td>
 				<td>
 					<input type="password" name="password" />
 				</td>
 			</tr>
 			<tr>
-				<td>{$translator->getTranslation('repeatPassword')}:</td>
+				<td>{$translator->gt('repeatPassword')}:</td>
 				<td>
 					<input type="password" name="repeatPassword" />
 				</td>
 			</tr>
 			<tr>
-				<td>{$translator->getTranslation('email')}:</td>
+				<td>{$translator->gt('email')}:</td>
 				<td>
 					<input type="text" name="email" />
 				</td>
@@ -35,7 +35,7 @@
 			<tr>
 				<td colspan="2">
 					{add_form_salt formName="register"}
-					<input type="submit" value="{$translator->getTranslation('register')}" />
+					<input type="submit" value="{$translator->gt('register')}" />
 				</td>
 			</tr>
 		</table>

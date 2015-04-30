@@ -1,15 +1,15 @@
 {include file="header.tpl"}
 <div class="itemTypes">
 	<div class="submenu">
-		<a class="button" id="addItemType" href="#">{$translator->getTranslation('addItemType')}</a>
+		<a class="button" id="addItemType" href="#">{$translator->gt('addItemType')}</a>
 		<div class="clear"></div>
 	</div>
 	<table class="collapse">
 		<thead>
 			<tr>
-				<th class="itemType">{$translator->getTranslation('itemType')}</th>
-				<th class="talentPoints">{$translator->getTranslation('talentPoints')}</th>
-				<th class="time">{$translator->getTranslation('time')}</th>
+				<th class="itemType">{$translator->gt('itemType')}</th>
+				<th class="talentPoints">{$translator->gt('talentPoints')}</th>
+				<th class="time">{$translator->gt('time')}</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -18,43 +18,43 @@
 				<tr class="{cycle values="odd,even"}">
 					<td class="itemType">{$itemType->getName()}</td>
 					<td class="talentPoints">{$itemType->getTalentPoints()}</td>
-					<td class="time">{$itemType->getTime()|number_format:2:',':'.'} {$translator->getTranslation('tu')}</td>
+					<td class="time">{$itemType->getTime()|number_format:2:',':'.'} {$translator->gt('tu')}</td>
 					<td>
 						<a href="index.php?page=ItemTypes&remove={$itemType->getItemTypeId()}">X</a>
 					</td>
 				</tr>
 			{foreachelse}
 				<tr>
-					<td colspan="4">{$translator->getTranslation('noItemTypesFound')}</td>
+					<td colspan="4">{$translator->gt('noItemTypesFound')}</td>
 				</tr>
 			{/foreach}
 		</tbody>
 	</table>
-	<div id="addItemTypePopup" style="display: none;" data-title="{$translator->getTranslation('addItemType')}">
+	<div id="addItemTypePopup" style="display: none;" data-title="{$translator->gt('addItemType')}">
 		<form method="post" action="ajax/addItemType.php">
 			<table class="addItemTypes collapse">
 				<tbody>
 					<tr class="odd">
-						<td>{$translator->getTranslation('itemType')}</td>
+						<td>{$translator->gt('itemType')}</td>
 						<td>
 							<input type="text" name="name" />
 						</td>
 					</tr>
 					<tr class="even">
-						<td>{$translator->getTranslation('talentPoints')}</td>
+						<td>{$translator->gt('talentPoints')}</td>
 						<td>
 							<input type="number" step="0.01" name="talentPoints" />
 						</td>
 					</tr>
 					<tr class="odd">
-						<td>{$translator->getTranslation('time')}</td>
+						<td>{$translator->gt('time')}</td>
 						<td>
 							<input type="number" step="0.01" name="time" />
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2" class="buttonArea">
-							<input type="submit" value="{$translator->getTranslation('addItemType')}" />
+							<input type="submit" value="{$translator->gt('addItemType')}" />
 						</td>
 					</tr>
 				</tbody>

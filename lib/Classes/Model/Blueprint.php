@@ -481,7 +481,7 @@ class Blueprint extends \SmartWork\Model
 			if ($technique->getUnsellable())
 			{
 				$translator = \SmartWork\Translator::getInstance();
-				return $translator->getTranslation('unsellable');
+				return $translator->gt('unsellable');
 			}
 
 			if ($technique->getPriceFactor() >= 1)
@@ -609,7 +609,7 @@ class Blueprint extends \SmartWork\Model
 
 		$hitPoints = $this->getEndHitPoints();
 		$hitPointsString = $hitPoints['dices']
-			.$translator->getTranslation($hitPoints['diceType']);
+			.$translator->gt($hitPoints['diceType']);
 		$initiative += $this->getUpgradeInitiative();
 		$breakFactor += $this->getUpgradeBreakFactor();
 		$damageType = 'damage';
@@ -633,7 +633,7 @@ class Blueprint extends \SmartWork\Model
 			'price' => $this->getEndPrice(),
 			'weaponModificator' => \Helper\WeaponModificator::format($weaponModificator),
 			'notes' => $this->item->getNotes(),
-			'time' => $this->getTimeUnits().' '.$translator->getTranslation('tu'),
+			'time' => $this->getTimeUnits().' '.$translator->gt('tu'),
 		);
 	}
 

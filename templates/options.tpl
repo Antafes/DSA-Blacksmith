@@ -10,13 +10,13 @@
 		<table>
 			<tbody>
 				<tr>
-					<td>{$translator->getTranslation('username')}:</td>
+					<td>{$translator->gt('username')}:</td>
 					<td>
 						<input type="text" name="username" value="{$user->getName()}" />
 					</td>
 				</tr>
 				<tr>
-					<td>{$translator->getTranslation('email')}:</td>
+					<td>{$translator->gt('email')}:</td>
 					<td>
 						<input type="text" name="email" value="{$user->getEmail()}" />
 					</td>
@@ -24,7 +24,7 @@
 				<tr>
 					<td colspan="2">
 						{add_form_salt formName="generalOptions"}
-						<input type="submit" value="{$translator->getTranslation('change')}"
+						<input type="submit" value="{$translator->gt('change')}"
 					</td>
 				</tr>
 			</tbody>
@@ -40,13 +40,13 @@
 		<table>
 			<tbody>
 				<tr>
-					<td>{$translator->getTranslation('password')}:</td>
+					<td>{$translator->gt('password')}:</td>
 					<td>
 						<input type="password" name="password" />
 					</td>
 				</tr>
 				<tr>
-					<td>{$translator->getTranslation('repeatPassword')}:</td>
+					<td>{$translator->gt('repeatPassword')}:</td>
 					<td>
 						<input type="password" name="repeatPassword" />
 					</td>
@@ -54,7 +54,7 @@
 				<tr>
 					<td colspan="2">
 						{add_form_salt formName="passwordOptions"}
-						<input type="submit" value="{$translator->getTranslation('change')}" />
+						<input type="submit" value="{$translator->gt('change')}" />
 					</td>
 				</tr>
 			</tbody>

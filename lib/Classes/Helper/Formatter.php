@@ -31,11 +31,11 @@ class Formatter
 
 		if ($withSeconds)
 		{
-			return date($translator->getTranslation('timeFormat'), $time);
+			return date($translator->gt('timeFormat'), $time);
 		}
 		else
 		{
-			return date($translator->getTranslation('timeFormatShort'), $time);
+			return date($translator->gt('timeFormatShort'), $time);
 		}
 	}
 }

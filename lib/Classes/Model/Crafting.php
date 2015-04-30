@@ -365,7 +365,7 @@ class Crafting extends \SmartWork\Model
 		}
 		else
 		{
-			return round($time / (8 * 3600)).' '.  \SmartWork\Translator::getInstance()->getTranslation('days');
+			return round($time / (8 * 3600)).' '.  \SmartWork\Translator::getInstance()->gt('days');
 		}
 	}
 
