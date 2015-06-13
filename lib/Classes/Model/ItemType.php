@@ -122,7 +122,7 @@ class ItemType extends \SmartWork\Model
 	}
 
 	/**
-	 * Get the general type. May be on of: weapon, shield, armor, projectile
+	 * Get the general type. May be on of: meleeWeapon, rangedWeapon, shield, armor, projectile
 	 *
 	 * @return string
 	 */
@@ -176,6 +176,7 @@ class ItemType extends \SmartWork\Model
 		return array(
 			'itemTypeId' => $this->getItemTypeId(),
 			'name' => $this->getName(),
+			'type' => $this->getType(),
 			'talentPoints' => $this->getTalentPoints(),
 			'time' => $this->getTime(),
 		);

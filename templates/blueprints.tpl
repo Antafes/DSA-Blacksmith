@@ -51,7 +51,7 @@
 						<td>
 							<select id="itemSelect" name="itemId">
 								{foreach $itemListing->getList() as $item}
-									<option value="{$item->getItemId()}" data-damagetype="{$item->getDamageType()}">{$item->getName()}</option>
+									<option value="{$item->getItemId()}" data-itemtype="{$item->getItemType()}" data-damagetype="{$item->getDamageType()}">{$item->getName()}</option>
 								{/foreach}
 							</select>
 						</td>
@@ -59,9 +59,9 @@
 					<tr class="odd">
 						<td>{$translator->gt('itemType')}</td>
 						<td>
-							<select name="itemTypeId">
+							<select id="itemTypeSelect" name="itemTypeId">
 								{foreach $itemTypeListing->getList() as $itemType}
-									<option value="{$itemType->getItemTypeId()}">{$itemType->getName()}</option>
+									<option value="{$itemType->getItemTypeId()}" data-type="{$itemType->getType()}">{$itemType->getName()}</option>
 								{/foreach}
 							</select>
 						</td>
