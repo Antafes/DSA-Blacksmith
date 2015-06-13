@@ -91,15 +91,12 @@ table.showBlueprint .initiative
 	width: 50px;
 }
 
-table.showBlueprint .weaponModificator,
-table.showBlueprint .forceModificator
+table .weaponModificator
 {
 	width: 75px;
 }
 
 table .additional,
-table .weaponModificator,
-table .forceModificator,
 table .characterName
 {
 	width: 300px;
@@ -290,4 +287,9 @@ table.addMaterialAsset td.percentage input
 .tooltip
 {
 	cursor: help;
+}
+
+table.items
+{
+	margin-bottom: 40px;
 }

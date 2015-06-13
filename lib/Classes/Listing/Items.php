@@ -22,7 +22,7 @@ class Items extends \SmartWork\Listing
 	 *
 	 * @return \self
 	 */
-	public static function loadList()
+	public static function loadList($groupBy = 'itemType')
 	{
 		$sql = '
 			SELECT `itemId`
@@ -41,7 +41,14 @@ class Items extends \SmartWork\Listing
 		$list = array();
 		foreach ($itemIds as $item)
 		{
-			$list[$item['itemId']] = \Model\Item::loadById($item['itemId']);
+			$itemObject = \Model\Item::loadById($item['itemId']);
+
+			if (!is_array($list[$itemObject->getItemType()]))
+			{
+				$list[$itemObject->getItemType()] = array();
+			}
+
+			$list[$itemObject->getItemType()][$item['itemId']] = $itemObject;
 		}
 
 		$obj->setList($list);
@@ -58,6 +65,12 @@ class Items extends \SmartWork\Listing
 	 */
 	public function getById($id)
 	{
-		return $this->list[$id];
+		foreach ($this->list as $items)
+		{
+			if (array_key_exists($id, $items))
+			{
+				return $items[$id];
+			}
+		}
 	}
 }

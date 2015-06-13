@@ -4,58 +4,50 @@
 		<a class="button" id="addItem" href="#">{$translator->gt('addItem')}</a>
 		<div class="clear"></div>
 	</div>
-	<table class="collapse">
-		<thead>
-			<tr>
-				<th class="item">{$translator->gt('item')}</th>
-				<th class="itemType">{$translator->gt('itemType')}</th>
-				<th class="hitPoints">{$translator->gt('hp')}</th>
-				<th class="weight">{$translator->gt('weight')}</th>
-				<th class="breakFactor">{$translator->gt('bf')}</th>
-				<th class="initiative">{$translator->gt('ini')}</th>
-				<th class="price">{$translator->gt('price')}</th>
-				<th class="weaponModificator">{$translator->gt('wm')}</th>
-				<th class="notes">{$translator->gt('notes')}</th>
-				<th class="options"></th>
-			</tr>
-		</thead>
-		<tbody>
-			{foreach $itemsListing->getList() as $item}
-				<tr class="{cycle values="odd,even"}">
-					<td class="item">{$item->getName()}</td>
-					<td class="itemType">{$translator->gt($item->getItemType())}</td>
-					<td class="hitPoints">{$item->getHitPointsString()}</td>
-					<td class="weight">{$item->getWeight()}</td>
-					<td class="breakFactor">{$item->getBreakFactor()}</td>
-					<td class="initiative">{$item->getInitiative()}</td>
-					<td class="price">{$item->getPriceFormatted()}</td>
-					<td class="weaponModificator">{$item->getWeaponModificatorFormatted()}</td>
-					<td class="notes">{$item->getNotes()}</td>
-					<td class="options">
-						<a href="index.php?page=Items&amp;remove={$item->getItemId()}">X</a>
-					</td>
-				</tr>
-			{foreachelse}
+	{foreach $itemsListing->getList() as $itemType => $items}
+		<h3>{$translator->gt($itemType)}</h3>
+		<table class="collapse items">
+			<thead>
 				<tr>
-					<td colspan="5">{$translator->gt('noItemsFound')}</td>
+					{foreach $columsPerItemType[$itemType] as $class => $column}
+						<th class="{$class}">{$translator->gt($column.heading)}</th>
+					{/foreach}
+					<th class="options"></th>
 				</tr>
-			{/foreach}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				{foreach $items as $item}
+					{assign var='itemArray' value=$item->getAsArray()}
+					<tr class="{cycle values="odd,even"}">
+						{foreach $columsPerItemType[$itemType] as $class  => $column}
+							<td class="{$class}">{$itemArray[$column.key]}</td>
+						{/foreach}
+						<td class="options">
+							<a href="index.php?page=Items&amp;remove={$itemArray.itemId}">X</a>
+						</td>
+					</tr>
+				{foreachelse}
+					<tr>
+						<td colspan="5">{$translator->gt('noItemsFound')}</td>
+					</tr>
+				{/foreach}
+			</tbody>
+		</table>
+	{/foreach}
 	<div id="addItemPopup" style="display: none;" data-title="{$translator->gt('addItem')}">
 		<form method="post" action="ajax/addMaterial.php">
 			<table class="addItem collapse">
 				<tbody>
-					<tr class="odd">
+					<tr class="name odd">
 						<td>{$translator->gt('item')}</td>
 						<td>
 							<input type="text" name="name" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="itemType even">
 						<td>{$translator->gt('itemType')}</td>
 						<td>
-							<select class="itemType" name="itemType">
+							<select id="itemTypeSelect" class="itemType" name="itemType">
 								<option value="meleeWeapon">{$translator->gt('meleeWeapon')}</option>
 								<option value="rangedWeapon">{$translator->gt('rangedWeapon')}</option>
 								<option value="shield">{$translator->gt('shield')}</option>
@@ -64,7 +56,7 @@
 							</select>
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="hitPoints">
 						<td>{$translator->gt('hitPoints')}</td>
 						<td>
 							<input class="hitPointsDice" type="number" name="hitPointsDice" />
@@ -75,7 +67,7 @@
 							<input class="hitPoints" type="number" name="hitPoints" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="hitPoints">
 						<td>{$translator->gt('damageType')}</td>
 						<td>
 							<select class="damageType" name="damageType">
@@ -84,25 +76,25 @@
 							</select>
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="weight">
 						<td>{$translator->gt('weight')}</td>
 						<td>
 							<input type="number" name="weight" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="breakFactor">
 						<td>{$translator->gt('breakFactor')}</td>
 						<td>
 							<input type="number" name="breakFactor" />
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="initiative">
 						<td>{$translator->gt('initiative')}</td>
 						<td>
 							<input type="number" name="initiative" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="price">
 						<td>{$translator->gt('price')}</td>
 						<td>
 							<input class="Price" type="number" name="price" />
@@ -113,31 +105,37 @@
 							</select>
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="weaponModificator">
 						<td>{$translator->gt('weaponModificator')}</td>
 						<td>
 							<textarea class="weaponModificator" name="weaponModificator"></textarea>
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="notes">
 						<td>{$translator->gt('twoHanded')}</td>
 						<td>
 							<input type="checkbox" name="twoHanded" value="1" />
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="notes">
 						<td>{$translator->gt('improvisational')}</td>
 						<td>
 							<input type="checkbox" name="improvisational" value="1" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="notes">
 						<td>{$translator->gt('privileged')}</td>
 						<td>
 							<input type="checkbox" name="privileged" value="1" />
 						</td>
 					</tr>
-					<tr>
+					<tr class="physicalStrengthRequirement">
+						<td>{$translator->gt('physicalStrengthRequirement')}</td>
+						<td>
+							<input type="text" name="physicalStrengthRequirement" value="0" />
+						</td>
+					</tr>
+					<tr class="buttons">
 						<td colspan="2" class="buttonArea">
 							<input type="submit" value="{$translator->gt('addItem')}" />
 						</td>
@@ -147,4 +145,7 @@
 		</form>
 	</div>
 </div>
+<script type="text/javascript">
+	window.columsPerItemType = {$columsPerItemType|json_encode};
+</script>
 {include file="footer.tpl"}

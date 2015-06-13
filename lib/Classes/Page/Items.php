@@ -42,8 +42,66 @@ class Items extends \SmartWork\Page
 			$this->removeItem($itemsListing->getById($_GET['remove']));
 		}
 
-		$this->getTemplate()->assign('itemsListing', $itemsListing);
-		$this->getTemplate()->assign('currencyList', $moneyHelper->getCurrencyList());
+		$this->assign('itemsListing', $itemsListing);
+		$this->assign('currencyList', $moneyHelper->getCurrencyList());
+		$this->assign('columsPerItemType', array(
+			'meleeWeapon' => array(
+				'item' => array(
+					'heading' => 'item',
+					'key' => 'name',
+				),
+				'hitPoints' => array(
+					'heading' => 'hp',
+					'key' => 'hitPointsString',
+				),
+				'weight' => array(
+					'heading' => 'weight',
+					'key' => 'weight',
+				),
+				'breakFactor' => array(
+					'heading' => 'bf',
+					'key' => 'breakFactor',
+				),
+				'initiative' => array(
+					'heading' => 'ini',
+					'key' => 'initiative',
+				),
+				'price' => array(
+					'heading' => 'price',
+					'key' => 'priceFormatted',
+				),
+				'weaponModificator' => array(
+					'heading' => 'wm',
+					'key' => 'weaponModificatorFormatted',
+				),
+				'notes' => array(
+					'heading' => 'notes',
+					'key' => 'notes',
+				),
+			),
+			'rangedWeapon' => array(
+				'item' => array(
+					'heading' => 'item',
+					'key' => 'name',
+				),
+				'hitPoints' => array(
+					'heading' => 'hp',
+					'key' => 'hitPointsString',
+				),
+				'weight' => array(
+					'heading' => 'weight',
+					'key' => 'weight',
+				),
+				'physicalStrengthRequirement' => array(
+					'heading' => 'physicalStrengthRequirement',
+					'key' => 'physicalStrengthRequirement',
+				),
+				'price' => array(
+					'heading' => 'price',
+					'key' => 'priceFormatted',
+				),
+			),
+		));
 	}
 
 	/**

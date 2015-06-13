@@ -93,6 +93,13 @@ class Item extends \SmartWork\Model
 	protected $weight;
 
 	/**
+	 * Only used for ranged weapons
+	 *
+	 * @var integer
+	 */
+	protected $physicalStrengthRequirement;
+
+	/**
 	 * Load an item by its id.
 	 *
 	 * @param integer $id
@@ -117,7 +124,8 @@ class Item extends \SmartWork\Model
 				`breakFactor`,
 				`initiative`,
 				`weaponModificator`,
-				`weight`
+				`weight`,
+				`physicalStrengthRequirement`
 			FROM items
 			WHERE `itemId` = '.\sqlval($id).'
 				AND !deleted
@@ -178,7 +186,8 @@ class Item extends \SmartWork\Model
 				breakFactor = '.\sqlval($data['breakFactor']).',
 				initiative = '.\sqlval($data['initiative']).',
 				weaponModificator = '.\sqlval(json_encode($weaponModificator)).',
-				weight = '.\sqlval($data['weight']).'
+				weight = '.\sqlval($data['weight']).',
+				physicalStrengthRequirement = '.\sqlval($data['physicalStrengthRequirement']).'
 		';
 		query($sql);
 
@@ -409,6 +418,17 @@ class Item extends \SmartWork\Model
 	}
 
 	/**
+	 * Get the physical strength requirement.
+	 * Only used for ranged weapons.
+	 *
+	 * @return integer
+	 */
+	public function physicalStrengthRequirement()
+	{
+		return $this->physicalStrengthRequirement;
+	}
+
+	/**
 	 * Remove the item.
 	 *
 	 * @return void
@@ -434,17 +454,22 @@ class Item extends \SmartWork\Model
 			'itemId' => $this->getItemId(),
 			'name' => $this->getName(),
 			'price' => $this->getPrice(),
+			'priceFormatted' => $this->getPriceFormatted(),
 			'twoHanded' => $this->getTwoHanded(),
 			'improvisational' => $this->getImprovisational(),
 			'privileged' => $this->getPrivileged(),
 			'hitPointsDice' => $this->getHitPointsDice(),
 			'hitPointsDiceType' => $this->getHitPointsDiceType(),
 			'hitPoints' => $this->getHitPoints(),
+			'hitPointsString' => $this->getHitPointsString(),
 			'damageType' => $this->getDamageType(),
 			'breakFactor' => $this->getBreakFactor(),
 			'initiative' => $this->getInitiative(),
 			'weaponModificator' => $this->getWeaponModificator(),
+			'weaponModificatorFormatted' => $this->getWeaponModificatorFormatted(),
 			'weight' => $this->getWeight(),
+			'notes' => $this->getNotes(),
+			'physicalStrengthRequirement' => $this->physicalStrengthRequirement(),
 		);
 	}
 
