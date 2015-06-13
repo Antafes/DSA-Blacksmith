@@ -8,6 +8,7 @@
 		<thead>
 			<tr>
 				<th class="itemType">{$translator->gt('itemType')}</th>
+				<th class="type">{$translator->gt('type')}</th>
 				<th class="talentPoints">{$translator->gt('talentPoints')}</th>
 				<th class="time">{$translator->gt('time')}</th>
 				<th class="options"></th>
@@ -17,6 +18,7 @@
 			{foreach $itemTypeListing->getList() as $itemType}
 				<tr class="{cycle values="odd,even"}">
 					<td class="itemType">{$itemType->getName()}</td>
+					<td class="type">{$translator->gt($itemType->getType())}</td>
 					<td class="talentPoints">{$itemType->getTalentPoints()}</td>
 					<td class="time">{$itemType->getTime()|number_format:2:',':'.'} {$translator->gt('tu')}</td>
 					<td class="options">
@@ -41,12 +43,24 @@
 						</td>
 					</tr>
 					<tr class="even">
+						<td>{$translator->gt('type')}</td>
+						<td>
+							<select class="type" name="type">
+								<option value="meleeWeapon">{$translator->gt('meleeWeapon')}</option>
+								<option value="rangedWeapon">{$translator->gt('rangedWeapon')}</option>
+								<option value="shield">{$translator->gt('shield')}</option>
+								<option value="armor">{$translator->gt('armor')}</option>
+								<option value="projectile">{$translator->gt('projectile')}</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="odd">
 						<td>{$translator->gt('talentPoints')}</td>
 						<td>
 							<input type="number" step="0.01" name="talentPoints" />
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="even">
 						<td>{$translator->gt('time')}</td>
 						<td>
 							<input type="number" step="0.01" name="time" />

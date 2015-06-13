@@ -8,6 +8,7 @@
 		<thead>
 			<tr>
 				<th class="item">{$translator->gt('item')}</th>
+				<th class="itemType">{$translator->gt('itemType')}</th>
 				<th class="hitPoints">{$translator->gt('hp')}</th>
 				<th class="weight">{$translator->gt('weight')}</th>
 				<th class="breakFactor">{$translator->gt('bf')}</th>
@@ -22,6 +23,7 @@
 			{foreach $itemsListing->getList() as $item}
 				<tr class="{cycle values="odd,even"}">
 					<td class="item">{$item->getName()}</td>
+					<td class="itemType">{$translator->gt($item->getItemType())}</td>
 					<td class="hitPoints">{$item->getHitPointsString()}</td>
 					<td class="weight">{$item->getWeight()}</td>
 					<td class="breakFactor">{$item->getBreakFactor()}</td>
@@ -51,6 +53,18 @@
 						</td>
 					</tr>
 					<tr class="even">
+						<td>{$translator->gt('itemType')}</td>
+						<td>
+							<select class="itemType" name="itemType">
+								<option value="meleeWeapon">{$translator->gt('meleeWeapon')}</option>
+								<option value="rangedWeapon">{$translator->gt('rangedWeapon')}</option>
+								<option value="shield">{$translator->gt('shield')}</option>
+								<option value="armor">{$translator->gt('armor')}</option>
+								<option value="projectile">{$translator->gt('projectile')}</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="odd">
 						<td>{$translator->gt('hitPoints')}</td>
 						<td>
 							<input class="hitPointsDice" type="number" name="hitPointsDice" />
@@ -61,7 +75,7 @@
 							<input class="hitPoints" type="number" name="hitPoints" />
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="even">
 						<td>{$translator->gt('damageType')}</td>
 						<td>
 							<select class="damageType" name="damageType">
@@ -70,25 +84,25 @@
 							</select>
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="odd">
 						<td>{$translator->gt('weight')}</td>
 						<td>
 							<input type="number" name="weight" />
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="even">
 						<td>{$translator->gt('breakFactor')}</td>
 						<td>
 							<input type="number" name="breakFactor" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="odd">
 						<td>{$translator->gt('initiative')}</td>
 						<td>
 							<input type="number" name="initiative" />
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="even">
 						<td>{$translator->gt('price')}</td>
 						<td>
 							<input class="Price" type="number" name="price" />
@@ -99,25 +113,25 @@
 							</select>
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="odd">
 						<td>{$translator->gt('weaponModificator')}</td>
 						<td>
 							<textarea class="weaponModificator" name="weaponModificator"></textarea>
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="even">
 						<td>{$translator->gt('twoHanded')}</td>
 						<td>
 							<input type="checkbox" name="twoHanded" value="1" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="odd">
 						<td>{$translator->gt('improvisational')}</td>
 						<td>
 							<input type="checkbox" name="improvisational" value="1" />
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="even">
 						<td>{$translator->gt('privileged')}</td>
 						<td>
 							<input type="checkbox" name="privileged" value="1" />

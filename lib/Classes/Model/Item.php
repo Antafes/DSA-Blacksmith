@@ -28,6 +28,11 @@ class Item extends \SmartWork\Model
 	protected $name;
 
 	/**
+	 * @var string
+	 */
+	protected $itemType;
+
+	/**
 	 * @var integer
 	 */
 	protected $price;
@@ -100,6 +105,7 @@ class Item extends \SmartWork\Model
 			SELECT
 				`itemId`,
 				`name`,
+				`itemType`,
 				`price`,
 				`twoHanded`,
 				`improvisational`,
@@ -160,6 +166,7 @@ class Item extends \SmartWork\Model
 		$sql = '
 			INSERT INTO items
 			SET name = '.\sqlval($data['name']).',
+				itemType = '.\sqlval($data['itemType']).',
 				price = '.\sqlval($price).',
 				twoHanded = '.\sqlval($data['twoHanded']).',
 				improvisational = '.\sqlval($data['improvisational']).',
@@ -218,6 +225,21 @@ class Item extends \SmartWork\Model
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * Get the items type. May be one of the following:
+	 * - meleeWeapon
+	 * - rangedWeapon
+	 * - shield
+	 * - armor
+	 * - projectile
+	 *
+	 * @return string
+	 */
+	public function getItemType()
+	{
+		return $this->itemType;
 	}
 
 	/**

@@ -92,6 +92,7 @@ class ItemType extends \SmartWork\Model
 		$sql = '
 			INSERT INTO itemTypes
 			SET name = '.\sqlval($data['name']).',
+				type = '.\sqlval($data['type']).',
 				talentPoints = '.\sqlval($data['talentPoints']).',
 				time = '.\sqlval($data['time']).'
 		';

@@ -3,7 +3,7 @@
 $DB_MIGRATION = array(
 
 	'description' => function () {
-		return '';
+		return 'talent selection for blueprints';
 	},
 
 	'up' => function ($migration_metadata) {
