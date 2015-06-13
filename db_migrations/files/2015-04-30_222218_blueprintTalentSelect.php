@@ -23,14 +23,14 @@ $DB_MIGRATION = array(
 		$results[] = query_raw('
 			CREATE TABLE `craftingTalentPoints` (
 				`craftingId` INT(10) UNSIGNED NOT NULL,
-				`materialid` INT(10) UNSIGNED NOT NULL,
+				`materialId` INT(10) UNSIGNED NOT NULL,
 				`blueprintId` INT(10) UNSIGNED NOT NULL,
 				`gainedTalentPoints` INT(10) UNSIGNED NOT NULL,
 				`deleted` TINYINT(1) NOT NULL,
 				INDEX `craftingsToCraftingTalentPoints` (`craftingId`),
-				INDEX `materialsToCraftingTalentPoints` (`materialid`, `blueprintId`),
+				INDEX `materialsToCraftingTalentPoints` (`materialId`, `blueprintId`),
 				CONSTRAINT `craftingsToCraftingTalentPoints` FOREIGN KEY (`craftingId`) REFERENCES `craftings` (`craftingId`) ON UPDATE CASCADE ON DELETE CASCADE,
-				CONSTRAINT `materialsToCraftingTalentPoints` FOREIGN KEY (`materialid`, `blueprintId`) REFERENCES `materialsToBlueprints` (`materialId`, `blueprintId`) ON UPDATE CASCADE ON DELETE CASCADE
+				CONSTRAINT `materialsToCraftingTalentPoints` FOREIGN KEY (`materialId`, `blueprintId`) REFERENCES `materialsToBlueprints` (`materialId`, `blueprintId`) ON UPDATE CASCADE ON DELETE CASCADE
 			)
 			COLLATE="utf8_bin"
 			ENGINE=InnoDB

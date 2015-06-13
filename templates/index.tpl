@@ -23,12 +23,12 @@
 						<td class="craftingCharacter">{$crafting.character->getName()}</td>
 						<td class="craftingBlueprint">{$crafting.blueprint->getName()}</td>
 						<td class="craftingHandicap">{$crafting.handicap}</td>
-						<td class="craftingGainedTalentPoints">
-							<a href="#" class="addTalentPoints" data-id="{$crafting.craftingId}">{$crafting.gainedTalentPoints}</a>
+						<td class="craftingGainedTalentPoints" title="{$crafting.gainedTalentPointsInfo}">
+							<a href="#" class="addTalentPoints" data-id="{$crafting.craftingId}" data-talents="{$crafting.talents|json_encode|escape}">{$crafting.totalGainedTalentPoints}</a>
 						</td>
-						<td class="craftingTotalTalentPoints">
-							{if $crafting.gainedTalentPoints > 0}
-								{$crafting.totalTalentPoints - $crafting.gainedTalentPoints} ({$crafting.totalTalentPoints})
+						<td class="craftingTotalTalentPoints" title="{$crafting.talentPointsInfo}">
+							{if $crafting.totalGainedTalentPoints > 0}
+								{$crafting.totalTalentPointsInfo}
 							{else}
 								{$crafting.totalTalentPoints}
 							{/if}

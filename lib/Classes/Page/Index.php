@@ -34,7 +34,16 @@ class Index extends \SmartWork\Page
 	{
 		$this->getTemplate()->loadJs('jquery.blueprint');
 		$this->getTemplate()->loadJs('showCrafting');
-		$this->getTemplate()->loadJs('addTalentPoints');
+		$this->getTemplate()->loadJs('jquery.addTalentPoints');
+		$this->getTemplate()->loadJsReadyScript('
+			$(document).tooltip({
+				content: function () {
+					$(this).addClass("tooltip");
+					return $(this).attr("title").replace(/(?:\r\n|\r|\n)/g, "<br />");
+				}
+			});
+			$(".addTalentPoints").addTalentPoints();
+		');
 		$craftingsList = \Listing\Craftings::loadList(true);
 
 		$this->getTemplate()->assign('craftings', $craftingsList);
