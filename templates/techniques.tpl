@@ -13,7 +13,7 @@
 				<th class="proof">{$translator->gt('proof')}</th>
 				<th class="breakFactor">{$translator->gt('breakFactor')}</th>
 				<th class="hitPoints">{$translator->gt('hitPoints')}</th>
-				<th></th>
+				<th class="options"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -25,7 +25,7 @@
 					<td class="proof">{$technique->getProof()}</td>
 					<td class="breakFactor">{$technique->getBreakFactor()}</td>
 					<td class="hitPoints">{$technique->getHitPoints()}</td>
-					<td>
+					<td class="options">
 						<a href="index.php?page=Techniques&amp;remove={$technique->getTechniqueId()}">X</a>
 					</td>
 				</tr>

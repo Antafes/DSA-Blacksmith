@@ -176,6 +176,7 @@ class Blueprint extends \SmartWork\Model
 
 		foreach ($data['material'] as $key => $material)
 		{
+			$materialAssetId = false;
 			$sql = '
 				SELECT
 					`materialAssetId`,
@@ -206,7 +207,8 @@ class Blueprint extends \SmartWork\Model
 				SET materialId = '.\sqlval($material).',
 					blueprintId = '.\sqlval($blueprintId).',
 					materialAssetId = '.\sqlval($materialAssetId).',
-					percentage = '.\sqlval($data['percentage'][$key]).'
+					percentage = '.\sqlval($data['percentage'][$key]).',
+					talent = '.\sqlval($data['talent'][$key]).'
 			';
 			query($sql);
 		}
@@ -264,7 +266,8 @@ class Blueprint extends \SmartWork\Model
 			SELECT
 				`materialId`,
 				`materialAssetId`,
-				percentage
+				percentage,
+				talent
 			FROM materialsToBlueprints
 			WHERE `blueprintId` = '.\sqlval($this->blueprintId).'
 				AND !deleted
@@ -278,6 +281,7 @@ class Blueprint extends \SmartWork\Model
 				'material' => \Model\Material::loadById($material['materialId']),
 				'materialAsset' => \Model\MaterialAsset::loadById($material['materialAssetId']),
 				'percentage' => intval($material['percentage']),
+				'talent' => $material['talent'],
 			);
 		}
 
@@ -413,6 +417,17 @@ class Blueprint extends \SmartWork\Model
 
 	/**
 	 * Get the material list.
+	 *
+	 * array(
+	 *     array(
+	 *         'material' => \Model\Material,
+	 *         'materialAsset' => \Model\MaterialAsset,
+	 *         'percentage' => 100,
+	 *         'talent' => 'blacksmith', // may be one of 'bowMaking', 'precisionMechanics',
+	 *                                      'blacksmith', 'woodworking', 'leatherworking',
+	 *                                      'tailoring'
+	 *     )
+	 * )
 	 *
 	 * @return array
 	 */

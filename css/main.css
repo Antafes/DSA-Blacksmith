@@ -19,6 +19,16 @@ a.button:hover
 	font-size: 11px;
 }
 
+table > tbody a
+{
+	text-decoration: underline;
+}
+
+table > tbody .options a
+{
+	text-decoration: none;
+}
+
 table > thead
 {
 	font-weight: bold;
@@ -37,7 +47,8 @@ table > thead > tr > td
 	text-align: center;
 }
 
-table > tbody > tr.done
+table > tbody > tr.done,
+table > tbody > tr.done a
 {
 	color: #009933;
 }
@@ -273,5 +284,10 @@ table.addMaterialAsset td.percentage input
 
 .no-close .ui-dialog-titlebar-close
 {
-  display: none;
+	display: none;
+}
+
+.tooltip
+{
+	cursor: help;
 }

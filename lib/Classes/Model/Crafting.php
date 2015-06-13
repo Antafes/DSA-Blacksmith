@@ -53,9 +53,18 @@ class Crafting extends \SmartWork\Model
 	protected $planProofModificator;
 
 	/**
+	 * An array of the gained talent points, sorted by talent
+	 *
+	 * @var array
+	 */
+	protected $gainedTalentPoints = array();
+
+	/**
+	 * The amount of done proofs.
+	 *
 	 * @var integer
 	 */
-	protected $gainedTalentPoints;
+	protected $doneProofs;
 
 	/**
 	 * @var boolean
@@ -87,7 +96,7 @@ class Crafting extends \SmartWork\Model
 				`notes`,
 				`toolsProofModificator`,
 				`planProofModificator`,
-				`gainedTalentPoints`,
+				`doneProofs`,
 				`done`
 			FROM craftings
 			WHERE `craftingId` = '.\sqlval($id).'
@@ -96,8 +105,44 @@ class Crafting extends \SmartWork\Model
 		$crafting = \query($sql);
 		$obj = new self();
 		$obj->fill($crafting);
+		$obj->loadTalentPoints();
 
 		return $obj;
+	}
+
+	/**
+	 * Load the gained talent points for each talent used in this crafting.
+	 *
+	 * @return void
+	 */
+	public function loadTalentPoints()
+	{
+		$materialIds = array();
+		foreach ($this->getBlueprint()->getMaterialList() as $material)
+		{
+			$materialIds[] = $material['material']->getMaterialId();
+		}
+
+		$sql = '
+			SELECT
+				SUM(ctp.`gainedTalentPoints`) AS gainedTalentPoints,
+				m2b.talent,
+				m2b.percentage
+			FROM craftingTalentPoints AS ctp
+			JOIN materialsToBlueprints AS m2b ON (
+				ctp.`blueprintId` = m2b.`blueprintId` AND ctp.materialid = m2b.`materialId`
+			)
+			WHERE ctp.`craftingId` = '.\sqlval($this->craftingId).'
+				AND ctp.materialid IN ('.implode(',', \sqlval($materialIds)).')
+				AND ctp.`blueprintId` = '.\sqlval($this->getBlueprint()->getBlueprintId()).'
+			GROUP BY m2b.talent
+		';
+		$data = \query($sql, true);
+
+		foreach ($data as $row)
+		{
+			$this->gainedTalentPoints[$row['talent']] = intval($row['gainedTalentPoints']);
+		}
 	}
 
 	/**
@@ -157,10 +202,29 @@ class Crafting extends \SmartWork\Model
 				name = '.\sqlval($data['name']).',
 				notes = '.\sqlval($data['notes']).',
 				toolsProofModificator = '.\sqlval($data['toolsProofModificator']).',
-				planProofModificator = '.\sqlval($data['planProofModificator']).',
-				gainedTalentPoints = '.\sqlval($data['gainedTalentPoints']).'
+				planProofModificator = '.\sqlval($data['planProofModificator']).'
 		';
-		\query($sql);
+		$craftingId = \query($sql);
+
+		$sql = '
+			SELECT
+				`blueprintId`,
+				`materialId`
+			FROM materialsToBlueprints
+			WHERE `blueprintId` = '.\sqlval($data['blueprintId']).'
+		';
+		$data = \query($sql, true);
+
+		foreach ($data as $row)
+		{
+			$sql = '
+				INSERT INTO craftingTalentPoints
+				SET craftingId = '.\sqlval($craftingId).',
+					materialId = '.\sqlval($row['materialId']).',
+					blueprintId = '.\sqlval($row['blueprintId']).'
+			';
+			\query($sql);
+		}
 
 		return true;
 	}
@@ -180,11 +244,16 @@ class Crafting extends \SmartWork\Model
 			'notes' => $this->notes,
 			'toolsProofModificator' => $this->getToolsProofModificator(),
 			'planProofModificator' => $this->getPlanProofModificator(),
-			'gainedTalentPoints' => $this->gainedTalentPoints,
+			'totalGainedTalentPoints' => $this->getTotalGainedTalentPoints(),
 			'totalTalentPoints' => $this->getTotalTalentPoints(),
+			'totalTalentPointsInfo' => $this->getTotalTalentPointsInfo(),
+			'talentPointsInfo' => $this->getTalentPointsInfo(),
+			'gainedTalentPointsInfo' => $this->getGainedTalentPointsInfo(),
 			'handicap' => $this->getHandicap(),
 			'estimatedFinishingTime' => $this->getEstimatedFinishingTime(),
+			'productionTime' => $this->getProductionTime(),
 			'done' => $this->done,
+			'talents' => $this->getTalents(),
 		);
 	}
 
@@ -256,13 +325,99 @@ class Crafting extends \SmartWork\Model
 	}
 
 	/**
-	 * Get the total talent points which are already gained for this crafting.
+	 * Get an array with the total talent points which are already gained for this crafting.
 	 *
-	 * @return integer
+	 * @return array
 	 */
 	public function getGainedTalentPoints()
 	{
 		return $this->gainedTalentPoints;
+	}
+
+	/**
+	 * Get the gained talent points in total.
+	 *
+	 * @return integer
+	 */
+	public function getTotalGainedTalentPoints()
+	{
+		return array_sum($this->getGainedTalentPoints());
+	}
+
+	/**
+	 * Get an array with the calculated talent points per talent.
+	 *
+	 * @return array
+	 */
+	protected function calculateTalentPoints()
+	{
+		$talentPointList = array();
+		$totalTalentPoints = $this->getTotalTalentPoints();
+		$materialList = $this->getBlueprint()->getMaterialList();
+		$isFirst = true;
+
+		foreach ($this->getGainedTalentPoints() as $talent => $talentPoints)
+		{
+			$currentTalentPoints = 0;
+			foreach ($materialList as $material)
+			{
+				if ($material['talent'] == $talent)
+				{
+					if ($isFirst)
+					{
+						$currentTalentPoints += ceil($totalTalentPoints * ($material['percentage'] / 100));
+						$isFirst = false;
+					}
+					else
+					{
+						$currentTalentPoints += floor($totalTalentPoints * ($material['percentage'] / 100));
+					}
+				}
+			}
+
+			$talentPointList[$talent] = $currentTalentPoints;
+		}
+
+		return $talentPointList;
+	}
+
+	/**
+	 * Get the talent points info.
+	 *
+	 * @return string
+	 */
+	public function getTalentPointsInfo()
+	{
+		$translator = \SmartWork\Translator::getInstance();
+		$calculatedTalentPoints = $this->calculateTalentPoints();
+		$info = '';
+
+		foreach ($this->getGainedTalentPoints() as $talent => $talentPoints)
+		{
+			$info .= $translator->gt($talent).': ';
+			$currentTalentPoints = $calculatedTalentPoints[$talent];
+			$info .= ($currentTalentPoints - $talentPoints).' ('.$currentTalentPoints.')'."\n";
+		}
+
+		return $info;
+	}
+
+	/**
+	 * Get the gained talent points info.
+	 *
+	 * @return string
+	 */
+	public function getGainedTalentPointsInfo()
+	{
+		$translator = \SmartWork\Translator::getInstance();
+		$info = '';
+
+		foreach ($this->getGainedTalentPoints() as $talent => $talentPoints)
+		{
+			$info .= $translator->gt($talent).': '.$talentPoints."\n";
+		}
+
+		return $info;
 	}
 
 	/**
@@ -304,6 +459,28 @@ class Crafting extends \SmartWork\Model
 		return round($baseValue * $modificator);
 	}
 
+	public function getTotalTalentPointsInfo()
+	{
+		$gainedTalentPoints = $this->getGainedTalentPoints();
+		$talentPoints = $this->calculateTalentPoints();
+		$neededTalentPoints = $this->getTotalTalentPoints();
+		$remainingTalentPoints = 0;
+
+		foreach ($talentPoints as $talent => $points)
+		{
+			$currentTalentPoints = $points - $gainedTalentPoints[$talent];
+
+			if ($currentTalentPoints < 0)
+			{
+				$currentTalentPoints = 0;
+			}
+
+			$remainingTalentPoints += $currentTalentPoints;
+		}
+
+		return $remainingTalentPoints.' ('.$neededTalentPoints.')';
+	}
+
 	/**
 	 * Get the proof handicap.
 	 *
@@ -340,16 +517,13 @@ class Crafting extends \SmartWork\Model
 	/**
 	 * Get the estimated finishing time in days or hours.
 	 *
-	 * @return string
+	 * @param boolean $format
+	 *
+	 * @return string|integer
 	 */
-	public function getEstimatedFinishingTime()
+	public function getEstimatedFinishingTime($format = true)
 	{
-		if ($this->done)
-		{
-			return '-';
-		}
-
-		$talentPoints = $this->getTotalTalentPoints() - $this->getGainedTalentPoints();
+		$talentPoints = $this->getTotalTalentPoints();
 		$charHandicap = $this->character->getBlacksmith() - $this->getHandicap();
 
 		if ($charHandicap <= 0)
@@ -359,14 +533,106 @@ class Crafting extends \SmartWork\Model
 
 		$time = ($talentPoints / $charHandicap) * ($this->blueprint->getTimeUnits() * $this->timeUnitSeconds);
 
+		if ($format) {
+			return $this->formatProductionTime($time);
+		}
+
+		return $time;
+	}
+
+	/**
+	 * Get the time already used for producing this item.
+	 *
+	 * @param boolean $format
+	 *
+	 * @return string|integer
+	 */
+	public function getCurrentProductionTime($format = true)
+	{
+		$time = $this->doneProofs * ($this->blueprint->getTimeUnits() * $this->timeUnitSeconds);
+
+		if ($format) {
+			return $this->formatProductionTime($time);
+		}
+
+		return $time;
+	}
+
+	/**
+	 * Get the current and the estimated production time as a formatted string
+	 *
+	 * @return string
+	 */
+	public function getProductionTime()
+	{
+		$estimatedTime = $this->getEstimatedFinishingTime(false);
+		$currentTime = $this->getCurrentProductionTime(false);
+		$time = '';
+
+		if ($currentTime && $currentTime < 28800)
+		{
+			$time .= \Helper\Formatter::time($currentTime);
+		}
+		else
+		{
+			$time .= round($currentTime / (8 * 3600));
+		}
+
+		$time .= ' / ';
+		$time .= $this->formatProductionTime($estimatedTime);
+
+		return $time;
+	}
+
+	/**
+	 * Formats the seconds needed for production to a time or days string.
+	 *
+	 * @param integer $time
+	 *
+	 * @return string
+	 */
+	protected function formatProductionTime($time)
+	{
 		if ($time < 28800)
 		{
 			return \Helper\Formatter::time($time);
 		}
 		else
 		{
-			return round($time / (8 * 3600)).' '.  \SmartWork\Translator::getInstance()->gt('days');
+			$days = round($time / (8 * 3600));
+
+			if ($days == 1) {
+				return $days.' '.\SmartWork\Translator::getInstance()->gt('day');
+			}
+
+			return $days.' '.\SmartWork\Translator::getInstance()->gt('days');
 		}
+	}
+
+	/**
+	 * Get the talents used in this crafting. As default only unfinished parts will be returned.
+	 *
+	 * @param boolean $getAll Whether to get all talents or not, defaults to false
+	 *
+	 * @return array
+	 */
+	public function getTalents($getAll = false)
+	{
+		$translator = \SmartWork\Translator::getInstance();
+		$calculatedTalentPoints = $this->calculateTalentPoints();
+		$talents = array();
+
+		foreach ($this->gainedTalentPoints as $talent => $talentPoints)
+		{
+			if ($calculatedTalentPoints[$talent] <= $talentPoints && !$getAll)
+			{
+				continue;
+			}
+
+			$talents[$talent] = $translator->gt($talent);
+		}
+
+		return $talents;
 	}
 
 	/**
@@ -376,14 +642,56 @@ class Crafting extends \SmartWork\Model
 	 */
 	public function addTalentPoints($talentPoints)
 	{
+		foreach ($talentPoints as $talent => $points)
+		{
+			$sql = '
+				UPDATE craftingTalentPoints, materialsToBlueprints
+				SET craftingTalentPoints.`gainedTalentPoints` = craftingTalentPoints.`gainedTalentPoints` + '.\sqlval($points, false).'
+				WHERE craftingTalentPoints.`craftingId` = '.\sqlval($this->craftingId).'
+					AND materialsToBlueprints.talent = '.\sqlval($talent).'
+					AND materialsToBlueprints.`blueprintId` = craftingTalentPoints.`blueprintId`
+					AND materialsToBlueprints.materialId = craftingTalentPoints.materialId
+			';
+			\query($sql);
+
+			$this->gainedTalentPoints[$talent] += $points;
+		}
+
 		$sql = '
 			UPDATE craftings
-			SET `gainedTalentPoints` = `gainedTalentPoints` + '.\sqlval($talentPoints).'
+			SET `doneProofs` = `doneProofs` + 1
 			WHERE `craftingId` = '.\sqlval($this->craftingId).'
 		';
 		\query($sql);
 
-		$this->gainedTalentPoints += $talentPoints;
+		if ($this->checkIfDone())
+		{
+			$this->done();
+		}
+	}
+
+	/**
+	 * Check whether all needed talent points are reached
+	 *
+	 * @return boolean
+	 */
+	public function checkIfDone()
+	{
+		$gainedTalentPoints = $this->getGainedTalentPoints();
+		$talentPoints = $this->calculateTalentPoints();
+		$doneTalents = array();
+
+		foreach ($talentPoints as $talent => $points)
+		{
+			$doneTalents[$talent] = false;
+
+			if ($gainedTalentPoints[$talent] >= $points)
+			{
+				$doneTalents[$talent] = true;
+			}
+		}
+
+		return !in_array(false, $doneTalents);
 	}
 
 	/**

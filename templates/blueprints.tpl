@@ -12,7 +12,7 @@
 				<th class="itemType">{$translator->gt('itemType')}</th>
 				<th class="endPrice">{$translator->gt('endPrice')}</th>
 				<th class="notes">{$translator->gt('notes')}</th>
-				<th></th>
+				<th class="options"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -25,7 +25,7 @@
 					<td class="itemType">{$blueprint->getItemType()->getName()}</td>
 					<td class="endPrice">{$blueprint->getEndPrice()}</td>
 					<td class="notes">{$blueprint->getItem()->getNotes()}</td>
-					<td>
+					<td class="options">
 						<a href="index.php?page=Blueprints&amp;remove={$blueprint->getBlueprintId()}">X</a>
 					</td>
 				</tr>
@@ -84,6 +84,7 @@
 									<tr>
 										<td class="material">{$translator->gt('material')}</td>
 										<td class="percentage">{$translator->gt('percentage')}</td>
+										<td class="talent">{$translator->gt('talent')}</td>
 										<td></td>
 									</tr>
 								</thead>
@@ -145,6 +146,7 @@
 		$(function() {
 			window.materials = JSON.parse('{$materialList}');
 			window.techniques = JSON.parse('{$techniqueList}');
+			window.talents = JSON.parse('{$talentList}');
 		});
 	</script>
 </div>

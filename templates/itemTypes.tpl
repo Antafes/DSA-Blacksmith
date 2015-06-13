@@ -10,7 +10,7 @@
 				<th class="itemType">{$translator->gt('itemType')}</th>
 				<th class="talentPoints">{$translator->gt('talentPoints')}</th>
 				<th class="time">{$translator->gt('time')}</th>
-				<th></th>
+				<th class="options"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -19,7 +19,7 @@
 					<td class="itemType">{$itemType->getName()}</td>
 					<td class="talentPoints">{$itemType->getTalentPoints()}</td>
 					<td class="time">{$itemType->getTime()|number_format:2:',':'.'} {$translator->gt('tu')}</td>
-					<td>
+					<td class="options">
 						<a href="index.php?page=ItemTypes&remove={$itemType->getItemTypeId()}">X</a>
 					</td>
 				</tr>

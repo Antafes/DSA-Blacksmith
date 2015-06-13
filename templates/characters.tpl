@@ -20,7 +20,7 @@
 					<th class="characterWoodworking">{$translator->gt('woodworking')}</th>
 					<th class="characterLeatherworking">{$translator->gt('leatherworking')}</th>
 					<th class="characterTailoring">{$translator->gt('tailoring')}</th>
-					<th></th>
+					<th class="options"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -34,7 +34,7 @@
 						<td class="characterWoodworking">{$character.woodworking}</td>
 						<td class="characterLeatherworking">{$character.leatherworking}</td>
 						<td class="characterTailoring">{$character.tailoring}</td>
-						<td>
+						<td class="options">
 							<a href="index.php?page=Characters&remove={$character.characterId}">X</a>
 						</td>
 					</tr>

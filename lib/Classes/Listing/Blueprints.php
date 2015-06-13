@@ -22,13 +22,14 @@ class Blueprints extends \SmartWork\Listing
 	 *
 	 * @return \self
 	 */
-	public static function loadList()
+	public static function loadList($orderBy = 'name')
 	{
 		$sql = '
 			SELECT `blueprintId`
 			FROM blueprints
 			WHERE userid = '.\sqlval($_SESSION['userId']).'
 				AND !deleted
+			ORDER BY '.sqlval($orderBy, false).'
 		';
 		$blueprintIds = query($sql, true);
 		$obj = new self();

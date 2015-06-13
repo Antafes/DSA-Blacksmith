@@ -15,7 +15,7 @@
 				<th class="price">{$translator->gt('price')}</th>
 				<th class="weaponModificator">{$translator->gt('wm')}</th>
 				<th class="notes">{$translator->gt('notes')}</th>
-				<th></th>
+				<th class="options"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -29,7 +29,7 @@
 					<td class="price">{$item->getPriceFormatted()}</td>
 					<td class="weaponModificator">{$item->getWeaponModificatorFormatted()}</td>
 					<td class="notes">{$item->getNotes()}</td>
-					<td>
+					<td class="options">
 						<a href="index.php?page=Items&amp;remove={$item->getItemId()}">X</a>
 					</td>
 				</tr>

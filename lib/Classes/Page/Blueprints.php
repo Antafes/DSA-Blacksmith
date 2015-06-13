@@ -50,6 +50,7 @@ class Blueprints extends \SmartWork\Page
 			$this->removeBlueprint($blueprintListing->getById($_GET['remove']));
 		}
 
+		$translator = \SmartWork\Translator::getInstance();
 		$this->getTemplate()->assign('blueprintListing', $blueprintListing);
 		$this->getTemplate()->assign('itemListing', $itemListing);
 		$this->getTemplate()->assign('itemTypeListing', $itemTypeListing);
@@ -58,6 +59,16 @@ class Blueprints extends \SmartWork\Page
 		$this->getTemplate()->assign('techniqueListing', $techniqueListing);
 		$this->getTemplate()->assign('techniqueList', json_encode($techniqueListing->getAsArray()));
 		$this->getTemplate()->assign('currencyList', $moneyHelper->getCurrencyList());
+		$talentList = array(
+			'bowMaking' => $translator->gt('bowMaking'),
+			'precisionMechanics' => $translator->gt('precisionMechanics'),
+			'blacksmith' => $translator->gt('blacksmith'),
+			'woodworking' => $translator->gt('woodworking'),
+			'leatherworking' => $translator->gt('leatherworking'),
+			'tailoring' => $translator->gt('tailoring'),
+		);
+		asort($talentList, SORT_NATURAL);
+		$this->getTemplate()->assign('talentList', json_encode($talentList));
 	}
 
 	/**

@@ -19,7 +19,7 @@
 				<th class="armor">{$translator->gt('armor')}</th>
 				<th class="weaponModificator">{$translator->gt('weaponModificator')}</th>
 				<th class="additional">{$translator->gt('additional')}</th>
-				<th></th>
+				<th class="options"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -78,7 +78,7 @@
 								-
 							{/foreach}
 						</td>
-						<td{if $assetCount > 1} rowspan="{$assetCount}"{/if}>
+						<td{if $assetCount > 1} rowspan="{$assetCount}"{/if} class="options">
 							<a href="index.php?page=Materials&remove={$material->getMaterialId()}">X</a>
 						</td>
 					{/foreach}

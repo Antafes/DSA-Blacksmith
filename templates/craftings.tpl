@@ -14,8 +14,8 @@
 				<th class="craftingHandicap">{$translator->gt('proof')}</th>
 				<th class="craftingGainedTalentPoints">{$translator->gt('gainedTalentPoints')}</th>
 				<th class="craftingTotalTalentPoints">{$translator->gt('totalTalentPoints')}</th>
-				<th class="craftingEstimatedFinishingTime">{$translator->gt('estimatedFinishingTime')}</th>
-				<th></th>
+				<th class="craftingEstimatedFinishingTime">{$translator->gt('productionTime')}</th>
+				<th class="options"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -28,18 +28,18 @@
 					<td class="craftingBlueprint">{$crafting.blueprint->getName()}</td>
 					<td class="item">{$crafting.blueprint->getItem()->getName()}</td>
 					<td class="craftingHandicap">{$crafting.handicap}</td>
-					<td class="craftingGainedTalentPoints">
-						<a href="#" class="addTalentPoints" data-id="{$crafting.craftingId}">{$crafting.gainedTalentPoints}</a>
+					<td class="craftingGainedTalentPoints" title="{$crafting.gainedTalentPointsInfo}">
+						<a href="#" class="addTalentPoints" data-id="{$crafting.craftingId}" data-talents="{$crafting.talents|json_encode|escape}">{$crafting.totalGainedTalentPoints}</a>
 					</td>
-					<td class="craftingTotalTalentPoints">
-						{if $crafting.gainedTalentPoints > 0}
-							{$crafting.totalTalentPoints - $crafting.gainedTalentPoints} ({$crafting.totalTalentPoints})
+					<td class="craftingTotalTalentPoints" title="{$crafting.talentPointsInfo}">
+						{if $crafting.totalGainedTalentPoints > 0}
+							{$crafting.totalTalentPointsInfo}
 						{else}
 							{$crafting.totalTalentPoints}
 						{/if}
 					</td>
-					<td class="craftingEstimatedFinishingTime">{$crafting.estimatedFinishingTime}</td>
-					<td>
+					<td class="craftingEstimatedFinishingTime">{$crafting.productionTime}</td>
+					<td class="options">
 						<a href="index.php?page=Craftings&amp;remove={$crafting.craftingId}">X</a>
 					</td>
 				</tr>
