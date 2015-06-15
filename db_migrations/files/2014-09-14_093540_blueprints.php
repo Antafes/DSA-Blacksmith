@@ -167,7 +167,7 @@ $DB_MIGRATION = array(
 		');
 
 		$results[] = query_raw('
-			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "upgradeBreakFaktor", "Reduzierter Bruchfaktor", 0)
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "upgradeBreakFactor", "Reduzierter Bruchfaktor", 0)
 		');
 
 		$results[] = query_raw('

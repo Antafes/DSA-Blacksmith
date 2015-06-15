@@ -438,7 +438,7 @@ class Crafting extends \SmartWork\Model
 	public function getTotalTalentPoints()
 	{
 		switch ($this->blueprint->getItemType()->getType()) {
-			case 'weapon':
+			case 'meleeWeapon':
 				$hitPoints = $this->blueprint->getEndHitPoints();
 				$baseValue = $hitPoints['dices'] * 4 + $hitPoints['add'];
 				$modificator = 3;
@@ -447,6 +447,13 @@ class Crafting extends \SmartWork\Model
 				$modificator += 0.5 * $this->blueprint->getUpgradeInitiative();
 				$weaponModificator = $this->blueprint->getUpgradeWeaponModificator();
 				$modificator += 0.5 * ($weaponModificator[0]['attack'] + $weaponModificator[0]['parade']);
+				break;
+			case 'rangedWeapon':
+				$hitPoints = $this->blueprint->getEndHitPoints();
+				$baseValue = $hitPoints['dices'] * 4 + $hitPoints['add'];
+				$modificator = 3;
+				$modificator += 0.5 * $this->blueprint->getBonusRangedFightValue();
+				$modificator += 0.5 * $this->blueprint->getReducePhysicalStrengthRequirement();
 				break;
 			case 'shield':
 				break;
@@ -459,6 +466,11 @@ class Crafting extends \SmartWork\Model
 		return round($baseValue * $modificator);
 	}
 
+	/**
+	 * Get the total talent points as a formatted string.
+	 *
+	 * @return string
+	 */
 	public function getTotalTalentPointsInfo()
 	{
 		$gainedTalentPoints = $this->getGainedTalentPoints();
@@ -489,24 +501,46 @@ class Crafting extends \SmartWork\Model
 	public function getHandicap()
 	{
 		$handicap = 0;
-		$handicap += $this->blueprint->getUpgradeHitPoints() * 3;
-		$handicap += $this->blueprint->getUpgradeBreakFactor() * -2;
-		$handicap += $this->blueprint->getUpgradeInitiative() ? 5 : 0;
-		$weaponModificator = $this->blueprint->getUpgradeWeaponModificator();
-		$handicap += $weaponModificator[0]['attack'] ? 5 : 0;
-		$handicap += $weaponModificator[0]['parade'] ? 5 : 0;
 
-		foreach ($this->blueprint->getMaterialList() as $material)
-		{
-			/* @var $materialAsset \Model\MaterialAsset */
-			$materialAsset = $material['materialAsset'];
-			$handicap += $materialAsset->getProof();
-		}
+		switch ($this->blueprint->getItemType()->getType()) {
+			case 'meleeWeapon':
+				$handicap += $this->blueprint->getUpgradeHitPoints() * 3;
+				$handicap += $this->blueprint->getUpgradeBreakFactor() * -2;
+				$handicap += $this->blueprint->getUpgradeInitiative() ? 5 : 0;
+				$weaponModificator = $this->blueprint->getUpgradeWeaponModificator();
+				$handicap += $weaponModificator[0]['attack'] ? 5 : 0;
+				$handicap += $weaponModificator[0]['parade'] ? 5 : 0;
 
-		/* @var $technique \Model\Technique */
-		foreach ($this->blueprint->getTechniqueList() as $technique)
-		{
-			$handicap += $technique->getProof();
+				foreach ($this->blueprint->getMaterialList() as $material)
+				{
+					/* @var $materialAsset \Model\MaterialAsset */
+					$materialAsset = $material['materialAsset'];
+					$handicap += $materialAsset->getProof();
+				}
+
+				/* @var $technique \Model\Technique */
+				foreach ($this->blueprint->getTechniqueList() as $technique)
+				{
+					$handicap += $technique->getProof();
+				}
+				break;
+			case 'rangedWeapon':
+				$handicap += $this->blueprint->getBonusRangedFightValue() * 7;
+				$handicap += $this->blueprint->getReducePhysicalStrengthRequirement() * 5;
+
+				foreach ($this->blueprint->getMaterialList() as $material)
+				{
+					/* @var $materialAsset \Model\MaterialAsset */
+					$materialAsset = $material['materialAsset'];
+					$handicap += $materialAsset->getProof();
+				}
+				break;
+			case 'shield':
+				break;
+			case 'armor':
+				break;
+			case 'projectile':
+				break;
 		}
 
 		$handicap -= $this->getToolsProofModificator() + $this->getPlanProofModificator();
@@ -524,14 +558,57 @@ class Crafting extends \SmartWork\Model
 	public function getEstimatedFinishingTime($format = true)
 	{
 		$talentPoints = $this->getTotalTalentPoints();
-		$charHandicap = $this->character->getBlacksmith() - $this->getHandicap();
+		$time = 0;
 
-		if ($charHandicap <= 0)
+		foreach ($this->blueprint->getMaterialList() as $material)
 		{
-			$charHandicap = 1;
+			switch ($material['talent'])
+			{
+				case 'blacksmith':
+					$charHandicap = $this->character->getBlacksmith() - $this->getHandicap();
+					break;
+				case 'bowMaking':
+					$charHandicap = $this->character->getBowMaking() - $this->getHandicap();
+					break;
+				case 'precisionMechanics':
+					$charHandicap = $this->character->getPrecisionMechanics() - $this->getHandicap();
+					break;
+				case 'woodworking':
+					$charHandicap = $this->character->getWoodworking() - $this->getHandicap();
+					break;
+				case 'leatherworking':
+					$charHandicap = $this->character->getLeatherworking() - $this->getHandicap();
+					break;
+				case 'tailoring':
+					$charHandicap = $this->character->getTailoring() - $this->getHandicap();
+					break;
+			}
+
+
+			if ($charHandicap <= 0)
+			{
+				$charHandicap = 1;
+			}
+
+			$time += ($talentPoints / $charHandicap) * ($this->blueprint->getTimeUnits() * $this->timeUnitSeconds);
+		}
+		switch ($this->blueprint->getItemType()->getType())
+		{
+			case 'meleeWeapon':
+				$charHandicap = $this->character->getBlacksmith() - $this->getHandicap();
+				break;
+			case 'rangedWeapon':
+				$charHandicap = $this->character->getBowMaking() - $this->getHandicap();
+				break;
+			case 'shield':
+				break;
+			case 'armor':
+				break;
+			case 'projectile':
+				break;
 		}
 
-		$time = ($talentPoints / $charHandicap) * ($this->blueprint->getTimeUnits() * $this->timeUnitSeconds);
+
 
 		if ($format) {
 			return $this->formatProductionTime($time);

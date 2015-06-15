@@ -69,6 +69,29 @@ class Blueprints extends \SmartWork\Page
 		);
 		asort($talentList, SORT_NATURAL);
 		$this->getTemplate()->assign('talentList', json_encode($talentList));
+		$this->assign('columsPerItemType', array(
+			'meleeWeapon' => array(
+				'name',
+				'items',
+				'itemType',
+				'damageType',
+				'materials',
+				'techniques',
+				'upgradeHitPoints',
+				'upgradeBreakFactor',
+				'upgradeInitiative',
+				'upgradeWeaponModificator',
+			),
+			'rangedWeapon' => array(
+				'name',
+				'items',
+				'itemType',
+				'damageType',
+				'materials',
+				'bonusRangedFightValue',
+				'reducePhysicalStrengthRequirement',
+			),
+		));
 	}
 
 	/**

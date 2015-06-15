@@ -78,6 +78,16 @@ class Blueprint extends \SmartWork\Model
 	protected $techniqueList;
 
 	/**
+	 * @var integer
+	 */
+	protected $bonusRangedFightValue;
+
+	/**
+	 * @var integer
+	 */
+	protected $reducePhysicalStrengthRequirement;
+
+	/**
 	 * Load the blueprint for the given id.
 	 *
 	 * @param integer $id
@@ -97,7 +107,9 @@ class Blueprint extends \SmartWork\Model
 				`upgradeHitPoints`,
 				`upgradeBreakFactor`,
 				`upgradeInitiative`,
-				`upgradeWeaponModificator`
+				`upgradeWeaponModificator`,
+				`bonusRangedFightValue`,
+				`reducePhysicalStrengthRequirement`
 			FROM blueprints
 			WHERE `blueprintId` = '.\sqlval($id).'
 				AND !`deleted`
@@ -170,7 +182,9 @@ class Blueprint extends \SmartWork\Model
 				upgradeHitPoints = '.\sqlval($data['upgradeHitPoints']).',
 				upgradeBreakFactor = '.\sqlval($data['upgradeBreakFactor']).',
 				upgradeInitiative = '.\sqlval($data['upgradeInitiative']).',
-				upgradeWeaponModificator = '.\sqlval(json_encode($upgradeWeaponModificator)).'
+				upgradeWeaponModificator = '.\sqlval(json_encode($upgradeWeaponModificator)).',
+				bonusRangedFightValue = '.\sqlval($data['bonusRangedFightValue']).',
+				reducePhysicalStrengthRequirement = '.\sqlval($data['reducePhysicalStrengthRequirement']).'
 		';
 		$blueprintId = query($sql);
 
@@ -447,6 +461,28 @@ class Blueprint extends \SmartWork\Model
 	}
 
 	/**
+	 * The bonus for the ranged fight value.
+	 * Only used for ranged weapons.
+	 *
+	 * @return integer
+	 */
+	public function getBonusRangedFightValue()
+	{
+		return $this->bonusRangedFightValue;
+	}
+
+	/**
+	 * The reducement for the physical strength requirement.
+	 * Only used for ranged weapons.
+	 *
+	 * @return integer
+	 */
+	public function getReducePhysicalStrengthRequirement()
+	{
+		return $this->reducePhysicalStrengthRequirement;
+	}
+
+	/**
 	 * Calculate the end price for the blueprint.
 	 *
 	 * @return string
@@ -459,72 +495,117 @@ class Blueprint extends \SmartWork\Model
 		$priceFactorBelowOne = 0;
 		$moneyHelper = new \Helper\Money();
 
-		foreach ($this->materialList as $item)
-		{
-			/* @var $material \Model\Material */
-			$material = $item['material'];
-			/* @var $materialAsset \Model\MaterialAsset */
-			$materialAsset = $item['materialAsset'];
+		switch ($this->getItemType()->getType()) {
+			case 'meleeWeapon':
+				foreach ($this->materialList as $item)
+				{
+					/* @var $material \Model\Material */
+					$material = $item['material'];
+					/* @var $materialAsset \Model\MaterialAsset */
+					$materialAsset = $item['materialAsset'];
 
-			if ($materialAsset->getPriceFactor())
-			{
-				if ($materialAsset->getPriceFactor() >= 1)
-				{
-					$priceFactor += $materialAsset->getPriceFactor();
-				}
-				else
-				{
-					if (!$priceFactorBelowOne)
+					if ($materialAsset->getPriceFactor())
 					{
-						$priceFactorBelowOne = $materialAsset->getPriceFactor();
+						if ($materialAsset->getPriceFactor() >= 1)
+						{
+							$priceFactor += $materialAsset->getPriceFactor();
+						}
+						else
+						{
+							if (!$priceFactorBelowOne)
+							{
+								$priceFactorBelowOne = $materialAsset->getPriceFactor();
+							}
+							else
+							{
+								$priceFactorBelowOne *= $materialAsset->getPriceFactor();
+							}
+						}
+					}
+					elseif ($materialAsset->getPriceWeight())
+					{
+						$materialPrice += ($this->item->getWeight() * ($item['percentage'] / 100)) * $materialAsset->getPriceWeightRaw();
+					}
+				}
+
+				/* @var $technique \Model\Technique */
+				foreach ($this->techniqueList as $technique)
+				{
+					if ($technique->getUnsellable())
+					{
+						$translator = \SmartWork\Translator::getInstance();
+						return $translator->gt('unsellable');
+					}
+
+					if ($technique->getPriceFactor() >= 1)
+					{
+						$priceFactor += $technique->getPriceFactor();
 					}
 					else
 					{
-						$priceFactorBelowOne *= $materialAsset->getPriceFactor();
+						if (!$priceFactorBelowOne)
+						{
+							$priceFactorBelowOne = $technique->getPriceFactor();
+						}
+						else
+						{
+							$priceFactorBelowOne *= $technique->getPriceFactor();
+						}
 					}
 				}
-			}
-			elseif ($materialAsset->getPriceWeight())
-			{
-				$materialPrice += ($this->item->getWeight() * ($item['percentage'] / 100)) * $materialAsset->getPriceWeightRaw();
-			}
-		}
 
-		/* @var $technique \Model\Technique */
-		foreach ($this->techniqueList as $technique)
-		{
-			if ($technique->getUnsellable())
-			{
-				$translator = \SmartWork\Translator::getInstance();
-				return $translator->gt('unsellable');
-			}
+				$priceFactor += $this->getUpgradeHitPoints() * 3;
+				$priceFactor += $this->getUpgradeBreakFactor() * -2;
+				$priceFactor += $this->getUpgradeInitiative() * 5;
 
-			if ($technique->getPriceFactor() >= 1)
-			{
-				$priceFactor += $technique->getPriceFactor();
-			}
-			else
-			{
-				if (!$priceFactorBelowOne)
+				if ($this->getUpgradeWeaponModificator())
 				{
-					$priceFactorBelowOne = $technique->getPriceFactor();
+					$upgradeWeaponModificator = $this->getUpgradeWeaponModificator();
+
+					$priceFactor += ($upgradeWeaponModificator[0]['attack'] + $upgradeWeaponModificator[0]['parade']) * 5;
 				}
-				else
+				break;
+			case 'rangedWeapon':
+				foreach ($this->materialList as $item)
 				{
-					$priceFactorBelowOne *= $technique->getPriceFactor();
+					/* @var $material \Model\Material */
+					$material = $item['material'];
+					/* @var $materialAsset \Model\MaterialAsset */
+					$materialAsset = $item['materialAsset'];
+
+					if ($materialAsset->getPriceFactor())
+					{
+						if ($materialAsset->getPriceFactor() >= 1)
+						{
+							$priceFactor += $materialAsset->getPriceFactor();
+						}
+						else
+						{
+							if (!$priceFactorBelowOne)
+							{
+								$priceFactorBelowOne = $materialAsset->getPriceFactor();
+							}
+							else
+							{
+								$priceFactorBelowOne *= $materialAsset->getPriceFactor();
+							}
+						}
+					}
+					elseif ($materialAsset->getPriceWeight())
+					{
+						$materialPrice += ($this->item->getWeight() * ($item['percentage'] / 100)) * $materialAsset->getPriceWeightRaw();
+					}
 				}
-			}
-		}
 
-		$priceFactor += $this->getUpgradeHitPoints() * 3;
-		$priceFactor += $this->getUpgradeBreakFactor() * -2;
-		$priceFactor += $this->getUpgradeInitiative() * 5;
-
-		if ($this->getUpgradeWeaponModificator())
-		{
-			$upgradeWeaponModificator = $this->getUpgradeWeaponModificator();
-
-			$priceFactor += ($upgradeWeaponModificator[0]['attack'] + $upgradeWeaponModificator[0]['parade']) * 5;
+				$priceFactor += $this->getBonusRangedFightValue() * 5;
+				$priceFactor += $this->getReducePhysicalStrengthRequirement() * 3;
+				break;
+			case 'shield':
+				break;
+			case 'armor':
+				break;
+			case 'projectile':
+				break;
 		}
 
 		if ($priceFactor > 0)

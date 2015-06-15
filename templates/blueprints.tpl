@@ -40,23 +40,27 @@
 		<form method="post" action="ajax/addMaterial.php">
 			<table class="addBlueprint collapse">
 				<tbody>
-					<tr class="odd">
+					<tr class="name">
 						<td>{$translator->gt('blueprint')}</td>
 						<td>
 							<input type="text" name="name" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="items">
 						<td>{$translator->gt('item')}</td>
 						<td>
 							<select id="itemSelect" name="itemId">
-								{foreach $itemListing->getList() as $item}
-									<option value="{$item->getItemId()}" data-itemtype="{$item->getItemType()}" data-damagetype="{$item->getDamageType()}">{$item->getName()}</option>
+								{foreach $itemListing->getList() as $itemType => $items}
+									<optgroup label="{$translator->gt($itemType)}">
+										{foreach $items as $item}
+											<option value="{$item->getItemId()}" data-itemtype="{$item->getItemType()}" data-damagetype="{$item->getDamageType()}">{$item->getName()}</option>
+										{/foreach}
+									</optgroup>
 								{/foreach}
 							</select>
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="itemType">
 						<td>{$translator->gt('itemType')}</td>
 						<td>
 							<select id="itemTypeSelect" name="itemTypeId">
@@ -66,7 +70,7 @@
 							</select>
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="damageType">
 						<td>{$translator->gt('damageType')}</td>
 						<td>
 							<select id="damageTypeSelect" class="damageType" name="damageType">
@@ -75,7 +79,7 @@
 							</select>
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="materials">
 						<td>{$translator->gt('materials')}</td>
 						<td>
 							<a href="#" id="addMaterialRow">{$translator->gt('addMaterialSelect')}</a>
@@ -93,7 +97,7 @@
 							</table>
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="techniques">
 						<td>{$translator->gt('techniques')}</td>
 						<td>
 							<a href="#" id="addTechniqueRow">{$translator->gt('addTechniqueSelect')}</a>
@@ -109,45 +113,58 @@
 							</table>
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="upgradeHitPoints">
 						<td>{$translator->gt('upgradeHitPoints')}</td>
 						<td>
 							<input name="upgradeHitPoints" type="number" min="0" max="3" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="upgradeBreakFactor">
 						<td>{$translator->gt('upgradeBreakFactor')}</td>
 						<td>
 							<input name="upgradeBreakFactor" type="number" min="-7" max="0" />
 						</td>
 					</tr>
-					<tr class="odd">
+					<tr class="upgradeInitiative">
 						<td>{$translator->gt('upgradeInitiative')}</td>
 						<td>
 							<input name="upgradeInitiative" type="number" min="0" max="1" />
 						</td>
 					</tr>
-					<tr class="even">
+					<tr class="upgradeWeaponModificator">
 						<td>{$translator->gt('upgradeWeaponModificator')}</td>
 						<td>
 							<input class="upgradeWeaponModificator" name="upgradeWeaponModificator[attack]" type="number" min="0" max="1" /> / <input class="upgradeWeaponModificator" name="upgradeWeaponModificator[parade]" type="number" type="number" min="0" max="1" />
 						</td>
 					</tr>
+					<tr class="bonusRangedFightValue">
+						<td>{$translator->gt('bonusRangedFightValue')}</td>
+						<td>
+							<input name="bonusRangedFightValue" type="number" min="0" max="2" />
+						</td>
+					</tr>
+					<tr class="reducePhysicalStrengthRequirement">
+						<td>{$translator->gt('reducePhysicalStrengthRequirement')}</td>
+						<td>
+							<input name="reducePhysicalStrengthRequirement" type="number" min="0" max="1" />
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
 					<tr>
 						<td colspan="2" class="buttonArea">
 							<input type="submit" value="{$translator->gt('addBlueprint')}" />
 						</td>
 					</tr>
-				</tbody>
+				</tfoot>
 			</table>
 		</form>
 	</div>
 	<script type="text/javascript">
-		$(function() {
-			window.materials = JSON.parse('{$materialList}');
-			window.techniques = JSON.parse('{$techniqueList}');
-			window.talents = JSON.parse('{$talentList}');
-		});
+		window.materials = {$materialList};
+		window.techniques = {$techniqueList};
+		window.talents = {$talentList};
+		window.columsPerItemType = {$columsPerItemType|json_encode};
 	</script>
 </div>
 {include file="footer.tpl"}

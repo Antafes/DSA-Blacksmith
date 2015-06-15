@@ -28,7 +28,7 @@ class ItemTypes extends \SmartWork\Listing
 			SELECT `itemTypeId`
 			FROM itemTypes
 			WHERE !deleted
-			ORDER BY `name`
+			ORDER BY `type`, `name`
 		';
 		$itemTypeIds = query($sql, true);
 		$obj = new self();
