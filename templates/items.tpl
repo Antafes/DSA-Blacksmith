@@ -135,12 +135,14 @@
 							<input type="text" name="physicalStrengthRequirement" value="0" />
 						</td>
 					</tr>
+				</tbody>
+				<tfoot>
 					<tr class="buttons">
 						<td colspan="2" class="buttonArea">
 							<input type="submit" value="{$translator->gt('addItem')}" />
 						</td>
 					</tr>
-				</tbody>
+				</tfoot>
 			</table>
 		</form>
 	</div>

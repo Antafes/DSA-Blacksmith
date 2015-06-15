@@ -3,7 +3,7 @@
 $DB_MIGRATION = array(
 
 	'description' => function () {
-		return 'ranged weapon building';
+		return 'ranged weapon items';
 	},
 
 	'up' => function ($migration_metadata) {

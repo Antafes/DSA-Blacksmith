@@ -97,7 +97,8 @@ table .weaponModificator
 }
 
 table .additional,
-table .characterName
+table .characterName,
+table textarea.weaponModificator
 {
 	width: 300px;
 }
