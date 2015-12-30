@@ -99,7 +99,16 @@ class Item extends \SmartWork\Model
 	 */
 	protected $physicalStrengthRequirement;
 
-	/**
+    /**
+     * The value presented, if the object is directly rendered.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+    	/**
 	 * Load an item by its id.
 	 *
 	 * @param integer $id
@@ -484,15 +493,22 @@ class Item extends \SmartWork\Model
 	public function getNotes()
 	{
 		$notes = '';
+        $translator = \SmartWork\Translator::getInstance();
 
 		if ($this->improvisational)
-			$notes .= 'i ';
+        {
+			$notes .= $translator->gt('improvisationalNote').' ';
+        }
 
 		if ($this->twoHanded)
-			$notes .= 'z ';
+        {
+			$notes .= $translator->gt('twoHandedNote').' ';
+        }
 
 		if ($this->privileged)
-			$notes .= 'p';
+        {
+			$notes .= $translator->gt('privilegedNote');
+        }
 
 		return trim($notes);
 	}

@@ -2,10 +2,13 @@
 <div id="items">
 	<div class="submenu">
 		<a class="button" id="addItem" href="#">{$translator->gt('addItem')}</a>
+        {foreach $itemsListing->getList() as $itemType => $items}
+            <a class="button" href="#{$itemType}">{$translator->gt($itemType)}</a>
+        {/foreach}
 		<div class="clear"></div>
 	</div>
 	{foreach $itemsListing->getList() as $itemType => $items}
-		<h3>{$translator->gt($itemType)}</h3>
+		<h3 id="{$itemType}">{$translator->gt($itemType)}</h3>
 		<table class="collapse items">
 			<thead>
 				<tr>

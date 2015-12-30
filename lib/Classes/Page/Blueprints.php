@@ -37,6 +37,15 @@ class Blueprints extends \SmartWork\Page
 		$this->getTemplate()->loadJs('jquery.techniqueSelect');
 		$this->getTemplate()->loadJs('jquery.blueprint');
 		$this->getTemplate()->loadJs('showBlueprint');
+		$this->getTemplate()->loadJsReadyScript('
+			$(document).tooltip({
+				content: function () {
+					$(this).addClass("tooltip");
+					return $(this).attr("title").replace(/(?:\r\n|\r|\n)/g, "<br />");
+				}
+			});
+			$(".addTalentPoints").addTalentPoints();
+		');
 
 		$blueprintListing = \Listing\Blueprints::loadList();
 		$itemListing = \Listing\Items::loadList();
@@ -71,8 +80,8 @@ class Blueprints extends \SmartWork\Page
 		$this->getTemplate()->assign('talentList', json_encode($talentList));
 		$this->assign('columsPerItemType', array(
 			'meleeWeapon' => array(
-				'name',
-				'items',
+				'blueprint',
+				'item',
 				'itemType',
 				'damageType',
 				'materials',
@@ -83,8 +92,8 @@ class Blueprints extends \SmartWork\Page
 				'upgradeWeaponModificator',
 			),
 			'rangedWeapon' => array(
-				'name',
-				'items',
+				'blueprint',
+				'item',
 				'itemType',
 				'damageType',
 				'materials',

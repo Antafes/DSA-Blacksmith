@@ -85,6 +85,11 @@ class WeaponModificator
 	 */
 	public static function format($weaponModificator)
 	{
+        if (!isset($weaponModificator['attack']) && !isset($weaponModificator['parade']))
+        {
+            return '0 / 0';
+        }
+
 		$modificatorString = '';
 
 		if ($weaponModificator['attack'] > 0)

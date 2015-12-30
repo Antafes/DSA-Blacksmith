@@ -717,6 +717,7 @@ class Blueprint extends \SmartWork\Model
 
 		return array(
 			'name' => $this->getName().' ('.$this->item->getName().')',
+            'type' => $this->getItemType()->getType(),
 			'hitPoints' => \Helper\HitPoints::getHitPointsString(array(
 				'hitPointsDice' => $hitPoints['dices'],
 				'hitPointsDiceType' => $hitPoints['diceType'],
@@ -728,7 +729,7 @@ class Blueprint extends \SmartWork\Model
 			'initiative' => $initiative,
 			'price' => $this->getEndPrice(),
 			'weaponModificator' => \Helper\WeaponModificator::format($weaponModificator),
-			'notes' => $this->item->getNotes(),
+			'notes' => $this->getNotes(),
 			'time' => $this->getTimeUnits().' '.$translator->gt('tu'),
 		);
 	}
@@ -767,16 +768,22 @@ class Blueprint extends \SmartWork\Model
 	 */
 	public function getAsArray()
 	{
+        $upgradeWeaponModificator = $this->getUpgradeWeaponModificator();
 		return array(
 			'id' => $this->getBlueprintId(),
 			'name' => $this->getName(),
 			'item' => $this->getItem(),
 			'itemType' => $this->getItemType(),
+            'damageType' => $this->getDamageType(),
+            'materials' => $this->getMaterialsString(),
+            'techniques' => $this->getTechniquesString(),
 			'materialWeaponModificator' => $this->getMaterialWeaponModificator(),
 			'upgradeHitPoints' => $this->getUpgradeHitPoints(),
 			'upgradeBreakFactor' => $this->getUpgradeBreakFactor(),
 			'upgradeInitiative' => $this->getUpgradeInitiative(),
-			'upgradeWeaponModificator' => $this->getUpgradeWeaponModificator(),
+			'upgradeWeaponModificator' => \Helper\WeaponModificator::format($upgradeWeaponModificator[0]),
+            'bonusRangedFightValue' => $this->getBonusRangedFightValue(),
+            'reducePhysicalStrengthRequirement' => $this->getReducePhysicalStrengthRequirement(),
 		);
 	}
 
@@ -841,4 +848,72 @@ class Blueprint extends \SmartWork\Model
 
 		return ($a->getPercentage() < $b->getPercentage()) ? +1 : -1;
 	}
+
+    /**
+     * Get the item and blueprint notes.
+     *
+     * @return string
+     */
+    protected function getNotes()
+    {
+        $notes = $this->item->getNotes();
+        $translator = \SmartWork\Translator::getInstance();
+
+        if ($this->bonusRangedFightValue)
+        {
+            if (!empty($notes)) {
+                $notes .= ' ';
+            }
+
+            $notes .= $translator->gt('bonusRangedFightValueNote').'('.$this->bonusRangedFightValue.')';
+        }
+
+        if ($this->reducePhysicalStrengthRequirement)
+        {
+            if (!empty($notes)) {
+                $notes .= ' ';
+            }
+
+            $notes .= $translator->gt('reducePhysicalStrengthRequirementNote');
+        }
+
+        return $notes;
+    }
+
+    /**
+     * Get the materials of this blueprint as a string.
+     *
+     * @return string
+     */
+    protected function getMaterialsString()
+    {
+        $materials = '';
+
+        foreach ($this->getMaterialList() as $entry)
+        {
+            /* @var $material \Model\Material */
+            $material = $entry['material'];
+            $materials .= '<span title="'.$entry['percentage'].'%">'.$material->getName().'</span><br>';
+        }
+
+        return $materials;
+    }
+
+    /**
+     * Get the techniques of this blueprint as a string.
+     *
+     * @return string
+     */
+    protected function getTechniquesString()
+    {
+        $techniques = '';
+
+        /* @var $technique \Model\Technique */
+        foreach ($this->getTechniqueList() as $technique)
+        {
+            $techniques .= $technique->getName().'<br>';
+        }
+
+        return $techniques;
+    }
 }

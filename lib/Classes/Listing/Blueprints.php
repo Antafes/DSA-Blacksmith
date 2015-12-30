@@ -61,4 +61,33 @@ class Blueprints extends \SmartWork\Listing
 	{
 		return $this->list[$id];
 	}
+
+    /**
+     * Get an array of blueprints grouped by the item type.
+     * Group keys may be on of:
+     * - meleeWeapon
+     * - rangedWeapon
+     * - shield
+     * - armor
+     * - projectile
+     *
+     * @return array
+     */
+    public function getGroupedList()
+    {
+        $groupedBlueprints = array();
+
+        /* @var $blueprint \Model\Blueprint */
+        foreach ($this->list as $blueprint)
+        {
+            if (!isset($groupedBlueprints[$blueprint->getItemType()->getType()]))
+            {
+                $groupedBlueprints[$blueprint->getItemType()->getType()] = array();
+            }
+
+            $groupedBlueprints[$blueprint->getItemType()->getType()][] = $blueprint->getAsArray();
+        }
+
+        return $groupedBlueprints;
+    }
 }

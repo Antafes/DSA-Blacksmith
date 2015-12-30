@@ -2,40 +2,44 @@
 <div id="blueprints">
 	<div class="submenu">
 		<a class="button" id="addBlueprint" href="#">{$translator->gt('addBlueprint')}</a>
+        {foreach $blueprintListing->getGroupedList() as $key => $blueprints}
+            <a class="button" href="#{$key}">{$translator->gt($key)}</a>
+        {/foreach}
 		<div class="clear"></div>
 	</div>
-	<table class="collapse">
-		<thead>
-			<tr>
-				<th class="blueprint">{$translator->gt('blueprint')}</th>
-				<th class="item">{$translator->gt('item')}</th>
-				<th class="itemType">{$translator->gt('itemType')}</th>
-				<th class="endPrice">{$translator->gt('endPrice')}</th>
-				<th class="notes">{$translator->gt('notes')}</th>
-				<th class="options"></th>
-			</tr>
-		</thead>
-		<tbody>
-			{foreach $blueprintListing->getList() as $blueprint}
-				<tr class="{cycle values="odd,even"}">
-					<td class="blueprint">
-						<a class="blueprintShowLink" href="#" data-id="{$blueprint->getBlueprintId()}">{$blueprint->getName()}</a>
-					</td>
-					<td class="item">{$blueprint->getItem()->getName()}</td>
-					<td class="itemType">{$blueprint->getItemType()->getName()}</td>
-					<td class="endPrice">{$blueprint->getEndPrice()}</td>
-					<td class="notes">{$blueprint->getItem()->getNotes()}</td>
-					<td class="options">
-						<a href="index.php?page=Blueprints&amp;remove={$blueprint->getBlueprintId()}">X</a>
-					</td>
-				</tr>
-			{foreachelse}
-				<tr>
-					<td colspan="5">{$translator->gt('noBlueprintsFound')}</td>
-				</tr>
-			{/foreach}
-		</tbody>
-	</table>
+    {foreach $blueprintListing->getGroupedList() as $key => $blueprints}
+        <h3 id="{$key}">{$translator->gt($key)}</h3>
+        <table class="collapse">
+            <thead>
+                <tr>
+                    {foreach $columsPerItemType[$key] as $column}
+                        <th class="{$column}">{$translator->gt($column)}</th>
+                    {/foreach}
+                    <th class="options"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach $blueprints as $blueprint}
+                    <tr class="{cycle values="odd,even"}">
+                        {foreach $columsPerItemType[$key] as $column}
+                        <td class="{$column}">
+                            {if $column == 'blueprint'}
+                                <a class="blueprintShowLink" href="#" data-id="{$blueprint.id}">{$blueprint.name}</a>
+                            {else}
+                                {$translator->gt($blueprint[$column])}
+                            {/if}
+                        </td>
+                        {/foreach}
+                        <td class="options">
+                            <a href="index.php?page=Blueprints&amp;remove={$blueprint.id}">X</a>
+                        </td>
+                    </tr>
+                {/foreach}
+            </tbody>
+        </table>
+    {foreachelse}
+        <div>{$translator->gt('noBlueprintsFound')}</div>
+    {/foreach}
 	<div id="addBlueprintPopup" style="display: none;" data-title="{$translator->gt('addBlueprint')}">
 		<form method="post" action="ajax/addMaterial.php">
 			<table class="addBlueprint collapse">

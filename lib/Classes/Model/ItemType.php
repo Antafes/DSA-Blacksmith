@@ -42,6 +42,11 @@ class ItemType extends \SmartWork\Model
 	 */
 	protected $time;
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
 	/**
 	 * Load an item type by its id.
 	 *
