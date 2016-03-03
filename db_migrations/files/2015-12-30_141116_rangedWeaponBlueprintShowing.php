@@ -3,7 +3,7 @@
 $DB_MIGRATION = array(
 
 	'description' => function () {
-		return '';
+		return 'ranged weapon blueprint showing';
 	},
 
 	'up' => function ($migration_metadata) {
