@@ -17,7 +17,17 @@ namespace Helper;
  */
 class Mail
 {
-	/**
+    protected $globalConfig;
+
+    /**
+     * Constructor
+     */
+    function __construct()
+    {
+        $this->globalConfig = \SmartWork\GlobalConfig::getInstance();
+    }
+
+    /**
 	 * Send an email
 	 *
 	 * @param array  $recipient The recipient to send the mail to
@@ -36,8 +46,11 @@ class Mail
 		$translator = \SmartWork\Translator::getInstance();
 
 		$mailer = new \PHPMailer(true);
-		$mailer->set('CharSet', $GLOBALS['config']['charset']);
-		$mailer->setFrom($GLOBALS['mail']['sender'], $translator->gt('title'));
+		$mailer->set('CharSet', $this->globalConfig->getConfig('charset'));
+		$mailer->setFrom(
+            $this->globalConfig->getGlobal(array('mail' => 'sender')),
+            $translator->gt('title')
+        );
 		$mailer->addAddress($recipient[0], $recipient[1]);
 		$mailer->set('Subject', $subject);
 		$mailer->set('AltBody', strip_tags($message));
