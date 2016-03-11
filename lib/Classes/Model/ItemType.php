@@ -42,6 +42,11 @@ class ItemType extends \SmartWork\Model
 	 */
 	protected $time;
 
+    /**
+     * To string method, returns the name of the item type.
+     *
+     * @return string
+     */
     public function __toString()
     {
         return $this->name;
@@ -105,6 +110,39 @@ class ItemType extends \SmartWork\Model
 
 		return true;
 	}
+
+    /**
+     * Update the current item type.
+     *
+     * @param array $data
+     *
+     * @return integer
+     */
+    public function update($data)
+    {
+        $update = '';
+
+        foreach ($data as $key => $value)
+        {
+            $update .= \sqlval($key, false).' = '.\sqlval($value).",\n";
+        }
+
+        $update = substr($update, 0, -2);
+
+        $sql = '
+            UPDATE itemtypes
+            SET '.$update.'
+            WHERE `itemTypeId` = '.\sqlval($this->itemTypeId).'
+        ';
+        $result = \query($sql);
+
+        if ($result)
+        {
+            $this->fill($data);
+        }
+
+        return $result;
+    }
 
 	/**
 	 * Get the item type id.

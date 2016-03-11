@@ -1,4 +1,6 @@
+{if !$smarty.get.ajax}
 {include file="header.tpl"}
+{/if}
 <div class="itemTypes">
 	<div class="submenu">
 		<a class="button" id="addItemType" href="#">{$translator->gt('addItemType')}</a>
@@ -22,7 +24,8 @@
 					<td class="talentPoints">{$itemType->getTalentPoints()}</td>
 					<td class="time">{$itemType->getTime()|number_format:2:',':'.'} {$translator->gt('tu')}</td>
 					<td class="options">
-						<a href="index.php?page=ItemTypes&remove={$itemType->getItemTypeId()}">X</a>
+                        <a class="edit" href="index.php?page=ItemTypes&amp;action=edit&amp;id={$itemType->getItemTypeId()}" data-data-url="index.php?page=ItemTypes&action=get&id={$itemType->getItemTypeId()}">E</a>
+                        <a class="remove" href="index.php?page=ItemTypes&amp;action=remove&amp;id={$itemType->getItemTypeId()}">X</a>
 					</td>
 				</tr>
 			{foreachelse}
@@ -33,7 +36,7 @@
 		</tbody>
 	</table>
 	<div id="addItemTypePopup" style="display: none;" data-title="{$translator->gt('addItemType')}">
-		<form method="post" action="ajax/addItemType.php">
+		<form>
 			<table class="addItemTypes collapse">
 				<tbody>
 					<tr class="odd">
@@ -76,4 +79,6 @@
 		</form>
 	</div>
 </div>
+{if !$smarty.get.ajax}
 {include file="footer.tpl"}
+{/if}
