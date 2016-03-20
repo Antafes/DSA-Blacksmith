@@ -18,6 +18,10 @@ $DB_MIGRATION = array(
 			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "unkownError", "Ein unbekannter Fehler ist aufgetreten.", 0)
 		');
 
+		$results[] = query_raw('
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "editItem", "Gegenstand bearbeiten", 0)
+		');
+
 		return !in_array(false, $results);
 
 	},
@@ -27,7 +31,7 @@ $DB_MIGRATION = array(
 		$results = array();
 
 		$results[] = query_raw('
-            DELETE FROM translations WHERE `key` IN ("editItemType", "unkownError")
+            DELETE FROM translations WHERE `key` IN ("editItemType", "unkownError", "editItem")
 		');
 
 		return !in_array(false, $results);

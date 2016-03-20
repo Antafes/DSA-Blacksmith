@@ -26,7 +26,8 @@
 							<td class="{$class}">{$itemArray[$column.key]}</td>
 						{/foreach}
 						<td class="options">
-							<a href="index.php?page=Items&amp;remove={$itemArray.itemId}">X</a>
+                            <a class="edit" href="index.php?page=Items&amp;action=edit&amp;id={$itemArray.itemId}" data-data-url="index.php?page=Items&action=get&id={$itemArray.itemId}">E</a>
+                            <a class="remove" href="index.php?page=Items&amp;action=remove&amp;id={$itemArray.itemId}">X</a>
 						</td>
 					</tr>
 				{foreachelse}

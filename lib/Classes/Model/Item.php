@@ -174,7 +174,9 @@ class Item extends \SmartWork\Model
 	{
 		if (!$data['name'] && !isset($data['price']) && !$data['hitPointsDice']
 			&& !$data['hitPointsDiceType'] && !$data['weight'])
+        {
 			return false;
+        }
 
 		$moneyHelper = new \Helper\Money();
 		$price = $moneyHelper->exchange($data['price'], $data['currency']);
@@ -202,6 +204,58 @@ class Item extends \SmartWork\Model
 
 		return true;
 	}
+
+    /**
+     * Update the item.
+     *
+     * @param array $data
+     *
+     * @return integer
+     */
+    public function update($data)
+    {
+        $update = '';
+
+        $data['twoHanded'] = $data['twoHanded'] ? $data['twoHanded'] : 0;
+        $data['improvisational'] = $data['improvisational'] ? $data['improvisational'] : 0;
+        $data['privileged'] = $data['privileged'] ? $data['privileged'] : 0;
+
+        foreach ($data as $key => $value)
+        {
+            if ($key == 'currency')
+            {
+                continue;
+            }
+
+            if ($key == 'price')
+            {
+                $moneyHelper = new \Helper\Money();
+                $value = $moneyHelper->exchange($value, $data['currency']);
+            }
+            elseif ($key == 'weaponModificator')
+            {
+                $value = json_encode(\Helper\WeaponModificator::getWeaponModificatorArray($value));
+            }
+
+            $update .= \sqlval($key, false).' = '.\sqlval($value).",\n";
+        }
+
+        $update = substr($update, 0, -2);
+
+        $sql = '
+            UPDATE items
+            SET '.$update.'
+            WHERE `itemId` = '.\sqlval($this->itemId).'
+        ';
+        $result = \query($sql);
+
+        if ($result)
+        {
+            $this->fill($data);
+        }
+
+        return $result;
+    }
 
 	/**
 	 * Fill the data from the array into the object and cast them to the nearest possible type.

@@ -32,15 +32,25 @@ class Items extends \SmartWork\Page
 	 */
 	public function process()
 	{
-		$this->template->loadJs('addItem');
+		$this->template->loadJs('item');
+        $this->getTemplate()->loadJs('jquery.ajax');
+        $this->getTemplate()->loadJs('removeRow');
+        $this->getTemplate()->loadJs('jquery.popupEdit');
 
 		$itemsListing = \Listing\Items::loadList();
 		$moneyHelper = new \Helper\Money();
 
-		if ($_GET['remove'])
-		{
-			$this->removeItem($itemsListing->getById($_GET['remove']));
-		}
+        switch ($_GET['action']) {
+            case 'remove':
+                $this->removeItem($itemsListing->getById($_GET['id']));
+                break;
+            case 'edit':
+                $this->editItem($_GET['id'], $_POST['data']);
+                break;
+            case 'get':
+                $this->getItem($itemsListing->getById($_GET['id']));
+                break;
+        }
 
 		$this->assign('itemsListing', $itemsListing);
 		$this->assign('currencyList', $moneyHelper->getCurrencyList());
@@ -104,7 +114,44 @@ class Items extends \SmartWork\Page
 		));
 	}
 
-	/**
+    /**
+     * Get a single item.
+     * Used for ajax requests.
+     *
+     * @param \Model\Item $item
+     *
+     * @return void
+     */
+    protected function getItem($item)
+    {
+        $this->doRender = false;
+
+        if (empty($item))
+        {
+            $this->echoAjaxResponse(
+                array(
+                    'ok' => false,
+                    'error' => 'noItemFound',
+                )
+            );
+        }
+        else
+        {
+            $moneyHelper = new \Helper\Money();
+            $itemArray = $item->getAsArray();
+            $itemArray['price'] = $moneyHelper->exchange($itemArray['price'], 'K', 'S');
+            $itemArray['currency'] = 'S';
+            $itemArray['weaponModificator'] = $itemArray['weaponModificatorFormatted'];
+            $this->echoAjaxResponse(
+                array(
+                    'ok' => true,
+                    'data' => $itemArray
+                )
+            );
+        }
+    }
+
+    /**
 	 * Remove an item.
 	 *
 	 * @param \Model\Item $item
@@ -114,6 +161,38 @@ class Items extends \SmartWork\Page
 	protected function removeItem($item)
 	{
 		$item->remove();
-		redirect('index.php?page=Items');
+		$this->doRender = false;
+
+        $this->echoAjaxResponse(array('ok' => true));
 	}
+
+    /**
+     * Create or edit an item type.
+     *
+     * @param integer|string $id   The id of the item type entry. May be a string
+     *                             if a new item type is created. Otherwise it's
+     *                             an integer.
+     * @param array          $data The data for the item type.
+     *
+     * @return void
+     */
+    protected function editItem($id, $data)
+    {
+        if ($id == 'new')
+        {
+            $response = array(
+                'ok' => \Model\Item::create($data),
+            );
+        }
+        else
+        {
+            $item = \Model\Item::loadById($id);
+            $response = array(
+                'ok' => $item->update($data),
+                'data' => $item->getAsArray(),
+            );
+        }
+
+        $this->echoAjaxResponse($response);
+    }
 }
