@@ -26,7 +26,8 @@
 					<td class="breakFactor">{$technique->getBreakFactor()}</td>
 					<td class="hitPoints">{$technique->getHitPoints()}</td>
 					<td class="options">
-						<a href="index.php?page=Techniques&amp;remove={$technique->getTechniqueId()}">X</a>
+                        <a class="edit" href="index.php?page=Techniques&amp;action=edit&amp;id={$technique->getTechniqueId()}" data-data-url="index.php?page=Techniques&amp;action=get&amp;id={$technique->getTechniqueId()}">E</a>
+                        <a class="remove" href="index.php?page=Techniques&amp;action=remove&amp;id={$technique->getTechniqueId()}">X</a>
 					</td>
 				</tr>
 			{foreachelse}

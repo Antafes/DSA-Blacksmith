@@ -247,6 +247,42 @@ class Technique extends \SmartWork\Model
 		return true;
 	}
 
+    /**
+     * Update the technique.
+     *
+     * @param array $data
+     *
+     * @return integer
+     */
+    public function update($data)
+    {
+        $update = '';
+
+        $data['noOtherAllowed'] = $data['noOtherAllowed'] ? $data['noOtherAllowed'] : 0;
+        $data['unsellable'] = $data['unsellable'] ? $data['unsellable'] : 0;
+
+        foreach ($data as $key => $value)
+        {
+            $update .= \sqlval($key, false).' = '.\sqlval($value).",\n";
+        }
+
+        $update = substr($update, 0, -2);
+
+        $sql = '
+            UPDATE techniques
+            SET '.$update.'
+            WHERE `techniqueId` = '.\sqlval($this->techniqueId).'
+        ';
+        $result = \query($sql);
+
+        if ($result)
+        {
+            $this->fill($data);
+        }
+
+        return $result;
+    }
+
 	/**
 	 * Remove this technique.
 	 *
