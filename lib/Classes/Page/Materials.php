@@ -34,14 +34,18 @@ class Materials extends \SmartWork\Page
 	{
 		$this->template->loadJs('addMaterial');
 		$this->template->loadJs('jquery.materialAsset');
+        $this->getTemplate()->loadJs('jquery.ajax');
+        $this->getTemplate()->loadJs('removeRow');
+        $this->getTemplate()->loadJs('jquery.popupEdit');
 
 		$materialListing = \Listing\Materials::loadList();
 		$materialTypeListing = \Listing\MaterialTypes::loadList();
 
-		if ($_GET['remove'])
-		{
-			$this->removeMaterial($materialListing->getById($_GET['remove']));
-		}
+        switch ($_GET['action']) {
+            case 'remove':
+                $this->removeMaterial($materialListing->getById($_GET['id']));
+                break;
+        }
 
 		$moneyHelper = new \Helper\Money();
 		$this->getTemplate()->assign('materialListing', $materialListing);
@@ -59,6 +63,8 @@ class Materials extends \SmartWork\Page
 	protected function removeMaterial($material)
 	{
 		$material->remove();
-		redirect('index.php?page=Materials');
+		$this->doRender = false;
+
+        $this->echoAjaxResponse(array('ok' => true));
 	}
 }

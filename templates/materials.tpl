@@ -54,7 +54,7 @@
 								{/foreach}
 							</td>
 							<td{if $assetCount > 1} rowspan="{$assetCount}"{/if}>
-								<a href="index.php?page=Materials&remove={$material->getMaterialId()}">X</a>
+								<a class="remove" href="index.php?page=Materials&amp;action=remove&amp;id={$material->getMaterialId()}">X</a>
 							</td>
 						{/if}
 						{if $materialAsset@last == false}
@@ -79,7 +79,7 @@
 							{/foreach}
 						</td>
 						<td{if $assetCount > 1} rowspan="{$assetCount}"{/if} class="options">
-							<a href="index.php?page=Materials&remove={$material->getMaterialId()}">X</a>
+							<a class="remove" href="index.php?page=Materials&amp;action=remove&amp;id={$material->getMaterialId()}">X</a>
 						</td>
 					{/foreach}
 				</tr>
