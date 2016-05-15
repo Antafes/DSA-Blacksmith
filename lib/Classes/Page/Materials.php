@@ -32,7 +32,7 @@ class Materials extends \SmartWork\Page
 	 */
 	public function process()
 	{
-		$this->template->loadJs('addMaterial');
+		$this->template->loadJs('material');
 		$this->template->loadJs('jquery.materialAsset');
         $this->getTemplate()->loadJs('jquery.ajax');
         $this->getTemplate()->loadJs('removeRow');
@@ -44,6 +44,12 @@ class Materials extends \SmartWork\Page
         switch ($_GET['action']) {
             case 'remove':
                 $this->removeMaterial($materialListing->getById($_GET['id']));
+                break;
+            case 'edit':
+                $this->editMaterial($_GET['id'], $_POST['data']);
+                break;
+            case 'get':
+                $this->getMaterial($materialListing->getById($_GET['id']));
                 break;
         }
 
@@ -67,4 +73,66 @@ class Materials extends \SmartWork\Page
 
         $this->echoAjaxResponse(array('ok' => true));
 	}
+
+    /**
+     * Get a single material.
+     * Used for ajax requests.
+     *
+     * @param \Model\Material $material
+     *
+     * @return void
+     */
+    public function getMaterial($material)
+    {
+        $this->doRender = false;
+
+        if (empty($material))
+        {
+            $this->echoAjaxResponse(
+                array(
+                    'ok' => false,
+                    'error' => 'noMaterialFound',
+                )
+            );
+        }
+        else
+        {
+            $this->echoAjaxResponse(
+                array(
+                    'ok' => true,
+                    'data' => $material->getAsArray(),
+                )
+            );
+        }
+    }
+
+    /**
+     * Create or edit a material.
+     *
+     * @param integer|string $id   The id of the material entry. May be a string
+     *                             if a new material is created. Otherwise it's
+     *                             an integer.
+     * @param array          $data The data for the material.
+     *
+     * @return void
+     */
+    protected function editMaterial($id, $data)
+    {
+        if ($id == 'new')
+        {
+            $response = array(
+                'ok' => \Model\Material::create($data),
+            );
+        }
+        else
+        {
+            $material = \Model\Material::loadById($id);
+            $response = array(
+                'ok' => $material->update($data),
+                'data' => $material->getAsArray(),
+            );
+        }
+
+        $this->echoAjaxResponse($response);
+    }
 }

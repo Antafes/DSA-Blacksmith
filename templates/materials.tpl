@@ -53,7 +53,8 @@
 									-
 								{/foreach}
 							</td>
-							<td{if $assetCount > 1} rowspan="{$assetCount}"{/if}>
+							<td{if $assetCount > 1} rowspan="{$assetCount}"{/if} class="options">
+								<a class="edit" href="index.php?page=Materials&amp;action=edit&amp;id={$material->getMaterialId()}" data-data-url="index.php?page=Materials&amp;action=get&amp;id={$material->getMaterialId()}">E</a>
 								<a class="remove" href="index.php?page=Materials&amp;action=remove&amp;id={$material->getMaterialId()}">X</a>
 							</td>
 						{/if}
@@ -79,6 +80,7 @@
 							{/foreach}
 						</td>
 						<td{if $assetCount > 1} rowspan="{$assetCount}"{/if} class="options">
+                            <a class="edit" href="index.php?page=Materials&amp;action=edit&amp;id={$material->getMaterialId()}" data-data-url="index.php?page=Materials&amp;action=get&amp;id={$material->getMaterialId()}">E</a>
 							<a class="remove" href="index.php?page=Materials&amp;action=remove&amp;id={$material->getMaterialId()}">X</a>
 						</td>
 					{/foreach}
@@ -91,7 +93,7 @@
 		</tbody>
 	</table>
 	<div id="addMaterialPopup" style="display: none;" data-title="{$translator->gt('addMaterial')}">
-		<form method="post" action="ajax/addMaterial.php">
+		<form method="post">
 			<table class="addMaterial collapse">
 				<tbody>
 					<tr class="odd">
@@ -144,7 +146,9 @@
 				</thead>
 				<tbody></tbody>
 			</table>
-			<input type="submit" value="{$translator->gt('addMaterial')}" />
+            <div class="buttonArea">
+                <input type="submit" value="{$translator->gt('addMaterial')}" />
+            </div>
 		</form>
 	</div>
 	<div id="addMaterialTypePopup" style="display: none;" data-title="{$translator->gt('addMaterialType')}">

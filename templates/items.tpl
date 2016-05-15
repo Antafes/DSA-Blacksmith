@@ -39,7 +39,7 @@
 		</table>
 	{/foreach}
 	<div id="addItemPopup" style="display: none;" data-title="{$translator->gt('addItem')}">
-		<form method="post" action="ajax/addMaterial.php">
+		<form method="post">
 			<table class="addItem collapse">
 				<tbody>
 					<tr class="name odd">

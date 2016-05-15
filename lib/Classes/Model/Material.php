@@ -175,6 +175,99 @@ class Material extends \SmartWork\Model
 	}
 
 	/**
+	 * Create a new material and the material assets from the given array.
+	 * array(
+	 *     'name' => 'test',
+	 *     'materialTypeId' => 1,
+	 *     'additional' => 'one additional',
+	 *     'percentage' => array(
+	 *         0 => 50,
+	 *         1 => 100,
+	 *     ),
+	 *     'timeFactor' => array(
+	 *         0 => 1,
+	 *         1 => 1,
+	 *     ),
+	 *     'priceFactor' => array(
+	 *         0 => 2,
+	 *         0 => 1.5,
+	 *     ),
+	 *     'priceWeight' => array(),
+	 *     'currency' => array(
+	 *         0 => 'S',
+	 *         1 => 'D',
+	 *     ),
+	 *     'proof' => array(
+	 *         0 => 0,
+	 *         1 => -1,
+	 *     ),
+	 *     'breakFactor' => array(
+	 *         0 => 1,
+	 *         1 => -1,
+	 *     ),
+	 *     'hitPoints' => array(
+	 *         0 => 0,
+	 *         1 => 1,
+	 *     ),
+	 *     'armor' => array(
+	 *         0 => 0,
+	 *         1 => 0,
+	 *     ),
+	 *     'weaponModificator' => array(
+	 *         0 => '0/0',
+	 *         1 => '-1/0',
+	 *     ),
+	 * )
+	 *
+	 * @param array $data
+	 *
+	 * @return boolean
+	 */
+	public function update($data)
+	{
+        $update = '';
+
+		$additional = array();
+		$data['additional'] = trim($data['additional']);
+		if (!empty($data['additional']))
+		{
+			preg_match_all('/(\w.*?) +(\w.*?)(?=(\r\n|\r|\n))/m', trim($data['additional']), $matches, PREG_SET_ORDER);
+			foreach ($matches as $match)
+			{
+				$additional[$match[1]] = $match[2];
+			}
+		}
+
+		$sql = '
+			UPDATE materials
+			SET materialTypeId = '.\sqlval($data['materialTypeId']).',
+				name = '.\sqlval($data['name']).',
+				additional = '.\sqlval(json_encode($additional)).'
+            WHERE `materialId` = '. \sqlval($this->getMaterialId()).'
+		';
+		\query($sql);
+
+		foreach ($data['percentage'] as $key => $value)
+		{
+            $materialAsset = MaterialAsset::loadById($data['materialAssetId'][$key]);
+            $materialAsset->update(array(
+				'percentage' => $value,
+				'timeFactor' => $data['timeFactor'][$key],
+				'priceFactor' => $data['priceFactor'][$key],
+				'priceWeight' => $data['priceWeight'][$key],
+				'currency' => $data['currency'][$key],
+				'proof' => $data['proof'][$key],
+				'breakFactor' => $data['breakFactor'][$key],
+				'hitPoints' => $data['hitPoints'][$key],
+				'armor' => $data['armor'][$key],
+				'weaponModificator' => $data['weaponModificator'][$key],
+			));
+		}
+
+		return true;
+	}
+
+	/**
 	 * Fill the objects properties with the given data and cast them if possible to the best
 	 * matching type. Only existing properties are filled.
 	 *

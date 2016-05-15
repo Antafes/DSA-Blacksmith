@@ -38,7 +38,7 @@
 		</tbody>
 	</table>
 	<div id="addTechniquePopup" style="display: none;" data-title="{$translator->gt('addTechnique')}">
-		<form method="post" action="ajax/addMaterial.php">
+		<form method="post">
 			<table class="addTechnique collapse">
 				<tbody>
 					<tr class="odd">

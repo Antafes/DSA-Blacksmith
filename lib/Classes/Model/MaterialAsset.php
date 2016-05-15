@@ -183,6 +183,84 @@ class MaterialAsset extends \SmartWork\Model
 	}
 
 	/**
+	 * Create a new material asset from the given array.
+	 * array(
+	 *     'percentage' => array(
+	 *         0 => 50,
+	 *         1 => 50,
+	 *     ),
+	 *     'timeFactor' => array(
+	 *         0 => 1,
+	 *         1 => 1,
+	 *     ),
+	 *     'priceFactor' => array(
+	 *         0 => 2,
+	 *         0 => 1.5,
+	 *     ),
+	 *     'priceWeight' => array(),
+	 *     'currency' => array(
+	 *         0 => 'S',
+	 *         1 => 'D',
+	 *     ),
+	 *     'proof' => array(
+	 *         0 => 0,
+	 *         1 => -1,
+	 *     ),
+	 *     'breakFactor' => array(
+	 *         0 => 1,
+	 *         1 => -1,
+	 *     ),
+	 *     'hitPoints' => array(
+	 *         0 => 0,
+	 *         1 => 1,
+	 *     ),
+	 *     'armor' => array(
+	 *         0 => 0,
+	 *         1 => 0,
+	 *     ),
+	 *     'weaponModificator' => array(
+	 *         0 => '0/0',
+	 *         1 => '-1/0',
+	 *     ),
+	 * )
+	 *
+	 * @param array $data
+	 *
+	 * @return boolean
+	 */
+	public function update($data)
+	{
+		$weaponModificators = array();
+		if (!empty($data['weaponModificator']))
+		{
+			$weaponModificators = \Helper\WeaponModificator::getWeaponModificatorArray($data['weaponModificator']);
+		}
+
+		if (!empty($data['priceWeight']))
+		{
+			$moneyHelper = new \Helper\Money();
+			$data['priceWeight'] = $moneyHelper->exchange($data['priceWeight'], $data['currency']);
+		}
+
+		$sql = '
+			UPDATE materialAssets
+			SET percentage = '.\sqlval($data['percentage']).',
+				timeFactor = '.\sqlval($data['timeFactor']).',
+				priceFactor = '.\sqlval($data['priceFactor']).',
+				priceWeight = '.\sqlval($data['priceWeight']).',
+				proof = '.\sqlval($data['proof']).',
+				breakFactor = '.\sqlval($data['breakFactor']).',
+				hitPoints = '.\sqlval($data['hitPoints']).',
+				armor = '.\sqlval($data['armor']).',
+				weaponModificator = '.\sqlval(json_encode($weaponModificators)).'
+            WHERE `materialAssetId` = '.\sqlval($this->getMaterialAssetId()).'
+		';
+		query($sql);
+
+		return true;
+	}
+
+	/**
 	 * Get the material asset id.
 	 *
 	 * @return integer

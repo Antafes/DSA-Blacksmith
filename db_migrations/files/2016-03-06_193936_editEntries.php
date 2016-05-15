@@ -26,6 +26,14 @@ $DB_MIGRATION = array(
 			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "editTechnique", "Technik bearbeiten", 0)
 		');
 
+		$results[] = query_raw('
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "editMaterial", "Material bearbeiten", 0)
+		');
+
+		$results[] = query_raw('
+			INSERT INTO `translations` (`languageId`, `key`, `value`, `deleted`) VALUES (1, "addMaterialAssetRow", "Materialeigenschaften hinzufügen", 0)
+		');
+
 		return !in_array(false, $results);
 
 	},
@@ -35,7 +43,7 @@ $DB_MIGRATION = array(
 		$results = array();
 
 		$results[] = query_raw('
-            DELETE FROM translations WHERE `key` IN ("editItemType", "unkownError", "editItem", "editTechnique")
+            DELETE FROM translations WHERE `key` IN ("editItemType", "unkownError", "editItem", "editTechnique", "editMaterial", "addMaterialAssetRow")
 		');
 
 		return !in_array(false, $results);

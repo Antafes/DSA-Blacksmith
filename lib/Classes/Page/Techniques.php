@@ -44,7 +44,7 @@ class Techniques extends \SmartWork\Page
                 $this->removeTechnique($techniqueListing->getById($_GET['id']));
                 break;
             case 'edit':
-                $this->editItem($_GET['id'], $_POST['data']);
+                $this->editTechnique($_GET['id'], $_POST['data']);
                 break;
             case 'get':
                 $this->getTechnique($techniqueListing->getById($_GET['id']));
@@ -111,7 +111,7 @@ class Techniques extends \SmartWork\Page
      *
      * @return void
      */
-    protected function editItem($id, $data)
+    protected function editTechnique($id, $data)
     {
         if ($id == 'new')
         {

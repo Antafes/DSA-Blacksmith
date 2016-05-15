@@ -1,6 +1,4 @@
-{if !$smarty.get.ajax}
 {include file="header.tpl"}
-{/if}
 <div class="itemTypes">
 	<div class="submenu">
 		<a class="button" id="addItemType" href="#">{$translator->gt('addItemType')}</a>
@@ -79,6 +77,4 @@
 		</form>
 	</div>
 </div>
-{if !$smarty.get.ajax}
 {include file="footer.tpl"}
-{/if}
