@@ -1,8 +1,8 @@
 <div id="menu">
 	{if $smarty.session.userId}
 		<a class="button{if !$smarty.get.page || $smarty.get.page == 'Index'} active{/if}" href="index.php?page=Index">{$translator->gt('index')}</a>
-		<a class="button{if $smarty.get.page == 'Blueprints'} active{/if}" href="index.php?page=Blueprints">{$translator->gt('blueprints')}</a>
 		<a class="button{if $smarty.get.page == 'Craftings'} active{/if}" href="index.php?page=Craftings">{$translator->gt('craftings')}</a>
+		<a class="button{if $smarty.get.page == 'Blueprints'} active{/if}" href="index.php?page=Blueprints">{$translator->gt('blueprints')}</a>
 		<a class="button{if $smarty.get.page == 'Materials'} active{/if}" href="index.php?page=Materials">{$translator->gt('materials')}</a>
 		<a class="button{if $smarty.get.page == 'Techniques'} active{/if}" href="index.php?page=Techniques">{$translator->gt('techniques')}</a>
 		<a class="button{if $smarty.get.page == 'Items'} active{/if}" href="index.php?page=Items">{$translator->gt('items')}</a>
