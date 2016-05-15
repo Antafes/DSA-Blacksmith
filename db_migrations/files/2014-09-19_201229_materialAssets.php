@@ -18,7 +18,7 @@ $DB_MIGRATION = array(
 		$results = array();
 
 		$results[] = query_raw('
-			CREATE TABLE `materialassets` (
+			CREATE TABLE `materialAssets` (
 				`materialAssetId` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 				`materialId` INT(10) UNSIGNED NOT NULL,
 				`percentage` INT(10) UNSIGNED NOT NULL,
@@ -57,7 +57,7 @@ $DB_MIGRATION = array(
 		');
 
 		$results[] = query('
-			UPDATE `dsa_blacksmith`.`translations` SET `value`="Werte in folgendem Schema eintragen: TA / PA\r\nWenn zwischen mehreren Modifikatoren gewählt werden soll, können die Wertpaare mit "||", "or" oder "oder" getrennt werden." WHERE  `translationId`=73
+			UPDATE `translations` SET `value`="Werte in folgendem Schema eintragen: TA / PA\r\nWenn zwischen mehreren Modifikatoren gewählt werden soll, können die Wertpaare mit "||", "or" oder "oder" getrennt werden." WHERE  `translationId`=73
 		');
 
 		return !in_array(false, $results);
