@@ -53,6 +53,11 @@ class Item extends \SmartWork\Model
     protected $privileged;
 
     /**
+     * @var boolean
+     */
+    protected $throwingWeapon;
+
+    /**
      * @var integer
      */
     protected $hitPointsDice;
@@ -133,6 +138,7 @@ class Item extends \SmartWork\Model
                 `twoHanded`,
                 `improvisational`,
                 `privileged`,
+                `throwingWeapon`,
                 `hitPointsDice`,
                 `hitPointsDiceType`,
                 `hitPoints`,
@@ -197,6 +203,7 @@ class Item extends \SmartWork\Model
                 twoHanded = '.\sqlval($data['twoHanded']).',
                 improvisational = '.\sqlval($data['improvisational']).',
                 privileged = '.\sqlval($data['privileged']).',
+                throwingWeapon = '.\sqlval($data['throwingWeapon']).',
                 hitPointsDice = '.\sqlval($data['hitPointsDice']).',
                 hitPointsDiceType = '.\sqlval($data['hitPointsDiceType']).',
                 hitPoints = '.\sqlval($data['hitPoints']).',
@@ -227,6 +234,7 @@ class Item extends \SmartWork\Model
         $data['twoHanded'] = $data['twoHanded'] ? $data['twoHanded'] : 0;
         $data['improvisational'] = $data['improvisational'] ? $data['improvisational'] : 0;
         $data['privileged'] = $data['privileged'] ? $data['privileged'] : 0;
+        $data['throwingWeapon'] = $data['throwingWeapon'] ? $data['throwingWeapon'] : 0;
 
         foreach ($data as $key => $value)
         {
@@ -276,7 +284,7 @@ class Item extends \SmartWork\Model
     {
         foreach ($data as $key => $value)
         {
-            if ($key === 'twoHanded' || $key === 'improvisational' || $key === 'privileged')
+            if ($key === 'twoHanded' || $key === 'improvisational' || $key === 'privileged' || $key == 'throwingWeapon')
             {
                 $this->$key = (bool) $value;
             }
@@ -380,6 +388,16 @@ class Item extends \SmartWork\Model
     public function getPrivileged()
     {
         return $this->privileged;
+    }
+
+    /**
+     * If the item is a throwing weapon.
+     *
+     * @return boolean
+     */
+    function getThrowingWeapon()
+    {
+        return $this->throwingWeapon;
     }
 
     /**
@@ -540,6 +558,7 @@ class Item extends \SmartWork\Model
             'priceFormatted' => $this->getPriceFormatted(),
             'twoHanded' => $this->getTwoHanded(),
             'improvisational' => $this->getImprovisational(),
+            'throwingWeapon' => $this->getThrowingWeapon(),
             'privileged' => $this->getPrivileged(),
             'hitPointsDice' => $this->getHitPointsDice(),
             'hitPointsDiceType' => $this->getHitPointsDiceType(),
@@ -562,6 +581,7 @@ class Item extends \SmartWork\Model
      * - 'i' for improvisational
      * - 'z' for two handed
      * - 'p' for privileged
+     * - 'w' for throwing weapons
      *
      * @return string
      */
@@ -582,7 +602,12 @@ class Item extends \SmartWork\Model
 
         if ($this->privileged)
         {
-            $notes .= $translator->gt('privilegedNote');
+            $notes .= $translator->gt('privilegedNote').' ';
+        }
+
+        if ($this->getThrowingWeapon())
+        {
+            $notes .= $translator->gt('throwingWeaponNote');
         }
 
         return trim($notes);

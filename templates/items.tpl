@@ -133,6 +133,12 @@
                             <input type="checkbox" name="privileged" value="1" />
                         </td>
                     </tr>
+                    <tr class="notes">
+                        <td>{$translator->gt('throwingWeapon')}</td>
+                        <td>
+                            <input type="checkbox" name="throwingWeapon" value="1" />
+                        </td>
+                    </tr>
                     <tr class="physicalStrengthRequirement">
                         <td>{$translator->gt('physicalStrengthRequirement')}</td>
                         <td>
