@@ -74,6 +74,16 @@
                             </select>
                         </td>
                     </tr>
+                    <tr class="projectileForItem">
+                        <td>{$translator->gt('projectileForItem')}</td>
+                        <td>
+                            <select id="projectileForItemSelect" name="projectileForItemId">
+                                {foreach $itemListing->getList('rangedWeapon') as $item}
+                                    <option value="{$item->getItemId()}">{$item->getName()}</option>
+                                {/foreach}
+                            </select>
+                        </td>
+                    </tr>
                     <tr class="damageType">
                         <td>{$translator->gt('damageType')}</td>
                         <td>

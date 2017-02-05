@@ -73,4 +73,31 @@ class Items extends \SmartWork\Listing
             }
         }
     }
+
+    /**
+     * Get the list of items, optionally filtered by the item type.
+     *
+     * @param string|null $itemTypeFilter The item type to filter
+     *
+     * @return array
+     */
+    public function getList($itemTypeFilter = null)
+    {
+        $list = parent::getList();
+
+        if (!$itemTypeFilter)
+        {
+            return $list;
+        }
+
+        foreach ($list as $itemType => $items)
+        {
+            if ($itemType == $itemTypeFilter)
+            {
+                return $items;
+            }
+        }
+
+        return array();
+    }
 }

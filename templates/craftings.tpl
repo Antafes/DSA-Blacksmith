@@ -65,7 +65,7 @@
                         <td>
                             <select name="blueprintId">
                                 {foreach from=$blueprints->getAsArray() item='blueprint'}
-                                    <option value="{$blueprint.id}">{$blueprint.name}</option>
+                                    <option value="{$blueprint.id}">{$blueprint.name} ({$blueprint.item})</option>
                                 {/foreach}
                             </select>
                         </td>

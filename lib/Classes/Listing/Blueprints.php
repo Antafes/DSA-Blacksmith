@@ -88,6 +88,8 @@ class Blueprints extends \SmartWork\Listing
             $groupedBlueprints[$blueprint->getItemType()->getType()][] = $blueprint->getAsArray();
         }
 
+        ksort($groupedBlueprints);
+
         return $groupedBlueprints;
     }
 }

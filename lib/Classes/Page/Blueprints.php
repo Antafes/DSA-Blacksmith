@@ -33,6 +33,7 @@ class Blueprints extends \SmartWork\Page
     public function process()
     {
         $this->getTemplate()->loadJs('addBlueprint');
+        $this->getTemplate()->loadJs('jquery.addTalentPoints');
         $this->getTemplate()->loadJs('jquery.materialSelect');
         $this->getTemplate()->loadJs('jquery.techniqueSelect');
         $this->getTemplate()->loadJs('jquery.blueprint');
@@ -99,6 +100,13 @@ class Blueprints extends \SmartWork\Page
                 'materials',
                 'bonusRangedFightValue',
                 'reducePhysicalStrengthRequirement',
+            ),
+            'projectile' => array(
+                'blueprint',
+                'item',
+                'itemType',
+                'projectileForItem',
+                'materials',
             ),
         ));
     }

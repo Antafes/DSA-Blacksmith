@@ -38,6 +38,11 @@ class Blueprint extends \SmartWork\Model
     protected $itemType;
 
     /**
+     * @var \Model\Item
+     */
+    protected $projectileForItem = null;
+
+    /**
      * @var string
      */
     protected $damageType;
@@ -102,6 +107,7 @@ class Blueprint extends \SmartWork\Model
                 `name`,
                 `itemId`,
                 `itemTypeId`,
+                `projectileForItemId`,
                 `damageType`,
                 `materialWeaponModificator`,
                 `upgradeHitPoints`,
@@ -170,6 +176,7 @@ class Blueprint extends \SmartWork\Model
 
         $weaponModificators = \Helper\WeaponModificator::getWeaponModificatorArray(substr($weaponModificatorString, 0, -2));
         $upgradeWeaponModificator = \Helper\WeaponModificator::toWeaponModificatorArray($data['upgradeWeaponModificator']['attack'], $data['upgradeWeaponModificator']['parade']);
+        $projectileForItem = Item::loadById($data['projectileForItemId']);
 
         $sql = '
             INSERT INTO blueprints
@@ -177,6 +184,7 @@ class Blueprint extends \SmartWork\Model
                 userId = '.\sqlval($data['userId']).',
                 itemId = '.\sqlval($data['itemId']).',
                 itemTypeId = '.\sqlval($data['itemTypeId']).',
+                `projectileForItemId` = '.\sqlval($projectileForItem->getItemId()).',
                 damageType = '.\sqlval($data['damageType']).',
                 materialWeaponModificator = '.\sqlval(json_encode($weaponModificators)).',
                 upgradeHitPoints = '.\sqlval($data['upgradeHitPoints']).',
@@ -256,11 +264,15 @@ class Blueprint extends \SmartWork\Model
         {
             if ($key === 'itemId')
             {
-                $this->item = \Model\Item::loadById($value);
+                $this->item = Item::loadById($value);
             }
             elseif ($key === 'itemTypeId')
             {
-                $this->itemType = \Model\ItemType::loadById($value);
+                $this->itemType = ItemType::loadById($value);
+            }
+            elseif ($key === 'projectileForItemId' && $value)
+            {
+                $this->projectileForItem = Item::loadById($value);
             }
             elseif (property_exists($this, $key))
             {
@@ -367,6 +379,17 @@ class Blueprint extends \SmartWork\Model
     public function getItemType()
     {
         return $this->itemType;
+    }
+
+    /**
+     * Get the item the projectile is made for.
+     * Only used for projectiles.
+     *
+     * @return \Model\Item|null
+     */
+    function getProjectileForItem()
+    {
+        return $this->projectileForItem;
     }
 
     /**
@@ -650,7 +673,7 @@ class Blueprint extends \SmartWork\Model
             $time *= $technique->getTimeFactor();
         }
 
-        return round($time);
+        return $time;
     }
 
     /**
@@ -704,8 +727,6 @@ class Blueprint extends \SmartWork\Model
         }
 
         $hitPoints = $this->getEndHitPoints();
-        $hitPointsString = $hitPoints['dices']
-            .$translator->gt($hitPoints['diceType']);
         $initiative += $this->getUpgradeInitiative();
         $breakFactor += $this->getUpgradeBreakFactor();
         $damageType = 'damage';
@@ -715,9 +736,21 @@ class Blueprint extends \SmartWork\Model
             $damageType = 'stamina';
         }
 
+        if ($this->getItem()->getItemType() === 'projectile')
+        {
+            $formatedTime = number_format(
+                $this->getTimeUnits(), 2, $translator->gt('decimalPoint'), $translator->gt('thousandsSeparator')
+            );
+        }
+        else
+        {
+            $formatedTime = number_format($this->getTimeUnits(), 0);
+        }
+
         return array(
             'name' => $this->getName().' ('.$this->item->getName().')',
             'type' => $this->getItemType()->getType(),
+            'projectileForItem' => $this->getProjectileForItem() ? $this->getProjectileForItem()->getName() : '',
             'hitPoints' => \Helper\HitPoints::getHitPointsString(array(
                 'hitPointsDice' => $hitPoints['dices'],
                 'hitPointsDiceType' => $hitPoints['diceType'],
@@ -730,7 +763,7 @@ class Blueprint extends \SmartWork\Model
             'price' => $this->getEndPrice(),
             'weaponModificator' => \Helper\WeaponModificator::format($weaponModificator),
             'notes' => $this->getNotes(),
-            'time' => $this->getTimeUnits().' '.$translator->gt('tu'),
+            'time' => $formatedTime.' '.$translator->gt('tu'),
         );
     }
 
@@ -774,6 +807,7 @@ class Blueprint extends \SmartWork\Model
             'name' => $this->getName(),
             'item' => $this->getItem(),
             'itemType' => $this->getItemType(),
+            'projectileForItem' => $this->getProjectileForItem(),
             'damageType' => $this->getDamageType(),
             'materials' => $this->getMaterialsString(),
             'techniques' => $this->getTechniquesString(),
