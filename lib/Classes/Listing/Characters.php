@@ -17,47 +17,47 @@ namespace Listing;
  */
 class Characters extends \SmartWork\Listing
 {
-	/**
-	 * Load all characters for the logged in user.
-	 *
-	 * @return \self
-	 */
-	public static function loadList()
-	{
-		$sql = '
-			SELECT `characterId`
-			FROM characters
-			WHERE userid = '.\sqlval($_SESSION['userId']).'
-				AND !deleted
-		';
-		$characterIds = query($sql, true);
-		$obj = new self();
+    /**
+     * Load all characters for the logged in user.
+     *
+     * @return \self
+     */
+    public static function loadList()
+    {
+        $sql = '
+            SELECT `characterId`
+            FROM characters
+            WHERE userid = '.\sqlval($_SESSION['userId']).'
+                AND !deleted
+        ';
+        $characterIds = query($sql, true);
+        $obj = new self();
 
-		if (empty($characterIds))
-		{
-			return $obj;
-		}
+        if (empty($characterIds))
+        {
+            return $obj;
+        }
 
-		$list = array();
-		foreach ($characterIds as $character)
-		{
-			$list[$character['characterId']] = \Model\Character::loadById($character['characterId']);
-		}
+        $list = array();
+        foreach ($characterIds as $character)
+        {
+            $list[$character['characterId']] = \Model\Character::loadById($character['characterId']);
+        }
 
-		$obj->setList($list);
+        $obj->setList($list);
 
-		return $obj;
-	}
+        return $obj;
+    }
 
-	/**
-	 * Get a single character by its id.
-	 *
-	 * @param integer $id
-	 *
-	 * @return \Model\Blueprint
-	 */
-	public function getById($id)
-	{
-		return $this->list[$id];
-	}
+    /**
+     * Get a single character by its id.
+     *
+     * @param integer $id
+     *
+     * @return \Model\Blueprint
+     */
+    public function getById($id)
+    {
+        return $this->list[$id];
+    }
 }

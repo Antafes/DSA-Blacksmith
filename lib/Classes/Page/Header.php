@@ -17,18 +17,18 @@ namespace Page;
  */
 class Header extends \SmartWork\Page\Header
 {
-	/**
-	 * Add additional css and javascript files.
-	 */
-	public function process()
-	{
-		// Add CSS files
-		$this->template->loadCss('header');
-		$this->template->loadCss('main');
+    /**
+     * Add additional css and javascript files.
+     */
+    public function process()
+    {
+        // Add CSS files
+        $this->template->loadCss('header');
+        $this->template->loadCss('main');
 
-		parent::process();
+        parent::process();
 
-		// Add JS files
-		$this->template->loadJs('jquery.popup');
-	}
+        // Add JS files
+        $this->template->loadJs('jquery.popup');
+    }
 }

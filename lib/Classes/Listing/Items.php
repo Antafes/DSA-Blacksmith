@@ -17,60 +17,60 @@ namespace Listing;
  */
 class Items extends \SmartWork\Listing
 {
-	/**
-	 * Load all items.
-	 *
-	 * @return \self
-	 */
-	public static function loadList($groupBy = 'itemType')
-	{
-		$sql = '
-			SELECT `itemId`
-			FROM items
-			WHERE !deleted
-			ORDER BY `name`
-		';
-		$itemIds = query($sql, true);
-		$obj = new self();
+    /**
+     * Load all items.
+     *
+     * @return \self
+     */
+    public static function loadList($groupBy = 'itemType')
+    {
+        $sql = '
+            SELECT `itemId`
+            FROM items
+            WHERE !deleted
+            ORDER BY `name`
+        ';
+        $itemIds = query($sql, true);
+        $obj = new self();
 
-		if (empty($itemIds))
-		{
-			return $obj;
-		}
+        if (empty($itemIds))
+        {
+            return $obj;
+        }
 
-		$list = array();
-		foreach ($itemIds as $item)
-		{
-			$itemObject = \Model\Item::loadById($item['itemId']);
+        $list = array();
+        foreach ($itemIds as $item)
+        {
+            $itemObject = \Model\Item::loadById($item['itemId']);
 
-			if (!is_array($list[$itemObject->getItemType()]))
-			{
-				$list[$itemObject->getItemType()] = array();
-			}
+            if (!is_array($list[$itemObject->getItemType()]))
+            {
+                $list[$itemObject->getItemType()] = array();
+            }
 
-			$list[$itemObject->getItemType()][$item['itemId']] = $itemObject;
-		}
+            $list[$itemObject->getItemType()][$item['itemId']] = $itemObject;
+        }
 
-		$obj->setList($list);
+        $obj->setList($list);
 
-		return $obj;
-	}
+        return $obj;
+    }
 
-	/**
-	 * Get a single item by the given id.
-	 *
-	 * @param integer $id
-	 *
-	 * @return \Model\Item
-	 */
-	public function getById($id)
-	{
-		foreach ($this->list as $items)
-		{
-			if (array_key_exists($id, $items))
-			{
-				return $items[$id];
-			}
-		}
-	}
+    /**
+     * Get a single item by the given id.
+     *
+     * @param integer $id
+     *
+     * @return \Model\Item
+     */
+    public function getById($id)
+    {
+        foreach ($this->list as $items)
+        {
+            if (array_key_exists($id, $items))
+            {
+                return $items[$id];
+            }
+        }
+    }
 }

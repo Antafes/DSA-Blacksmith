@@ -17,27 +17,27 @@ namespace Page;
  */
 class Techniques extends \SmartWork\Page
 {
-	/**
-	 * Set the used template.
-	 */
-	public function __construct()
-	{
-		parent::__construct('techniques');
-	}
+    /**
+     * Set the used template.
+     */
+    public function __construct()
+    {
+        parent::__construct('techniques');
+    }
 
-	/**
-	 * Add javascripts, handle removing of techniques and show the list of them.
-	 *
-	 * @return void
-	 */
-	public function process()
-	{
-		$this->template->loadJs('technique');
+    /**
+     * Add javascripts, handle removing of techniques and show the list of them.
+     *
+     * @return void
+     */
+    public function process()
+    {
+        $this->template->loadJs('technique');
         $this->getTemplate()->loadJs('jquery.ajax');
         $this->getTemplate()->loadJs('removeRow');
         $this->getTemplate()->loadJs('jquery.popupEdit');
 
-		$techniqueListing = \Listing\Techniques::loadList();
+        $techniqueListing = \Listing\Techniques::loadList();
 
         switch ($_GET['action']) {
             case 'remove':
@@ -51,23 +51,23 @@ class Techniques extends \SmartWork\Page
                 break;
         }
 
-		$this->getTemplate()->assign('techniqueListing', $techniqueListing);
-	}
+        $this->getTemplate()->assign('techniqueListing', $techniqueListing);
+    }
 
-	/**
-	 * Remove a technique.
-	 *
-	 * @param \Model\Technique $technique
-	 *
-	 * @return void
-	 */
-	public function removeTechnique($technique)
-	{
-		$technique->remove();
-		$this->doRender = false;
+    /**
+     * Remove a technique.
+     *
+     * @param \Model\Technique $technique
+     *
+     * @return void
+     */
+    public function removeTechnique($technique)
+    {
+        $technique->remove();
+        $this->doRender = false;
 
         $this->echoAjaxResponse(array('ok' => true));
-	}
+    }
 
     /**
      * Get a single technique.

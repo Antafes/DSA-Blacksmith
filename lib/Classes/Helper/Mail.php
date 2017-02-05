@@ -28,35 +28,35 @@ class Mail
     }
 
     /**
-	 * Send an email
-	 *
-	 * @param array  $recipient The recipient to send the mail to
-	 *                          Format:
-	 *                          array(
-	 *                              'test@example.org',
-	 *                              'test',
-	 *                          )
-	 * @param string $subject   The mail subjet
-	 * @param string $message   The mail message, may be html
-	 *
-	 * @return boolean
-	 */
-	public static function send($recipient, $subject, $message)
-	{
-		$translator = \SmartWork\Translator::getInstance();
+     * Send an email
+     *
+     * @param array  $recipient The recipient to send the mail to
+     *                          Format:
+     *                          array(
+     *                              'test@example.org',
+     *                              'test',
+     *                          )
+     * @param string $subject   The mail subjet
+     * @param string $message   The mail message, may be html
+     *
+     * @return boolean
+     */
+    public static function send($recipient, $subject, $message)
+    {
+        $translator = \SmartWork\Translator::getInstance();
 
-		$mailer = new \PHPMailer(true);
-		$mailer->set('CharSet', $this->globalConfig->getConfig('charset'));
-		$mailer->setFrom(
+        $mailer = new \PHPMailer(true);
+        $mailer->set('CharSet', $this->globalConfig->getConfig('charset'));
+        $mailer->setFrom(
             $this->globalConfig->getGlobal(array('mail' => 'sender')),
             $translator->gt('title')
         );
-		$mailer->addAddress($recipient[0], $recipient[1]);
-		$mailer->set('Subject', $subject);
-		$mailer->set('AltBody', strip_tags($message));
-		$mailer->msgHTML($message);
-		$mailer->isHTML(true);
+        $mailer->addAddress($recipient[0], $recipient[1]);
+        $mailer->set('Subject', $subject);
+        $mailer->set('AltBody', strip_tags($message));
+        $mailer->msgHTML($message);
+        $mailer->isHTML(true);
 
-		return $mailer->send();
-	}
+        return $mailer->send();
+    }
 }

@@ -17,93 +17,93 @@ namespace Model;
  */
 class MaterialType extends \SmartWork\Model
 {
-	/**
-	 * @var integer
-	 */
-	protected $materialTypeId;
+    /**
+     * @var integer
+     */
+    protected $materialTypeId;
 
-	/**
-	 * @var string
-	 */
-	protected $name;
+    /**
+     * @var string
+     */
+    protected $name;
 
-	/**
-	 * Load the material type by the given id.
-	 *
-	 * @param integer $id
-	 *
-	 * @return \self
-	 */
-	public static function loadById($id)
-	{
-		$sql = '
-			SELECT
-				`materialTypeId`,
-				`name`
-			FROM materialTypes
-			WHERE `materialTypeId` = '.\sqlval($id).'
-				AND !deleted
-		';
-		$materialType = \query($sql);
-		$obj = new self();
-		$obj->fill($materialType);
+    /**
+     * Load the material type by the given id.
+     *
+     * @param integer $id
+     *
+     * @return \self
+     */
+    public static function loadById($id)
+    {
+        $sql = '
+            SELECT
+                `materialTypeId`,
+                `name`
+            FROM materialTypes
+            WHERE `materialTypeId` = '.\sqlval($id).'
+                AND !deleted
+        ';
+        $materialType = \query($sql);
+        $obj = new self();
+        $obj->fill($materialType);
 
-		return $obj;
-	}
+        return $obj;
+    }
 
-	/**
-	 * Create a new material type from the given array.
-	 * array(
-	 *     'name' => 'test',
-	 * )
-	 *
-	 * @param array $data
-	 *
-	 * @return boolean
-	 */
-	public static function create($data)
-	{
-		if (!$data['name'])
-			return false;
+    /**
+     * Create a new material type from the given array.
+     * array(
+     *     'name' => 'test',
+     * )
+     *
+     * @param array $data
+     *
+     * @return boolean
+     */
+    public static function create($data)
+    {
+        if (!$data['name'])
+            return false;
 
-		$sql = '
-			INSERT INTO materialTypes
-			SET name = '.\sqlval(trim($data['name'])).'
-		';
-		$id = query($sql);
+        $sql = '
+            INSERT INTO materialTypes
+            SET name = '.\sqlval(trim($data['name'])).'
+        ';
+        $id = query($sql);
 
-		return array(
-			'id' => $id,
-			'name' => trim($data['name']),
-		);
-	}
+        return array(
+            'id' => $id,
+            'name' => trim($data['name']),
+        );
+    }
 
-	/**
-	 * Get the material type id.
-	 *
-	 * @return integer
-	 */
-	function getMaterialTypeId()
-	{
-		return $this->materialTypeId;
-	}
+    /**
+     * Get the material type id.
+     *
+     * @return integer
+     */
+    function getMaterialTypeId()
+    {
+        return $this->materialTypeId;
+    }
 
-	/**
-	 * Get the name of the material type.
-	 *
-	 * @return string
-	 */
-	function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * Get the name of the material type.
+     *
+     * @return string
+     */
+    function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * Not used
-	 *
-	 * @return void
-	 */
-	public function getAsArray()
-	{
-	}
+    /**
+     * Not used
+     *
+     * @return void
+     */
+    public function getAsArray()
+    {
+    }
 }

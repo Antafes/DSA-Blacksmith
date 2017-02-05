@@ -17,28 +17,28 @@ namespace Page;
  */
 class Items extends \SmartWork\Page
 {
-	/**
-	 * Set the used template.
-	 */
-	public function __construct()
-	{
-		parent::__construct('items');
-	}
+    /**
+     * Set the used template.
+     */
+    public function __construct()
+    {
+        parent::__construct('items');
+    }
 
-	/**
-	 * Add javascripts, handle removing of items and show the item list.
-	 *
-	 * @return void
-	 */
-	public function process()
-	{
-		$this->template->loadJs('item');
+    /**
+     * Add javascripts, handle removing of items and show the item list.
+     *
+     * @return void
+     */
+    public function process()
+    {
+        $this->template->loadJs('item');
         $this->getTemplate()->loadJs('jquery.ajax');
         $this->getTemplate()->loadJs('removeRow');
         $this->getTemplate()->loadJs('jquery.popupEdit');
 
-		$itemsListing = \Listing\Items::loadList();
-		$moneyHelper = new \Helper\Money();
+        $itemsListing = \Listing\Items::loadList();
+        $moneyHelper = new \Helper\Money();
 
         switch ($_GET['action']) {
             case 'remove':
@@ -52,77 +52,77 @@ class Items extends \SmartWork\Page
                 break;
         }
 
-		$this->assign('itemsListing', $itemsListing);
-		$this->assign('currencyList', $moneyHelper->getCurrencyList());
-		$this->assign('columsPerItemType', array(
-			'meleeWeapon' => array(
-				'item' => array(
-					'heading' => 'item',
-					'key' => 'name',
-				),
-				'hitPoints' => array(
-					'heading' => 'hp',
-					'key' => 'hitPointsString',
-				),
-				'weight' => array(
-					'heading' => 'weight',
-					'key' => 'weight',
-				),
-				'breakFactor' => array(
-					'heading' => 'bf',
-					'key' => 'breakFactor',
-				),
-				'initiative' => array(
-					'heading' => 'ini',
-					'key' => 'initiative',
-				),
-				'price' => array(
-					'heading' => 'price',
-					'key' => 'priceFormatted',
-				),
-				'weaponModificator' => array(
-					'heading' => 'wm',
-					'key' => 'weaponModificatorFormatted',
-				),
-				'notes' => array(
-					'heading' => 'notes',
-					'key' => 'notes',
-				),
-			),
-			'rangedWeapon' => array(
-				'item' => array(
-					'heading' => 'item',
-					'key' => 'name',
-				),
-				'hitPoints' => array(
-					'heading' => 'hp',
-					'key' => 'hitPointsString',
-				),
-				'weight' => array(
-					'heading' => 'weight',
-					'key' => 'weight',
-				),
-				'physicalStrengthRequirement' => array(
-					'heading' => 'physicalStrengthRequirement',
-					'key' => 'physicalStrengthRequirement',
-				),
-				'price' => array(
-					'heading' => 'price',
-					'key' => 'priceFormatted',
-				),
-			),
-            'projectile' => array(
-				'item' => array(
-					'heading' => 'item',
-					'key' => 'name',
-				),
-				'proofModificator' => array(
-					'heading' => 'proofModificator',
-					'key' => 'proofModificator',
-				),
+        $this->assign('itemsListing', $itemsListing);
+        $this->assign('currencyList', $moneyHelper->getCurrencyList());
+        $this->assign('columsPerItemType', array(
+            'meleeWeapon' => array(
+                'item' => array(
+                    'heading' => 'item',
+                    'key' => 'name',
+                ),
+                'hitPoints' => array(
+                    'heading' => 'hp',
+                    'key' => 'hitPointsString',
+                ),
+                'weight' => array(
+                    'heading' => 'weight',
+                    'key' => 'weight',
+                ),
+                'breakFactor' => array(
+                    'heading' => 'bf',
+                    'key' => 'breakFactor',
+                ),
+                'initiative' => array(
+                    'heading' => 'ini',
+                    'key' => 'initiative',
+                ),
+                'price' => array(
+                    'heading' => 'price',
+                    'key' => 'priceFormatted',
+                ),
+                'weaponModificator' => array(
+                    'heading' => 'wm',
+                    'key' => 'weaponModificatorFormatted',
+                ),
+                'notes' => array(
+                    'heading' => 'notes',
+                    'key' => 'notes',
+                ),
             ),
-		));
-	}
+            'rangedWeapon' => array(
+                'item' => array(
+                    'heading' => 'item',
+                    'key' => 'name',
+                ),
+                'hitPoints' => array(
+                    'heading' => 'hp',
+                    'key' => 'hitPointsString',
+                ),
+                'weight' => array(
+                    'heading' => 'weight',
+                    'key' => 'weight',
+                ),
+                'physicalStrengthRequirement' => array(
+                    'heading' => 'physicalStrengthRequirement',
+                    'key' => 'physicalStrengthRequirement',
+                ),
+                'price' => array(
+                    'heading' => 'price',
+                    'key' => 'priceFormatted',
+                ),
+            ),
+            'projectile' => array(
+                'item' => array(
+                    'heading' => 'item',
+                    'key' => 'name',
+                ),
+                'proofModificator' => array(
+                    'heading' => 'proofModificator',
+                    'key' => 'proofModificator',
+                ),
+            ),
+        ));
+    }
 
     /**
      * Get a single item.
@@ -162,19 +162,19 @@ class Items extends \SmartWork\Page
     }
 
     /**
-	 * Remove an item.
-	 *
-	 * @param \Model\Item $item
-	 *
-	 * @return void
-	 */
-	protected function removeItem($item)
-	{
-		$item->remove();
-		$this->doRender = false;
+     * Remove an item.
+     *
+     * @param \Model\Item $item
+     *
+     * @return void
+     */
+    protected function removeItem($item)
+    {
+        $item->remove();
+        $this->doRender = false;
 
         $this->echoAjaxResponse(array('ok' => true));
-	}
+    }
 
     /**
      * Create or edit an item type.

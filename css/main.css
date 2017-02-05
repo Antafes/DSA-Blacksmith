@@ -1,56 +1,56 @@
 a
 {
-	color: #000000;
-	text-decoration: none;
+    color: #000000;
+    text-decoration: none;
 }
 
 a:hover
 {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 a.button:hover
 {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 .help
 {
-	font-size: 11px;
+    font-size: 11px;
 }
 
 table > tbody a
 {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 table > tbody .options a
 {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 table > thead
 {
-	font-weight: bold;
-	border-bottom: 1px solid #878787;
+    font-weight: bold;
+    border-bottom: 1px solid #878787;
 }
 
 table > thead > tr > td,
 table > tbody > tr > td
 {
-	height: 16px;
-	padding: 4px;
+    height: 16px;
+    padding: 4px;
 }
 
 table > thead > tr > td
 {
-	text-align: center;
+    text-align: center;
 }
 
 table > tbody > tr.done,
 table > tbody > tr.done a
 {
-	color: #009933;
+    color: #009933;
 }
 
 table .material,
@@ -59,7 +59,7 @@ table .technique,
 table .name,
 table textarea.weaponModificator
 {
-	width: 200px;
+    width: 200px;
 }
 
 table .materialType,
@@ -77,52 +77,52 @@ table .characterPrecisionMechanics,
 table .characterBlacksmith,
 table .characterTailoring
 {
-	width: 100px;
+    width: 100px;
 }
 
 table .priceWeight
 {
-	width: 110px;
+    width: 110px;
 }
 
 table .proof,
 table.showBlueprint .breakFactor,
 table.showBlueprint .initiative
 {
-	width: 50px;
+    width: 50px;
 }
 
 table .weaponModificator
 {
-	width: 75px;
+    width: 75px;
 }
 
 table .additional,
 table .characterName
 {
-	width: 300px;
+    width: 300px;
 }
 
 table .characterLastUpdate
 {
-	width: 150px;
+    width: 150px;
 }
 
 
 table .characterWoodworking,
 table .characterLeatherworking
 {
-	width: 125px;
+    width: 125px;
 }
 
 .submenu
 {
-	margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .materials
 {
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 table.addTechnique,
@@ -130,30 +130,30 @@ table.addItemTypes,
 table.addBlueprint,
 table.addMaterialAsset
 {
-	width: 100%;
+    width: 100%;
 }
 
 table.addMaterial
 {
-	width: 300px;
-	margin-bottom: 20px;
+    width: 300px;
+    margin-bottom: 20px;
 }
 
 table.addMaterial tr > td:first-child
 {
-	width: 100px;
+    width: 100px;
 }
 
 table.addMaterial tr > td
 {
-	width: 200px;
+    width: 200px;
 }
 
 table.addMaterial .buttonArea,
 table.addTechnique .buttonArea,
 table.addItemTypes .buttonArea
 {
-	text-align: center;
+    text-align: center;
 }
 
 table.addMaterial input,
@@ -166,133 +166,133 @@ table.addBlueprint input:not([type=checkbox]),
 table.addBlueprint select,
 table.addBlueprint textarea
 {
-	width: 100%;
+    width: 100%;
 }
 
 table.addMaterial .priceWeight
 {
-	width: 155px;
+    width: 155px;
 }
 
 table.addMaterial .currency
 {
-	width: 70px;
+    width: 70px;
 }
 
 table.addMaterial textarea,
 table.addTechnique textarea,
 table.addBlueprint textarea
 {
-	height: 100px;
+    height: 100px;
 }
 
 table.addMaterial .materialType
 {
-	vertical-align: middle;
-	position: relative;
+    vertical-align: middle;
+    position: relative;
 }
 
 table.addMaterial .materialType a
 {
-	display: inline-block;
-	position: absolute;
-	top: 5px;
-	right: 0;
+    display: inline-block;
+    position: absolute;
+    top: 5px;
+    right: 0;
 }
 
 table.addMaterial .materialType select
 {
-	width: 170px;
+    width: 170px;
 }
 
 table.addTechnique > tbody > tr > td:first-child
 {
-	max-width: 150px;
+    max-width: 150px;
 }
 
 table.addBlueprint > tbody > tr > td:last-child
 {
-	width: 400px;
+    width: 400px;
 }
 
 table.addBlueprint .currency,
 table.addBlueprint input.baseHitPointsDice,
 table.addBlueprint input.baseHitPoints
 {
-	width: 100px;
+    width: 100px;
 }
 
 table.addBlueprint input.basePrice
 {
-	width: 280px;
+    width: 280px;
 }
 
 table.addBlueprint .baseHitPointsDiceType
 {
-	width: 60px;
+    width: 60px;
 }
 
 table.addBlueprint input.upgradeForceModificator
 {
-	width: 50px;
+    width: 50px;
 }
 
 table.addBlueprint #materialSelect td.material
 {
-	width: 200px;
+    width: 200px;
 }
 
 table.addBlueprint #materialSelect td.percentage input
 {
-	width: calc(100% - 20px);
+    width: calc(100% - 20px);
 }
 
 table#materialSelect .percentage
 {
-	width: 100px;
+    width: 100px;
 }
 
 table.addMaterialAsset td
 {
-	width: 100px;
+    width: 100px;
 }
 
 table.addMaterialAsset tr > td:last-child
 {
-	width: 10px;
+    width: 10px;
 }
 
 table.addMaterialAsset td input,
 table.addMaterialAsset td textarea,
 table.addMaterialAsset td select
 {
-	width: 100px;
+    width: 100px;
 }
 
 table.addMaterialAsset td textarea
 {
-	height: 80px;
-	width: 140px;
+    height: 80px;
+    width: 140px;
 }
 
 table.addMaterialAsset td.percentage input
 {
-	width: 60px;
+    width: 60px;
 }
 
 .no-close .ui-dialog-titlebar-close
 {
-	display: none;
+    display: none;
 }
 
 .tooltip
 {
-	cursor: help;
+    cursor: help;
 }
 
 table.items
 {
-	margin-bottom: 40px;
+    margin-bottom: 40px;
 }
 
 .infoContainer

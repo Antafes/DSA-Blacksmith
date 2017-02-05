@@ -17,25 +17,25 @@ namespace Helper;
  */
 class Formatter
 {
-	/**
-	 * Format a timestamp according the time format in the translations.
-	 *
-	 * @param integer $time        The timestamp to format
-	 * @param boolean $withSeconds Whether to add seconds to the formatted time or not
-	 *
-	 * @return string
-	 */
-	public static function time($time, $withSeconds = false)
-	{
-		$translator = \SmartWork\Translator::getInstance();
+    /**
+     * Format a timestamp according the time format in the translations.
+     *
+     * @param integer $time        The timestamp to format
+     * @param boolean $withSeconds Whether to add seconds to the formatted time or not
+     *
+     * @return string
+     */
+    public static function time($time, $withSeconds = false)
+    {
+        $translator = \SmartWork\Translator::getInstance();
 
-		if ($withSeconds)
-		{
-			return date($translator->gt('timeFormat'), $time);
-		}
-		else
-		{
-			return date($translator->gt('timeFormatShort'), $time);
-		}
-	}
+        if ($withSeconds)
+        {
+            return date($translator->gt('timeFormat'), $time);
+        }
+        else
+        {
+            return date($translator->gt('timeFormatShort'), $time);
+        }
+    }
 }

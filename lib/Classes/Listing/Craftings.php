@@ -17,51 +17,51 @@ namespace Listing;
  */
 class Craftings extends \SmartWork\Listing
 {
-	/**
-	 * Load all craftings for the logged in user.
-	 *
-	 * @param boolean $onlyUnfinished
-	 *
-	 * @return \self
-	 */
-	public static function loadList($onlyUnfinished = false)
-	{
-		$sql = '
-			SELECT `craftingId`
-			FROM craftings
-			WHERE `userId` = '.\sqlval($_SESSION['userId']).'
-				AND !deleted
-				'.($onlyUnfinished ? 'AND !done' : '').'
-			ORDER BY done, `name`
-		';
-		$craftingIds = query($sql, true);
-		$obj = new self();
+    /**
+     * Load all craftings for the logged in user.
+     *
+     * @param boolean $onlyUnfinished
+     *
+     * @return \self
+     */
+    public static function loadList($onlyUnfinished = false)
+    {
+        $sql = '
+            SELECT `craftingId`
+            FROM craftings
+            WHERE `userId` = '.\sqlval($_SESSION['userId']).'
+                AND !deleted
+                '.($onlyUnfinished ? 'AND !done' : '').'
+            ORDER BY done, `name`
+        ';
+        $craftingIds = query($sql, true);
+        $obj = new self();
 
-		if (empty($craftingIds))
-		{
-			return $obj;
-		}
+        if (empty($craftingIds))
+        {
+            return $obj;
+        }
 
-		$list = array();
-		foreach ($craftingIds as $crafting)
-		{
-			$list[$crafting['craftingId']] = \Model\Crafting::loadById($crafting['craftingId']);
-		}
+        $list = array();
+        foreach ($craftingIds as $crafting)
+        {
+            $list[$crafting['craftingId']] = \Model\Crafting::loadById($crafting['craftingId']);
+        }
 
-		$obj->setList($list);
+        $obj->setList($list);
 
-		return $obj;
-	}
+        return $obj;
+    }
 
-	/**
-	 * Get a single crafting for the given id.
-	 *
-	 * @param integer $id
-	 *
-	 * @return \Model\Crafting
-	 */
-	public function getById($id)
-	{
-		return $this->list[$id];
-	}
+    /**
+     * Get a single crafting for the given id.
+     *
+     * @param integer $id
+     *
+     * @return \Model\Crafting
+     */
+    public function getById($id)
+    {
+        return $this->list[$id];
+    }
 }

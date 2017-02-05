@@ -17,27 +17,27 @@ namespace Page;
  */
 class ItemTypes extends \SmartWork\Page
 {
-	/**
-	 * Set the used template.
-	 */
-	public function __construct()
-	{
-		parent::__construct('itemTypes');
-	}
+    /**
+     * Set the used template.
+     */
+    public function __construct()
+    {
+        parent::__construct('itemTypes');
+    }
 
-	/**
-	 * Add javascripts, handle removing if item types and show the list of them.
-	 *
-	 * @return void
-	 */
-	public function process()
-	{
-		$this->template->loadJs('itemType');
+    /**
+     * Add javascripts, handle removing if item types and show the list of them.
+     *
+     * @return void
+     */
+    public function process()
+    {
+        $this->template->loadJs('itemType');
         $this->getTemplate()->loadJs('jquery.ajax');
         $this->getTemplate()->loadJs('removeRow');
         $this->getTemplate()->loadJs('jquery.popupEdit');
 
-		$itemTypesListing = \Listing\ItemTypes::loadList();
+        $itemTypesListing = \Listing\ItemTypes::loadList();
 
         switch ($_GET['action']) {
             case 'remove':
@@ -52,8 +52,8 @@ class ItemTypes extends \SmartWork\Page
                 break;
         }
 
-		$this->getTemplate()->assign('itemTypeListing', $itemTypesListing);
-	}
+        $this->getTemplate()->assign('itemTypeListing', $itemTypesListing);
+    }
 
     /**
      * Get a single item type.
@@ -89,19 +89,19 @@ class ItemTypes extends \SmartWork\Page
     }
 
     /**
-	 * Remove an item type.
-	 *
-	 * @param \Model\ItemType $itemType
-	 *
-	 * @return void
-	 */
-	protected function removeItemType($itemType)
-	{
-		$itemType->remove();
+     * Remove an item type.
+     *
+     * @param \Model\ItemType $itemType
+     *
+     * @return void
+     */
+    protected function removeItemType($itemType)
+    {
+        $itemType->remove();
         $this->doRender = false;
 
         $this->echoAjaxResponse(array('ok' => true));
-	}
+    }
 
     /**
      * Create or edit an item type.

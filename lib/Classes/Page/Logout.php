@@ -17,21 +17,21 @@ namespace Page;
  */
 class Logout extends \SmartWork\Page
 {
-	/**
-	 * No template used.
-	 */
-	public function __construct()
-	{
-	}
+    /**
+     * No template used.
+     */
+    public function __construct()
+    {
+    }
 
-	/**
-	 * Destroy the session and redirect to the login page.
-	 *
-	 * @return void
-	 */
-	public function process()
-	{
-		session_destroy();
-		redirect('index.php?page=Login');
-	}
+    /**
+     * Destroy the session and redirect to the login page.
+     *
+     * @return void
+     */
+    public function process()
+    {
+        session_destroy();
+        redirect('index.php?page=Login');
+    }
 }

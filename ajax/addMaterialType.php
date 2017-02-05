@@ -13,9 +13,9 @@ $response = \Model\MaterialType::create(array('name' => $_POST['name']));
 
 if ($response)
 {
-	$response['ok'] = true;
-	echo json_encode($response);
-	die();
+    $response['ok'] = true;
+    echo json_encode($response);
+    die();
 }
 
 echo json_encode(array('ok' => false));

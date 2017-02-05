@@ -17,47 +17,47 @@ namespace Listing;
  */
 class MaterialTypes extends \SmartWork\Listing
 {
-	/**
-	 * Load all available material types.
-	 *
-	 * @return \self
-	 */
-	public static function loadList()
-	{
-		$sql = '
-			SELECT `materialTypeId`
-			FROM materialTypes
-			WHERE !deleted
-			ORDER BY `name`
-		';
-		$materialTypeIds = query($sql, true);
-		$obj = new self();
+    /**
+     * Load all available material types.
+     *
+     * @return \self
+     */
+    public static function loadList()
+    {
+        $sql = '
+            SELECT `materialTypeId`
+            FROM materialTypes
+            WHERE !deleted
+            ORDER BY `name`
+        ';
+        $materialTypeIds = query($sql, true);
+        $obj = new self();
 
-		if (empty($materialTypeIds))
-		{
-			return $obj;
-		}
+        if (empty($materialTypeIds))
+        {
+            return $obj;
+        }
 
-		$list = array();
-		foreach ($materialTypeIds as $materialType)
-		{
-			$list[$materialType['materialTypeId']] = \Model\MaterialType::loadById($materialType['materialTypeId']);
-		}
+        $list = array();
+        foreach ($materialTypeIds as $materialType)
+        {
+            $list[$materialType['materialTypeId']] = \Model\MaterialType::loadById($materialType['materialTypeId']);
+        }
 
-		$obj->setList($list);
+        $obj->setList($list);
 
-		return $obj;
-	}
+        return $obj;
+    }
 
-	/**
-	 * Get a single material type for the given id.
-	 *
-	 * @param integer $id
-	 *
-	 * @return \Model\MaterialType
-	 */
-	public function getById($id)
-	{
-		return $this->list[$id];
-	}
+    /**
+     * Get a single material type for the given id.
+     *
+     * @param integer $id
+     *
+     * @return \Model\MaterialType
+     */
+    public function getById($id)
+    {
+        return $this->list[$id];
+    }
 }

@@ -17,40 +17,40 @@ namespace Page;
  */
 class LostPassword extends \SmartWork\Page
 {
-	/**
-	 * Set the used template.
-	 */
-	function __construct()
-	{
-		parent::__construct('lostPassword');
-	}
+    /**
+     * Set the used template.
+     */
+    function __construct()
+    {
+        parent::__construct('lostPassword');
+    }
 
-	/**
-	 * Show the lost password form and init the lost password process.
-	 *
-	 * @return void
-	 */
-	public function process()
-	{
-		if (!$_POST['lostPassword'] || $_POST['lostPassword'] != $_SESSION['formSalts']['lostPassword'])
-		{
-			return;
-		}
+    /**
+     * Show the lost password form and init the lost password process.
+     *
+     * @return void
+     */
+    public function process()
+    {
+        if (!$_POST['lostPassword'] || $_POST['lostPassword'] != $_SESSION['formSalts']['lostPassword'])
+        {
+            return;
+        }
 
-		if (!$_POST['email'])
-		{
-			$this->template->assign('error', 'emptyEmail');
-			return;
-		}
+        if (!$_POST['email'])
+        {
+            $this->template->assign('error', 'emptyEmail');
+            return;
+        }
 
-		$user = \SmartWork\User::getUserByMail($_POST['email']);
+        $user = \SmartWork\User::getUserByMail($_POST['email']);
 
-		if ($user)
-		{
-			$user->lostPassword();
-			$this->template->assign('message', 'lostPasswordMailSent');
-		}
-		else
-			$this->template->assign('error', 'lostPasswordNoUserFound');
-	}
+        if ($user)
+        {
+            $user->lostPassword();
+            $this->template->assign('message', 'lostPasswordMailSent');
+        }
+        else
+            $this->template->assign('error', 'lostPasswordNoUserFound');
+    }
 }

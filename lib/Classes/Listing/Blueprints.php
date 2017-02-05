@@ -17,50 +17,50 @@ namespace Listing;
  */
 class Blueprints extends \SmartWork\Listing
 {
-	/**
-	 * Load all available blueprints for the logged in user.
-	 *
-	 * @return \self
-	 */
-	public static function loadList($orderBy = 'name')
-	{
-		$sql = '
-			SELECT `blueprintId`
-			FROM blueprints
-			WHERE userid = '.\sqlval($_SESSION['userId']).'
-				AND !deleted
-			ORDER BY '.sqlval($orderBy, false).'
-		';
-		$blueprintIds = query($sql, true);
-		$obj = new self();
+    /**
+     * Load all available blueprints for the logged in user.
+     *
+     * @return \self
+     */
+    public static function loadList($orderBy = 'name')
+    {
+        $sql = '
+            SELECT `blueprintId`
+            FROM blueprints
+            WHERE userid = '.\sqlval($_SESSION['userId']).'
+                AND !deleted
+            ORDER BY '.sqlval($orderBy, false).'
+        ';
+        $blueprintIds = query($sql, true);
+        $obj = new self();
 
-		if (empty($blueprintIds))
-		{
-			return $obj;
-		}
+        if (empty($blueprintIds))
+        {
+            return $obj;
+        }
 
-		$list = array();
-		foreach ($blueprintIds as $blueprint)
-		{
-			$list[$blueprint['blueprintId']] = \Model\Blueprint::loadById($blueprint['blueprintId']);
-		}
+        $list = array();
+        foreach ($blueprintIds as $blueprint)
+        {
+            $list[$blueprint['blueprintId']] = \Model\Blueprint::loadById($blueprint['blueprintId']);
+        }
 
-		$obj->setList($list);
+        $obj->setList($list);
 
-		return $obj;
-	}
+        return $obj;
+    }
 
-	/**
-	 * Get a single blueprint by its id.
-	 *
-	 * @param integer $id
-	 *
-	 * @return \Model\Blueprint
-	 */
-	public function getById($id)
-	{
-		return $this->list[$id];
-	}
+    /**
+     * Get a single blueprint by its id.
+     *
+     * @param integer $id
+     *
+     * @return \Model\Blueprint
+     */
+    public function getById($id)
+    {
+        return $this->list[$id];
+    }
 
     /**
      * Get an array of blueprints grouped by the item type.
