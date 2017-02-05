@@ -100,6 +100,13 @@ class Item extends \SmartWork\Model
 	protected $physicalStrengthRequirement;
 
     /**
+     * Only used for projectiles.
+     *
+     * @var integer
+     */
+    protected $proofModificator;
+
+    /**
      * The value presented, if the object is directly rendered.
      *
      * @return string
@@ -134,7 +141,8 @@ class Item extends \SmartWork\Model
 				`initiative`,
 				`weaponModificator`,
 				`weight`,
-				`physicalStrengthRequirement`
+				`physicalStrengthRequirement`,
+                `proofModificator`
 			FROM items
 			WHERE `itemId` = '.\sqlval($id).'
 				AND !deleted
@@ -172,8 +180,7 @@ class Item extends \SmartWork\Model
 	 */
 	public static function create($data)
 	{
-		if (!$data['name'] && !isset($data['price']) && !$data['hitPointsDice']
-			&& !$data['hitPointsDiceType'] && !$data['weight'])
+		if (!$data['name'])
         {
 			return false;
         }
@@ -198,7 +205,8 @@ class Item extends \SmartWork\Model
 				initiative = '.\sqlval($data['initiative']).',
 				weaponModificator = '.\sqlval(json_encode($weaponModificator)).',
 				weight = '.\sqlval($data['weight']).',
-				physicalStrengthRequirement = '.\sqlval($data['physicalStrengthRequirement']).'
+				physicalStrengthRequirement = '.\sqlval($data['physicalStrengthRequirement']).',
+                proofModificator = '.\sqlval($data['proofModificator']).'
 		';
 		query($sql);
 
@@ -486,10 +494,21 @@ class Item extends \SmartWork\Model
 	 *
 	 * @return integer
 	 */
-	public function physicalStrengthRequirement()
+	public function getPhysicalStrengthRequirement()
 	{
 		return $this->physicalStrengthRequirement;
 	}
+
+    /**
+     * Get the proof modificator.
+     * Only used for projectiles.
+     *
+     * @return integer
+     */
+    function getProofModificator()
+    {
+        return $this->proofModificator;
+    }
 
 	/**
 	 * Remove the item.
@@ -515,6 +534,7 @@ class Item extends \SmartWork\Model
 	{
 		return array(
 			'itemId' => $this->getItemId(),
+            'itemType' => $this->getItemType(),
 			'name' => $this->getName(),
 			'price' => $this->getPrice(),
 			'priceFormatted' => $this->getPriceFormatted(),
@@ -532,7 +552,8 @@ class Item extends \SmartWork\Model
 			'weaponModificatorFormatted' => $this->getWeaponModificatorFormatted(),
 			'weight' => $this->getWeight(),
 			'notes' => $this->getNotes(),
-			'physicalStrengthRequirement' => $this->physicalStrengthRequirement(),
+			'physicalStrengthRequirement' => $this->getPhysicalStrengthRequirement(),
+            'proofModificator' => $this->getProofModificator(),
 		);
 	}
 

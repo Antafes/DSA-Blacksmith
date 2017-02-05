@@ -56,7 +56,8 @@ table > tbody > tr.done a
 table .material,
 table .itemType,
 table .technique,
-table .name
+table .name,
+table textarea.weaponModificator
 {
 	width: 200px;
 }
@@ -97,8 +98,7 @@ table .weaponModificator
 }
 
 table .additional,
-table .characterName,
-table textarea.weaponModificator
+table .characterName
 {
 	width: 300px;
 }

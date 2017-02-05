@@ -1,7 +1,7 @@
 {include file="header.tpl"}
 <div id="items">
 	<div class="submenu">
-		<a class="button" id="addItem" href="#">{$translator->gt('addItem')}</a>
+		<a class="button" id="addItem" href="index.php?page=Items&amp;action=edit&amp;id=new">{$translator->gt('addItem')}</a>
         {foreach $itemsListing->getList() as $itemType => $items}
             <a class="button" href="#{$itemType}">{$translator->gt($itemType)}</a>
         {/foreach}
@@ -42,13 +42,13 @@
 		<form method="post">
 			<table class="addItem collapse">
 				<tbody>
-					<tr class="name odd">
+					<tr class="name">
 						<td>{$translator->gt('item')}</td>
 						<td>
 							<input type="text" name="name" />
 						</td>
 					</tr>
-					<tr class="itemType even">
+					<tr class="itemType">
 						<td>{$translator->gt('itemType')}</td>
 						<td>
 							<select id="itemTypeSelect" class="itemType" name="itemType">
@@ -137,6 +137,12 @@
 						<td>{$translator->gt('physicalStrengthRequirement')}</td>
 						<td>
 							<input type="text" name="physicalStrengthRequirement" value="0" />
+						</td>
+					</tr>
+					<tr class="proofModificator">
+						<td>{$translator->gt('proofModificator')}</td>
+						<td>
+                            <input type="number" name="proofModificator" value="0" min="0" max="8" />
 						</td>
 					</tr>
 				</tbody>

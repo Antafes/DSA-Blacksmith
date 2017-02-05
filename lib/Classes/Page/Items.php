@@ -111,6 +111,16 @@ class Items extends \SmartWork\Page
 					'key' => 'priceFormatted',
 				),
 			),
+            'projectile' => array(
+				'item' => array(
+					'heading' => 'item',
+					'key' => 'name',
+				),
+				'proofModificator' => array(
+					'heading' => 'proofModificator',
+					'key' => 'proofModificator',
+				),
+            ),
 		));
 	}
 
