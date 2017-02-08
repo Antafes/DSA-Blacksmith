@@ -188,7 +188,7 @@ class Crafting extends \SmartWork\Model
      *     'gainedTalentPoints' => 0,
      * )
      *
-     * @param string $data
+     * @param array $data
      *
      * @return boolean
      */
@@ -213,13 +213,76 @@ class Crafting extends \SmartWork\Model
             FROM materialsToBlueprints
             WHERE `blueprintId` = '.\sqlval($data['blueprintId']).'
         ';
-        $data = \query($sql, true);
+        $dbData = \query($sql, true);
 
-        foreach ($data as $row)
+        foreach ($dbData as $row)
         {
             $sql = '
                 INSERT INTO craftingTalentPoints
                 SET craftingId = '.\sqlval($craftingId).',
+                    materialId = '.\sqlval($row['materialId']).',
+                    blueprintId = '.\sqlval($row['blueprintId']).'
+            ';
+            \query($sql);
+        }
+
+        return true;
+    }
+
+    /**
+     * Create a new crafting from the given array.
+     * array(
+     *     'userId' => 1,
+     *     'blueprintId' => 1,
+     *     'characterId' => 1,
+     *     'name' => 'test',
+     *     'notes' => 'these are test notes',
+     *     'toolsProofModificator' => 0,
+     *     'planProofModificator' => 0,
+     *     'gainedTalentPoints' => 0,
+     * )
+     *
+     * @param array $data
+     *
+     * @return boolean
+     */
+    public function update($data)
+    {
+        $sql = '
+            UPDATE craftings
+            SET blueprintId = '.\sqlval($data['blueprintId']).',
+                characterId = '.\sqlval($data['characterId']).',
+                name = '.\sqlval($data['name']).',
+                notes = '.\sqlval($data['notes']).',
+                toolsProofModificator = '.\sqlval($data['toolsProofModificator']).',
+                planProofModificator = '.\sqlval($data['planProofModificator']).',
+                `doneProofs` = 0,
+                done = 0
+            WHERE `craftingId` = '.\sqlval($this->getCraftingId()).'
+        ';
+        \query($sql);
+
+        $sql = '
+            SELECT
+                `blueprintId`,
+                `materialId`
+            FROM materialsToBlueprints
+            WHERE `blueprintId` = '.\sqlval($data['blueprintId']).'
+        ';
+        $dbData = \query($sql, true);
+
+        // Remove all talent point entries.
+        $sql = '
+            DELETE FROM craftingTalentPoints
+            WHERE `craftingId` = '.\sqlval($this->getCraftingId()).'
+        ';
+        \query($sql);
+
+        foreach ($dbData as $row)
+        {
+            $sql = '
+                INSERT INTO craftingTalentPoints
+                SET craftingId = '.\sqlval($this->getCraftingId()).',
                     materialId = '.\sqlval($row['materialId']).',
                     blueprintId = '.\sqlval($row['blueprintId']).'
             ';
@@ -255,6 +318,16 @@ class Crafting extends \SmartWork\Model
             'done' => $this->done,
             'talents' => $this->getTalents(),
         );
+    }
+
+    /**
+     * Get the craftings database id.
+     *
+     * @return int
+     */
+    function getCraftingId()
+    {
+        return $this->craftingId;
     }
 
     /**

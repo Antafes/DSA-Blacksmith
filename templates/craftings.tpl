@@ -1,7 +1,7 @@
 {include file="header.tpl"}
 <div id="craftings">
     <div class="submenu">
-        <a class="button" id="addCrafting" href="#">{$translator->gt('addCrafting')}</a>
+        <a class="button" id="addCrafting" href="index.php?page=Craftings&amp;action=edit&amp;id=new">{$translator->gt('addCrafting')}</a>
         <div class="clear"></div>
     </div>
     <table class="collapse">
@@ -22,7 +22,7 @@
             {foreach from=$craftings->getAsArray() item='crafting'}
                 <tr class="{cycle values="odd,even"}{if $crafting.done == true} done{/if}">
                     <td class="craftingName">
-                        <a href="#" class="showCraftingLink" data-id="{$crafting.blueprint->getBlueprintId()}">{$crafting.name}</a>
+                        <a href="index.php?page=Blueprints&amp;action=stats&amp;id={$crafting.blueprint->getBlueprintId()}" class="showCraftingLink">{$crafting.name}</a>
                     </td>
                     <td class="craftingCharacter">{$crafting.character->getName()}</td>
                     <td class="craftingBlueprint">{$crafting.blueprint->getName()}</td>
@@ -40,7 +40,8 @@
                     </td>
                     <td class="craftingEstimatedFinishingTime">{$crafting.productionTime}</td>
                     <td class="options">
-                        <a href="index.php?page=Craftings&amp;remove={$crafting.craftingId}">X</a>
+                        <a class="edit" href="index.php?page=Craftings&amp;action=edit&amp;id={$crafting.craftingId}" data-data-url="index.php?page=Craftings&action=get&id={$crafting.craftingId}">E</a>
+                        <a class="remove" href="index.php?page=Craftings&amp;action=remove&amp;id={$crafting.craftingId}">X</a>
                     </td>
                 </tr>
             {/foreach}
@@ -100,12 +101,17 @@
                             <input type="number" name="planProofModificator" min="-7" max="7" title="{$translator->gt('easing')}" />
                         </td>
                     </tr>
-                    <tr>
+                </tbody>
+                <tfoot>
+                    <tr class="buttons">
                         <td colspan="2" class="buttonArea">
+                            <div class="updateWarning hidden">
+                                {$translator->gt('updateWarning')}
+                            </div>
                             <input type="submit" value="{$translator->gt('addCrafting')}" />
                         </td>
                     </tr>
-                </tbody>
+                </tfoot>
             </table>
         </form>
     </div>

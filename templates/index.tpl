@@ -18,7 +18,7 @@
                 {foreach from=$craftings->getAsArray() item='crafting'}
                     <tr class="{cycle values="odd,even"}{if $crafting.done == true} done{/if}">
                         <td class="craftingName">
-                            <a href="#" class="showCraftingLink" data-id="{$crafting.blueprint->getBlueprintId()}">{$crafting.name}</a>
+                            <a href="index.php?page=Blueprints&amp;action=stats&amp;id={$crafting.blueprint->getBlueprintId()}" class="showCraftingLink">{$crafting.name}</a>
                         </td>
                         <td class="craftingCharacter">{$crafting.character->getName()}</td>
                         <td class="craftingBlueprint">{$crafting.blueprint->getName()}</td>

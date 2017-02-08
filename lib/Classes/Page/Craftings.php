@@ -32,24 +32,29 @@ class Craftings extends \SmartWork\Page
      */
     public function process()
     {
-        $this->getTemplate()->loadJs('addCrafting');
+        $this->getTemplate()->loadJs('jquery.ajax');
+        $this->getTemplate()->loadJs('removeRow');
         $this->getTemplate()->loadJs('jquery.popupBlueprint');
-        $this->getTemplate()->loadJs('showCrafting');
         $this->getTemplate()->loadJs('jquery.addTalentPoints');
-        $this->getTemplate()->loadJsReadyScript('
-            $(document).tooltip({
-                content: function () {
-                    $(this).addClass("tooltip");
-                    return $(this).attr("title").replace(/(?:\r\n|\r|\n)/g, "<br />");
-                }
-            });
-            $(".addTalentPoints").addTalentPoints();
-        ');
+        $this->getTemplate()->loadJs('jquery.popupEdit');
+        $this->getTemplate()->loadJs('crafting');
         $craftingsList = \Listing\Craftings::loadList();
+
+        switch ($_GET['action']) {
+            case 'remove':
+                $this->removeCrafting($craftingsList->getById($_GET['remove']));
+                break;
+            case 'edit':
+                $this->editCrafting($_GET['id'], $_POST['data']);
+                break;
+            case 'get':
+                $this->getCrafting($craftingsList->getById($_GET['id']));
+                break;
+        }
 
         if ($_GET['remove'])
         {
-            $this->removeCrafting($craftingsList->getById($_GET['remove']));
+
         }
 
         $this->getTemplate()->assign('blueprints', \Listing\Blueprints::loadList());
@@ -68,5 +73,87 @@ class Craftings extends \SmartWork\Page
     {
         $crafting->remove();
         redirect('index.php?page=Craftings');
+    }
+
+    /**
+     * Get a single crafting.
+     * Used for ajax requests.
+     *
+     * @param \Model\Crafting $crafting
+     *
+     * @return void
+     */
+    protected function getCrafting(\Model\Crafting $crafting)
+    {
+        $this->doRender = false;
+
+        if (empty($crafting))
+        {
+            $this->echoAjaxResponse(
+                array(
+                    'ok' => false,
+                    'error' => 'noCraftingFound',
+                )
+            );
+        }
+        else
+        {
+            $this->echoAjaxResponse(
+                array(
+                    'ok' => true,
+                    'data' => $this->getCraftingData($crafting),
+                )
+            );
+        }
+    }
+
+    /**
+     * Add or edit a crafting.
+     * Used for ajax requests.
+     *
+     * @param integer/string $id
+     * @param array          $data
+     *
+     * @return void
+     */
+    protected function editCrafting($id, $data)
+    {
+        $this->doRender = false;
+
+        if ($id == 'new')
+        {
+            $response = array(
+                'ok' => \Model\Crafting::create(
+                    array_merge(array('userId' => $_SESSION['userId']), $data)
+                ),
+            );
+        }
+        else
+        {
+            $crafting = \Model\Crafting::loadById($id);
+            $response = array(
+                'ok' => $crafting->update($data),
+                'data' => $this->getCraftingData($crafting),
+            );
+        }
+
+        $this->echoAjaxResponse($response);
+    }
+
+    /**
+     * Prepare the crafting data for the ajax request so it can be shown in the
+     * edit popup.
+     *
+     * @param \Model\Crafting $crafting
+     *
+     * @return array
+     */
+    protected function getCraftingData(\Model\Crafting $crafting)
+    {
+        $craftingArray = $crafting->getAsArray();
+        $craftingArray['characterId'] = $crafting->getCharacter()->getCharacterId();
+        $craftingArray['blueprintId'] = $crafting->getBlueprint()->getBlueprintId();
+
+        return $craftingArray;
     }
 }

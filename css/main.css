@@ -303,3 +303,9 @@ table.items
 {
     margin-top: 20px;
 }
+
+#addCraftingPopup .updateWarning
+{
+    margin: 10px 0;
+    font-weight: bold;
+}
