@@ -252,6 +252,135 @@ class Blueprint extends \SmartWork\Model
     }
 
     /**
+     * Create a new blueprint from the given array.
+     * array(
+     *     'name' => 'test',
+     *     'userId' => 1,
+     *     'itemId' => 1,
+     *     'itemTypeId => 1,
+     *     'damageType' => 'damage',
+     *     'material' => array(
+     *         0 => 1,
+     *     ),
+     *     'percentage' => array(
+     *         0 => 100
+     *     ),
+     *     'materialWeaponModificator' => '0/0',
+     *     'technique' => array(
+     *         0 => 1,
+     *     )
+     *     'upgradeHitPoints' => 0,
+     *     'upgradeBreakFactor' => 0,
+     *     'upgradeInitiative' => 0,
+     *     'upgradeWeaponModificator' => '0/0',
+     * )
+     *
+     * @param array $data
+     *
+     * @return boolean
+     */
+    public function update($data)
+    {
+        $weaponModificatorString = '';
+
+        if (!empty($data['materialWeaponModificator']))
+        {
+            foreach ($data['materialWeaponModificator'] as $materialWeaponModificator)
+            {
+                $weaponModificatorString .= $materialWeaponModificator . ' || ';
+            }
+        }
+
+        $weaponModificators = \Helper\WeaponModificator::getWeaponModificatorArray(substr($weaponModificatorString, 0, -2));
+        $upgradeWeaponModificator = \Helper\WeaponModificator::toWeaponModificatorArray($data['upgradeWeaponModificator']['attack'], $data['upgradeWeaponModificator']['parade']);
+        $projectileForItem = Item::loadById($data['projectileForItemId']);
+
+        $sql = '
+            UPDATE blueprints
+            SET name = '.\sqlval($data['name']).',
+                itemId = '.\sqlval($data['itemId']).',
+                itemTypeId = '.\sqlval($data['itemTypeId']).',
+                `projectileForItemId` = '.\sqlval($projectileForItem->getItemId()).',
+                damageType = '.\sqlval($data['damageType']).',
+                materialWeaponModificator = '.\sqlval(json_encode($weaponModificators)).',
+                upgradeHitPoints = '.\sqlval($data['upgradeHitPoints']).',
+                upgradeBreakFactor = '.\sqlval($data['upgradeBreakFactor']).',
+                upgradeInitiative = '.\sqlval($data['upgradeInitiative']).',
+                upgradeWeaponModificator = '.\sqlval(json_encode($upgradeWeaponModificator)).',
+                bonusRangedFightValue = '.\sqlval($data['bonusRangedFightValue']).',
+                reducePhysicalStrengthRequirement = '.\sqlval($data['reducePhysicalStrengthRequirement']).'
+            WHERE `blueprintId` = '.\sqlval($this->getBlueprintId()).'
+        ';
+        $blueprintId = query($sql);
+
+        // Remove all materials and techniques.
+        $sql = '
+            DELETE FROM materialsToBlueprints
+            WHERE `blueprintId` = '.\sqlval($this->getBlueprintId()).'
+        ';
+        \query($sql);
+        $sql = '
+            DELETE FROM techniquesToBlueprints
+            WHERE `blueprintId` = '.\sqlval($this->getBlueprintId()).'
+        ';
+        \query($sql);
+
+        foreach ($data['material'] as $key => $material)
+        {
+            $materialAssetId = false;
+            $sql = '
+                SELECT
+                    `materialAssetId`,
+                    `percentage`
+                FROM materialAssets
+                WHERE `materialId` = '.\sqlval($material).'
+                    AND !deleted
+                ORDER BY percentage DESC
+            ';
+            $materialAssets = \query($sql, true);
+
+            foreach ($materialAssets as $materialAsset)
+            {
+                if ($data['percentage'][$key] >= $materialAsset['percentage'])
+                {
+                    $materialAssetId = $materialAsset['materialAssetId'];
+                    break;
+                }
+            }
+
+            if (empty($materialAssetId))
+            {
+                $materialAssetId = $materialAssets[0]['materialAssetId'];
+            }
+
+            $sql = '
+                INSERT INTO materialsToBlueprints
+                SET materialId = '.\sqlval($material).',
+                    blueprintId = '.\sqlval($blueprintId).',
+                    materialAssetId = '.\sqlval($materialAssetId).',
+                    percentage = '.\sqlval($data['percentage'][$key]).',
+                    talent = '.\sqlval($data['talent'][$key]).'
+            ';
+            query($sql);
+        }
+
+        if (!empty($data['technique']))
+        {
+            foreach ($data['technique'] as $technique)
+            {
+                $sql = '
+                    INSERT INTO techniquesToBlueprints
+                    SET techniqueId = '.\sqlval($technique).',
+                        blueprintId = '.\sqlval($blueprintId).'
+                ';
+                query($sql);
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Fill the data from the array into the object and cast them to the nearest possible type.
      *
      * @param array $data

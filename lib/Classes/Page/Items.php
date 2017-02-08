@@ -32,7 +32,7 @@ class Items extends \SmartWork\Page
      */
     public function process()
     {
-        $this->template->loadJs('item');
+        $this->getTemplate()->loadJs('item');
         $this->getTemplate()->loadJs('jquery.ajax');
         $this->getTemplate()->loadJs('removeRow');
         $this->getTemplate()->loadJs('jquery.popupEdit');

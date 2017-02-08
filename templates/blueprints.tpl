@@ -1,7 +1,7 @@
 {include file="header.tpl"}
 <div id="blueprints">
     <div class="submenu">
-        <a class="button" id="addBlueprint" href="#">{$translator->gt('addBlueprint')}</a>
+        <a class="button" id="addBlueprint" href="index.php?page=Blueprints&amp;action=edit&amp;id=new">{$translator->gt('addBlueprint')}</a>
         {foreach $blueprintListing->getGroupedList() as $key => $blueprints}
             <a class="button" href="#{$key}">{$translator->gt($key)}</a>
         {/foreach}
@@ -24,14 +24,15 @@
                         {foreach $columsPerItemType[$key] as $column}
                         <td class="{$column}">
                             {if $column == 'blueprint'}
-                                <a class="blueprintShowLink" href="#" data-id="{$blueprint.id}">{$blueprint.name}</a>
+                                <a class="blueprintShowLink" href="index.php?page=Blueprints&amp;action=stats&amp;id={$blueprint.id}">{$blueprint.name}</a>
                             {else}
                                 {$translator->gt($blueprint[$column])}
                             {/if}
                         </td>
                         {/foreach}
                         <td class="options">
-                            <a href="index.php?page=Blueprints&amp;remove={$blueprint.id}">X</a>
+                            <a class="edit" href="index.php?page=Blueprints&amp;action=edit&amp;id={$blueprint.id}" data-data-url="index.php?page=Blueprints&action=get&id={$blueprint.id}">E</a>
+                            <a class="remove" href="index.php?page=Blueprints&amp;action=remove&amp;id={$blueprint.id}">X</a>
                         </td>
                     </tr>
                 {/foreach}
@@ -148,7 +149,7 @@
                     <tr class="upgradeWeaponModificator">
                         <td>{$translator->gt('upgradeWeaponModificator')}</td>
                         <td>
-                            <input class="upgradeWeaponModificator" name="upgradeWeaponModificator[attack]" type="number" min="0" max="1" /> / <input class="upgradeWeaponModificator" name="upgradeWeaponModificator[parade]" type="number" type="number" min="0" max="1" />
+                            <input class="upgradeWeaponModificatorAttack" name="upgradeWeaponModificator[attack]" type="number" min="0" max="1" /> / <input class="upgradeWeaponModificatorParade" name="upgradeWeaponModificator[parade]" type="number" type="number" min="0" max="1" />
                         </td>
                     </tr>
                     <tr class="bonusRangedFightValue">
@@ -165,7 +166,7 @@
                     </tr>
                 </tbody>
                 <tfoot>
-                    <tr>
+                    <tr class="buttons">
                         <td colspan="2" class="buttonArea">
                             <input type="submit" value="{$translator->gt('addBlueprint')}" />
                         </td>

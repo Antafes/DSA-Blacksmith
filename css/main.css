@@ -232,7 +232,11 @@ table.addBlueprint .baseHitPointsDiceType
     width: 60px;
 }
 
-table.addBlueprint input.upgradeForceModificator
+table.addBlueprint input.upgradeWeaponModificatorAttack,
+table.addBlueprint input.upgradeWeaponModificatorParade,
+table.addBlueprint .upgradeBreakFactor input,
+table.addBlueprint .upgradeInitiative input,
+table.addBlueprint .upgradeHitPoints input
 {
     width: 50px;
 }

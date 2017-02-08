@@ -33,7 +33,7 @@ class Craftings extends \SmartWork\Page
     public function process()
     {
         $this->getTemplate()->loadJs('addCrafting');
-        $this->getTemplate()->loadJs('jquery.blueprint');
+        $this->getTemplate()->loadJs('jquery.popupBlueprint');
         $this->getTemplate()->loadJs('showCrafting');
         $this->getTemplate()->loadJs('jquery.addTalentPoints');
         $this->getTemplate()->loadJsReadyScript('
