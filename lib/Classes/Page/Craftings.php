@@ -37,8 +37,12 @@ class Craftings extends \SmartWork\Page
         $this->getTemplate()->loadJs('jquery.popupBlueprint');
         $this->getTemplate()->loadJs('jquery.addTalentPoints');
         $this->getTemplate()->loadJs('jquery.popupEdit');
+        $this->getTemplate()->loadJs('jquery.ajaxCheckbox');
         $this->getTemplate()->loadJs('crafting');
         $craftingsList = \Listing\Craftings::loadList();
+        $blueprintsList = \Listing\Blueprints::loadList();
+        $publicBlueprintsList = \Listing\Blueprints::loadPublicList();
+        $user = \User::getUserById($_SESSION['userId']);
 
         switch ($_GET['action']) {
             case 'remove':
@@ -50,6 +54,9 @@ class Craftings extends \SmartWork\Page
             case 'get':
                 $this->getCrafting($craftingsList->getById($_GET['id']));
                 break;
+            case 'getBlueprints':
+                $this->getBlueprints($blueprintsList, $user);
+                break;
         }
 
         if ($_GET['remove'])
@@ -57,9 +64,13 @@ class Craftings extends \SmartWork\Page
 
         }
 
-        $this->getTemplate()->assign('blueprints', \Listing\Blueprints::loadList());
-        $this->getTemplate()->assign('characters', \Listing\Characters::loadList());
-        $this->getTemplate()->assign('craftings', $craftingsList);
+        $this->getTemplate()->assign(array(
+            'blueprints' => $blueprintsList,
+            'publicBlueprints' => $publicBlueprintsList,
+            'characters' => \Listing\Characters::loadList(),
+            'craftings'  => $craftingsList,
+            'user'       => $user,
+        ));
     }
 
     /**
@@ -155,5 +166,50 @@ class Craftings extends \SmartWork\Page
         $craftingArray['blueprintId'] = $crafting->getBlueprint()->getBlueprintId();
 
         return $craftingArray;
+    }
+
+    /**
+     * Get a list of blueprints.
+     * Used for ajax requests.
+     *
+     * @param \Listing\Blueprints $blueprintsList
+     * @param \User               $user
+     *
+     * @return void
+     */
+    protected function getBlueprints(\Listing\Blueprints $blueprintsList, \User $user)
+    {
+        $this->doRender = false;
+        $blueprints = array();
+
+        /* @var $blueprint \Model\Blueprint */
+        foreach ($blueprintsList->getList() as $blueprint)
+        {
+            $blueprints[] = array(
+                'id' => $blueprint->getBlueprintId(),
+                'name' => $blueprint->getName(),
+                'item' => $blueprint->getItem()->getName(),
+            );
+        }
+
+        if ($user->getShowPublicBlueprints())
+        {
+            $blueprints['public'] = array();
+            $publicBlueprints = \Listing\Blueprints::loadPublicList();
+            /* @var $blueprint \Model\Blueprint */
+            foreach ($publicBlueprints->getList() as $blueprint)
+            {
+                $blueprints['public'][] = array(
+                    'id' => $blueprint->getBlueprintId(),
+                    'name' => $blueprint->getName(),
+                    'item' => $blueprint->getItem()->getName(),
+                );
+            }
+        }
+
+        $this->echoAjaxResponse(array(
+            'ok' => true,
+            'data' => $blueprints,
+        ));
     }
 }

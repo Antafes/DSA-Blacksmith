@@ -93,6 +93,11 @@ class Blueprint extends \SmartWork\Model
     protected $reducePhysicalStrengthRequirement;
 
     /**
+     * @var boolean
+     */
+    protected $public;
+
+    /**
      * Load the blueprint for the given id.
      *
      * @param integer $id
@@ -104,6 +109,7 @@ class Blueprint extends \SmartWork\Model
         $sql = '
             SELECT
                 `blueprintId`,
+                `userId`,
                 `name`,
                 `itemId`,
                 `itemTypeId`,
@@ -115,7 +121,8 @@ class Blueprint extends \SmartWork\Model
                 `upgradeInitiative`,
                 `upgradeWeaponModificator`,
                 `bonusRangedFightValue`,
-                `reducePhysicalStrengthRequirement`
+                `reducePhysicalStrengthRequirement`,
+                `public`
             FROM blueprints
             WHERE `blueprintId` = '.\sqlval($id).'
                 AND !`deleted`
@@ -402,6 +409,10 @@ class Blueprint extends \SmartWork\Model
             elseif ($key === 'projectileForItemId' && $value)
             {
                 $this->projectileForItem = Item::loadById($value);
+            }
+            elseif ($key === 'public')
+            {
+                $this->public = !!$value;
             }
             elseif (property_exists($this, $key))
             {
@@ -947,6 +958,8 @@ class Blueprint extends \SmartWork\Model
             'upgradeWeaponModificator' => \Helper\WeaponModificator::format($upgradeWeaponModificator[0]),
             'bonusRangedFightValue' => $this->getBonusRangedFightValue(),
             'reducePhysicalStrengthRequirement' => $this->getReducePhysicalStrengthRequirement(),
+            'public' => $this->isPublic(),
+            'alreadyUsed' => $this->isUsedByOtherUser(),
         );
     }
 
@@ -1078,5 +1091,78 @@ class Blueprint extends \SmartWork\Model
         }
 
         return $techniques;
+    }
+
+    /**
+     * Check if the blueprint is public.
+     *
+     * @return boolean
+     */
+    public function isPublic()
+    {
+        return $this->public;
+    }
+
+    /**
+     * Set the blueprint to public.
+     *
+     * @return boolean
+     */
+    public function setPublic()
+    {
+        $sql = '
+            UPDATE blueprints
+            SET `public` = 1
+            WHERE `blueprintId` = '.\sqlval($this->getBlueprintId()).'
+        ';
+        $isSet = !!\query($sql);
+
+        if ($isSet)
+        {
+            $this->public = true;
+        }
+
+        return $isSet;
+    }
+
+    /**
+     * Unset the blueprints public state.
+     *
+     * @return boolean
+     */
+    public function unsetPublic()
+    {
+        $sql = '
+            UPDATE blueprints
+            SET `public` = 0
+            WHERE `blueprintId` = '.\sqlval($this->getBlueprintId()).'
+        ';
+        $isUnset = !!\query($sql);
+
+        if ($isUnset)
+        {
+            $this->public = false;
+        }
+
+        return $isUnset;
+    }
+
+    /**
+     * Check whether the blueprint is already used by other users.
+     *
+     * @return boolean
+     */
+    public function isUsedByOtherUser()
+    {
+        $sql = '
+            SELECT COUNT(`craftingId`) as craftingCount
+            FROM craftings
+            WHERE `blueprintId` = '.\sqlval($this->getBlueprintId()).'
+                AND `userId` != '.\sqlval($_SESSION['userId']).'
+                AND !deleted
+        ';
+        $count = \query($sql);
+
+        return $count > 0;
     }
 }

@@ -18,7 +18,7 @@ namespace Page;
 class Options extends \SmartWork\Page
 {
     /**
-     * @var \SmartWork\User
+     * @var \User
      */
     protected $user;
 
@@ -29,7 +29,7 @@ class Options extends \SmartWork\Page
     {
         parent::__construct('options');
 
-        $this->user = \SmartWork\User::getUserById($_SESSION['userId']);
+        $this->user = \User::getUserById($_SESSION['userId']);
     }
 
     /**
@@ -39,22 +39,42 @@ class Options extends \SmartWork\Page
      */
     public function process()
     {
+        if ($_GET['action'])
+        {
+            switch ($_GET['action']) {
+                case 'showPublicBlueprints':
+                    $this->doRender = false;
+                    $this->user->setShowPublicBlueprints(!!$_GET['public']);
+                    $this->echoAjaxResponse(array(
+                        'ok' => true,
+                        'checkbox' => $this->user->getShowPublicBlueprints() ? 'set' : 'unset',
+                    ));
+                    break;
+            }
+        }
+
         if (!$_POST['generalOptions'] && !$_POST['passwordOptions'])
+        {
             return;
+        }
 
         if ($_POST['generalOptions'])
         {
             if ($_POST['generalOptions'] != $_SESSION['formSalts']['generalOptions'])
+            {
                 return;
+            }
 
-            $this->changeGeneralOptions($_POST['username'], $_POST['email']);
+            $this->changeGeneralOptions($_POST['username'], $_POST['email'], !!$_POST['showPublicBlueprints']);
             return;
         }
 
         if ($_POST['passwordOptions'])
         {
             if ($_POST['passwordOptions'] != $_SESSION['formSalts']['passwordOptions'])
+            {
                 return;
+            }
 
             $this->changePassword($_POST['password'], $_POST['repeatPassword']);
             return;
@@ -76,12 +96,13 @@ class Options extends \SmartWork\Page
     /**
      * Change and save general options of the user.
      *
-     * @param string $username
-     * @param string $email
+     * @param string  $username
+     * @param string  $email
+     * @param boolean $showPublicBlueprints
      *
      * @return void
      */
-    protected function changeGeneralOptions($username, $email)
+    protected function changeGeneralOptions($username, $email, $showPublicBlueprints)
     {
         if (!$username || !$email)
         {
@@ -91,6 +112,8 @@ class Options extends \SmartWork\Page
 
         $this->user->setName($username);
         $this->user->setEmail($email);
+        $this->user->setShowPublicBlueprints($showPublicBlueprints);
+
         $this->template->assign('messageGeneral', 'generalSuccess');
     }
 

@@ -39,6 +39,7 @@ class Blueprints extends \SmartWork\Page
         $this->getTemplate()->loadJs('jquery.techniqueSelect');
         $this->getTemplate()->loadJs('jquery.popupBlueprint');
         $this->getTemplate()->loadJs('jquery.popupEdit');
+        $this->getTemplate()->loadJs('jquery.ajaxCheckbox');
         $this->getTemplate()->loadJs('blueprint');
         $this->getTemplate()->loadJsReadyScript('
             $(document).tooltip({
@@ -51,6 +52,7 @@ class Blueprints extends \SmartWork\Page
         ');
 
         $blueprintListing = \Listing\Blueprints::loadList();
+        $publicBlueprintsList = \Listing\Blueprints::loadPublicList();
         $itemListing = \Listing\Items::loadList();
         $itemTypeListing = \Listing\ItemTypes::loadList();
         $materialListing = \Listing\Materials::loadList();
@@ -68,19 +70,21 @@ class Blueprints extends \SmartWork\Page
                 $this->getBlueprint($blueprintListing->getById($_GET['id']));
                 break;
             case 'stats':
-                $this->getStats($blueprintListing->getById($_GET['id']));
+                $blueprint = $blueprintListing->getById($_GET['id']);
+
+                if (!$blueprint)
+                {
+                    $blueprint = $publicBlueprintsList->getById($_GET['id']);
+                }
+
+                $this->getStats($blueprint);
+                break;
+            case 'public':
+                $this->setPublicState($blueprintListing->getById($_GET['id']), !!$_GET['public']);
                 break;
         }
 
         $translator = \SmartWork\Translator::getInstance();
-        $this->getTemplate()->assign('blueprintListing', $blueprintListing);
-        $this->getTemplate()->assign('itemListing', $itemListing);
-        $this->getTemplate()->assign('itemTypeListing', $itemTypeListing);
-        $this->getTemplate()->assign('materialListing', $materialListing);
-        $this->getTemplate()->assign('materialList', json_encode($materialListing->getAsArray()));
-        $this->getTemplate()->assign('techniqueListing', $techniqueListing);
-        $this->getTemplate()->assign('techniqueList', json_encode($techniqueListing->getAsArray()));
-        $this->getTemplate()->assign('currencyList', $moneyHelper->getCurrencyList());
         $talentList = array(
             'bowMaking' => $translator->gt('bowMaking'),
             'precisionMechanics' => $translator->gt('precisionMechanics'),
@@ -90,35 +94,47 @@ class Blueprints extends \SmartWork\Page
             'tailoring' => $translator->gt('tailoring'),
         );
         asort($talentList, SORT_NATURAL);
-        $this->getTemplate()->assign('talentList', json_encode($talentList));
-        $this->assign('columsPerItemType', array(
-            'meleeWeapon' => array(
-                'blueprint',
-                'item',
-                'itemType',
-                'damageType',
-                'materials',
-                'techniques',
-                'upgradeHitPoints',
-                'upgradeBreakFactor',
-                'upgradeInitiative',
-                'upgradeWeaponModificator',
-            ),
-            'rangedWeapon' => array(
-                'blueprint',
-                'item',
-                'itemType',
-                'damageType',
-                'materials',
-                'bonusRangedFightValue',
-                'reducePhysicalStrengthRequirement',
-            ),
-            'projectile' => array(
-                'blueprint',
-                'item',
-                'itemType',
-                'projectileForItem',
-                'materials',
+        $this->getTemplate()->assign(array(
+            'blueprintListing'  => $blueprintListing,
+            'publicBlueprintListing' => $publicBlueprintsList,
+            'itemListing'       => $itemListing,
+            'itemTypeListing'   => $itemTypeListing,
+            'materialListing'   => $materialListing,
+            'materialList'      => json_encode($materialListing->getAsArray()),
+            'techniqueListing'  => $techniqueListing,
+            'techniqueList'     => json_encode($techniqueListing->getAsArray()),
+            'currencyList'      => $moneyHelper->getCurrencyList(),
+            'talentList'        => json_encode($talentList),
+            'user'              => \User::getUserById($_SESSION['userId']),
+            'columsPerItemType' => array(
+                'meleeWeapon' => array(
+                    'blueprint',
+                    'item',
+                    'itemType',
+                    'damageType',
+                    'materials',
+                    'techniques',
+                    'upgradeHitPoints',
+                    'upgradeBreakFactor',
+                    'upgradeInitiative',
+                    'upgradeWeaponModificator',
+                ),
+                'rangedWeapon' => array(
+                    'blueprint',
+                    'item',
+                    'itemType',
+                    'damageType',
+                    'materials',
+                    'bonusRangedFightValue',
+                    'reducePhysicalStrengthRequirement',
+                ),
+                'projectile' => array(
+                    'blueprint',
+                    'item',
+                    'itemType',
+                    'projectileForItem',
+                    'materials',
+                ),
             ),
         ));
     }
@@ -270,5 +286,45 @@ class Blueprints extends \SmartWork\Page
         $blueprintArray['upgradeWeaponModificator'] = $blueprint->getUpgradeWeaponModificator()[0];
 
         return $blueprintArray;
+    }
+
+    /**
+     * Set the public state of a blueprint.
+     *
+     * @param \Model\Blueprint $blueprint
+     * @param boolean          $state
+     *
+     * @return void
+     */
+    protected function setPublicState(\Model\Blueprint $blueprint, $state)
+    {
+        $this->doRender = false;
+
+        if ($state)
+        {
+            if ($blueprint->setPublic())
+            {
+                $this->echoAjaxResponse(
+                    array(
+                        'ok' => true,
+                        'checkbox' => 'set',
+                    )
+                );
+            }
+        }
+        else
+        {
+            if ($blueprint->unsetPublic())
+            {
+                $this->echoAjaxResponse(
+                    array(
+                        'ok' => true,
+                        'checkbox' => 'unset',
+                    )
+                );
+            }
+        }
+
+        $this->echoAjaxResponse(array('ok' => false));
     }
 }

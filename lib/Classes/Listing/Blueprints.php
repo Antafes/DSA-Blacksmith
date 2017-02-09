@@ -51,6 +51,46 @@ class Blueprints extends \SmartWork\Listing
     }
 
     /**
+     * Load all available blueprints for the logged in user.
+     *
+     * @return \self
+     */
+    public static function loadPublicList($orderBy = 'name')
+    {
+        $user = \User::getUserById($_SESSION['userId']);
+
+        if ($user->getShowPublicBlueprints())
+        {
+            $sql = '
+                SELECT `blueprintId`
+                FROM blueprints
+                WHERE `public` = 1
+                    AND userid != '.\sqlval($_SESSION['userId']).'
+                    AND !deleted
+                ORDER BY '.sqlval($orderBy, false).'
+            ';
+            $blueprintIds = query($sql, true);
+        }
+
+        $obj = new self();
+
+        if (empty($blueprintIds))
+        {
+            return $obj;
+        }
+
+        $list = array();
+        foreach ($blueprintIds as $blueprint)
+        {
+            $list[$blueprint['blueprintId']] = \Model\Blueprint::loadById($blueprint['blueprintId']);
+        }
+
+        $obj->setList($list);
+
+        return $obj;
+    }
+
+    /**
      * Get a single blueprint by its id.
      *
      * @param integer $id

@@ -2,10 +2,10 @@
 <div id="options">
     <form method="post" action="index.php?page=Options">
         {if $errorGeneral}
-            <div class="error">{$errorGeneral}</div>
+            <div class="error">{$translator->gt($errorGeneral)}</div>
         {/if}
         {if $messageGeneral}
-            <div class="message">{$messageGeneral}</div>
+            <div class="message">{$translator->gt($messageGeneral)}</div>
         {/if}
         <table>
             <tbody>
@@ -19,6 +19,12 @@
                     <td>{$translator->gt('email')}:</td>
                     <td>
                         <input type="text" name="email" value="{$user->getEmail()}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>{$translator->gt('showPublicBlueprints')}:</td>
+                    <td>
+                        <input type="checkbox" name="showPublicBlueprints" value="1" {if ($user->getShowPublicBlueprints())}checked="checked"{/if} />
                     </td>
                 </tr>
                 <tr>

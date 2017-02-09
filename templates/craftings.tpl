@@ -68,7 +68,18 @@
                                 {foreach from=$blueprints->getAsArray() item='blueprint'}
                                     <option value="{$blueprint.id}">{$blueprint.name} ({$blueprint.item})</option>
                                 {/foreach}
-                            </select>
+                                {if ($user->getShowPublicBlueprints() && $publicBlueprints->getAsArray())}
+                                    <optgroup class="publicBlueprints" label="{$translator->gt('publicBlueprints')}">
+                                        {foreach from=$publicBlueprints->getAsArray() item='blueprint'}
+                                            <option value="{$blueprint.id}">{$blueprint.name} ({$blueprint.item})</option>
+                                        {/foreach}
+                                    </optgroup>
+                                {/if}
+                            </select><br />
+                            <label>
+                                <input type="checkbox" id="showPublicBlueprints" value="1" {if $user->getShowPublicBlueprints()}checked="checked"{/if} />
+                                {$translator->gt(showPublicBlueprints)}
+                            </label>
                         </td>
                     </tr>
                     <tr class="odd">

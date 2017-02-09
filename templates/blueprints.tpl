@@ -5,6 +5,13 @@
         {foreach $blueprintListing->getGroupedList() as $key => $blueprints}
             <a class="button" href="#{$key}">{$translator->gt($key)}</a>
         {/foreach}
+        {if $user->getShowPublicBlueprints()}
+            <a class="button" href="#publicBlueprints">{$translator->gt('publicBlueprints')}</a>
+        {/if}
+        <label>
+            <input type="checkbox" id="showPublicBlueprints" value="1" {if $user->getShowPublicBlueprints()}checked="checked"{/if} />
+            {$translator->gt(showPublicBlueprints)}
+        </label>
         <div class="clear"></div>
     </div>
     {foreach $blueprintListing->getGroupedList() as $key => $blueprints}
@@ -15,6 +22,7 @@
                     {foreach $columsPerItemType[$key] as $column}
                         <th class="{$column}">{$translator->gt($column)}</th>
                     {/foreach}
+                    <th class="public">{$translator->gt('public')}</th>
                     <th class="options"></th>
                 </tr>
             </thead>
@@ -30,9 +38,20 @@
                             {/if}
                         </td>
                         {/foreach}
+                        <td class="public">
+                            {if ($blueprint.public && $blueprint.alreadyUsed)}
+                                <span class="disabled" title="{$translator->gt('disabledDueToUsage')}">&#10004;</span>
+                            {else}
+                            <input type="checkbox" class="publicCheckbox" data-id="{$blueprint.id}" value="1" {if ($blueprint.public)}checked="checked" {if ($blueprint.alreadyUsed)}disabled="disabled"{/if}{/if} />
+                            {/if}
+                        </td>
                         <td class="options">
                             <a class="edit" href="index.php?page=Blueprints&amp;action=edit&amp;id={$blueprint.id}" data-data-url="index.php?page=Blueprints&action=get&id={$blueprint.id}">E</a>
-                            <a class="remove" href="index.php?page=Blueprints&amp;action=remove&amp;id={$blueprint.id}">X</a>
+                            {if ($blueprint.public && $blueprint.alreadyUsed)}
+                                <span class="disabled" title="{$translator->gt('disabledDueToUsage')}">X</span>
+                            {else}
+                                <a class="remove" href="index.php?page=Blueprints&amp;action=remove&amp;id={$blueprint.id}">X</a>
+                            {/if}
                         </td>
                     </tr>
                 {/foreach}
@@ -41,6 +60,38 @@
     {foreachelse}
         <div>{$translator->gt('noBlueprintsFound')}</div>
     {/foreach}
+    {if $user->getShowPublicBlueprints()}
+        <h2 class="publicBlueprints" id="publicBlueprints">{$translator->gt('publicBlueprints')}</h2>
+        {foreach $publicBlueprintListing->getGroupedList() as $key => $blueprints}
+            <h3 id="{$key}">{$translator->gt($key)}</h3>
+            <table class="collapse">
+                <thead>
+                    <tr>
+                        {foreach $columsPerItemType[$key] as $column}
+                            <th class="{$column}">{$translator->gt($column)}</th>
+                        {/foreach}
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach $blueprints as $blueprint}
+                        <tr class="{cycle values="odd,even"}">
+                            {foreach $columsPerItemType[$key] as $column}
+                            <td class="{$column}">
+                                {if $column == 'blueprint'}
+                                    <a class="blueprintShowLink" href="index.php?page=Blueprints&amp;action=stats&amp;id={$blueprint.id}">{$blueprint.name}</a>
+                                {else}
+                                    {$translator->gt($blueprint[$column])}
+                                {/if}
+                            </td>
+                            {/foreach}
+                        </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        {foreachelse}
+            <div>{$translator->gt('noBlueprintsFound')}</div>
+        {/foreach}
+    {/if}
     <div id="addBlueprintPopup" style="display: none;" data-title="{$translator->gt('addBlueprint')}">
         <form method="post" action="ajax/addMaterial.php">
             <table class="addBlueprint collapse">
