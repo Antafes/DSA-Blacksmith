@@ -59,11 +59,6 @@ class Craftings extends \SmartWork\Page
                 break;
         }
 
-        if ($_GET['remove'])
-        {
-
-        }
-
         $this->getTemplate()->assign(array(
             'blueprints' => $blueprintsList,
             'publicBlueprints' => $publicBlueprintsList,
