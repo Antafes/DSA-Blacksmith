@@ -47,7 +47,7 @@
                         </td>
                         <td class="options">
                             <a class="edit" href="index.php?page=Blueprints&amp;action=edit&amp;id={$blueprint.id}" data-data-url="index.php?page=Blueprints&action=get&id={$blueprint.id}">E</a>
-                            {if ($blueprint.public && $blueprint.alreadyUsed)}
+                            {if ($blueprint.alreadyUsedByAnyone)}
                                 <span class="disabled" title="{$translator->gt('disabledDueToUsage')}">X</span>
                             {else}
                                 <a class="remove" href="index.php?page=Blueprints&amp;action=remove&amp;id={$blueprint.id}">X</a>

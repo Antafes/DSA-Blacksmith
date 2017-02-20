@@ -995,7 +995,7 @@ class Blueprint extends \SmartWork\Model
             'bonusRangedFightValue' => $this->getBonusRangedFightValue(),
             'reducePhysicalStrengthRequirement' => $this->getReducePhysicalStrengthRequirement(),
             'public' => $this->isPublic(),
-            'alreadyUsed' => $this->isUsedByOtherUser(),
+            'alreadyUsedByAnyone' => $this->isUsedByAnyone(),
         );
     }
 
@@ -1184,17 +1184,16 @@ class Blueprint extends \SmartWork\Model
     }
 
     /**
-     * Check whether the blueprint is already used by other users.
+     * Check whether the blueprint is already used by anyone.
      *
      * @return boolean
      */
-    public function isUsedByOtherUser()
+    public function isUsedByAnyone()
     {
         $sql = '
             SELECT COUNT(`craftingId`) as craftingCount
             FROM craftings
             WHERE `blueprintId` = '.\sqlval($this->getBlueprintId()).'
-                AND `userId` != '.\sqlval($_SESSION['userId']).'
                 AND !deleted
         ';
         $count = \query($sql);
