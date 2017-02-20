@@ -202,57 +202,12 @@ class Blueprint extends \SmartWork\Model
                 reducePhysicalStrengthRequirement = '.\sqlval($data['reducePhysicalStrengthRequirement']).'
         ';
         $blueprintId = query($sql);
-
-        foreach ($data['material'] as $key => $material)
-        {
-            $materialAssetId = false;
-            $sql = '
-                SELECT
-                    `materialAssetId`,
-                    `percentage`
-                FROM materialAssets
-                WHERE `materialId` = '.\sqlval($material).'
-                    AND !deleted
-                ORDER BY percentage DESC
-            ';
-            $materialAssets = \query($sql, true);
-
-            foreach ($materialAssets as $materialAsset)
-            {
-                if ($data['percentage'][$key] >= $materialAsset['percentage'])
-                {
-                    $materialAssetId = $materialAsset['materialAssetId'];
-                    break;
-                }
-            }
-
-            if (empty($materialAssetId))
-            {
-                $materialAssetId = $materialAssets[0]['materialAssetId'];
-            }
-
-            $sql = '
-                INSERT INTO materialsToBlueprints
-                SET materialId = '.\sqlval($material).',
-                    blueprintId = '.\sqlval($blueprintId).',
-                    materialAssetId = '.\sqlval($materialAssetId).',
-                    percentage = '.\sqlval($data['percentage'][$key]).',
-                    talent = '.\sqlval($data['talent'][$key]).'
-            ';
-            query($sql);
-        }
+        $blueprint = self::loadById($blueprintId);
+        $blueprint->addMaterials($data['material'], $data['percentage'], $data['talent']);
 
         if (!empty($data['technique']))
         {
-            foreach ($data['technique'] as $technique)
-            {
-                $sql = '
-                    INSERT INTO techniquesToBlueprints
-                    SET techniqueId = '.\sqlval($technique).',
-                        blueprintId = '.\sqlval($blueprintId).'
-                ';
-                query($sql);
-            }
+            $blueprint->addTechniques($data['technique']);
         }
 
         return true;
@@ -320,6 +275,9 @@ class Blueprint extends \SmartWork\Model
         ';
         \query($sql);
 
+        // Save the crafting talent points, because they are automatically removed in the database.
+        $craftingTalentPoints = $this->getCraftingTalentPoints();
+
         // Remove all materials and techniques.
         $sql = '
             DELETE FROM materialsToBlueprints
@@ -332,7 +290,35 @@ class Blueprint extends \SmartWork\Model
         ';
         \query($sql);
 
-        foreach ($data['material'] as $key => $material)
+        $this->addMaterials($data['material'], $data['percentage'], $data['talent']);
+
+        if (!empty($data['technique']))
+        {
+            $this->addTechniques($data['technique']);
+        }
+
+        // If talent points are safed, re add them.
+        if ($craftingTalentPoints)
+        {
+            $this->reAddCraftingTalentPoints($craftingTalentPoints);
+        }
+
+        return true;
+    }
+
+    /**
+     * Add the materials for a blueprint.
+     *
+     * @param array $materials
+     * @param array $percentages
+     * @param array $talents
+     *
+     * @return void
+     */
+    public function addMaterials($materials, $percentages, $talents)
+    {
+
+        foreach ($materials as $key => $material)
         {
             $materialAssetId = false;
             $sql = '
@@ -348,7 +334,7 @@ class Blueprint extends \SmartWork\Model
 
             foreach ($materialAssets as $materialAsset)
             {
-                if ($data['percentage'][$key] >= $materialAsset['percentage'])
+                if ($percentages[$key] >= $materialAsset['percentage'])
                 {
                     $materialAssetId = $materialAsset['materialAssetId'];
                     break;
@@ -365,26 +351,73 @@ class Blueprint extends \SmartWork\Model
                 SET materialId = '.\sqlval($material).',
                     blueprintId = '.\sqlval($this->getBlueprintId()).',
                     materialAssetId = '.\sqlval($materialAssetId).',
-                    percentage = '.\sqlval($data['percentage'][$key]).',
-                    talent = '.\sqlval($data['talent'][$key]).'
+                    percentage = '.\sqlval($percentages[$key]).',
+                    talent = '.\sqlval($talents[$key]).'
             ';
             \query($sql);
         }
+    }
 
-        if (!empty($data['technique']))
+    /**
+     * Add the techniques for a blueprint.
+     *
+     * @param array $techniques
+     *
+     * @return void
+     */
+    public function addTechniques($techniques)
+    {
+        foreach ($techniques as $technique)
         {
-            foreach ($data['technique'] as $technique)
-            {
-                $sql = '
-                    INSERT INTO techniquesToBlueprints
-                    SET techniqueId = '.\sqlval($technique).',
-                        blueprintId = '.\sqlval($this->getBlueprintId()).'
-                ';
-                \query($sql);
-            }
+            $sql = '
+                INSERT INTO techniquesToBlueprints
+                SET techniqueId = '.\sqlval($technique).',
+                    blueprintId = '.\sqlval($this->getBlueprintId()).'
+            ';
+            \query($sql);
         }
+    }
 
-        return true;
+    /**
+     * Get the crafting talent points, if available.
+     *
+     * @return array
+     */
+    protected function getCraftingTalentPoints()
+    {
+        $sql = '
+            SELECT
+                `craftingId`,
+                `materialId`,
+                `blueprintId`,
+                `gainedTalentPoints`
+            FROM craftingTalentPoints
+            WHERE `blueprintId` = '.\sqlval($this->getBlueprintId()).'
+                AND !deleted
+        ';
+        return \query($sql, true);
+    }
+
+    /**
+     * Re adds the crafting talent points in the given array.
+     *
+     * @param array $craftingTalentPoints
+     *
+     * @return void
+     */
+    protected function reAddCraftingTalentPoints($craftingTalentPoints)
+    {
+        foreach ($craftingTalentPoints as $row)
+        {
+            $sql = '
+                INSERT INTO craftingTalentPoints
+                SET `craftingId` = '.\sqlval($row['craftingId']).',
+                    `materialId` = '.\sqlval($row['materialId']).',
+                    `blueprintId` = '.\sqlval($this->getBlueprintId()).',
+                    `gainedTalentPoints` = '.\sqlval($row['gainedTalentPoints']).'
+            ';
+            \query($sql);
+        }
     }
 
     /**
@@ -441,14 +474,17 @@ class Blueprint extends \SmartWork\Model
         $materialIds = query($sql, true);
 
         $list = array();
-        foreach ($materialIds as $material)
+        if ($materialIds)
         {
-            $list[$material['materialId']] = array(
-                'material' => \Model\Material::loadById($material['materialId']),
-                'materialAsset' => \Model\MaterialAsset::loadById($material['materialAssetId']),
-                'percentage' => intval($material['percentage']),
-                'talent' => $material['talent'],
-            );
+            foreach ($materialIds as $material)
+            {
+                $list[$material['materialId']] = array(
+                    'material' => \Model\Material::loadById($material['materialId']),
+                    'materialAsset' => \Model\MaterialAsset::loadById($material['materialAssetId']),
+                    'percentage' => intval($material['percentage']),
+                    'talent' => $material['talent'],
+                );
+            }
         }
 
         $this->materialList = $list;
