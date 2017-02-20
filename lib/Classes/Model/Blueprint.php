@@ -318,7 +318,7 @@ class Blueprint extends \SmartWork\Model
                 reducePhysicalStrengthRequirement = '.\sqlval($data['reducePhysicalStrengthRequirement']).'
             WHERE `blueprintId` = '.\sqlval($this->getBlueprintId()).'
         ';
-        $blueprintId = query($sql);
+        \query($sql);
 
         // Remove all materials and techniques.
         $sql = '
@@ -363,12 +363,12 @@ class Blueprint extends \SmartWork\Model
             $sql = '
                 INSERT INTO materialsToBlueprints
                 SET materialId = '.\sqlval($material).',
-                    blueprintId = '.\sqlval($blueprintId).',
+                    blueprintId = '.\sqlval($this->getBlueprintId()).',
                     materialAssetId = '.\sqlval($materialAssetId).',
                     percentage = '.\sqlval($data['percentage'][$key]).',
                     talent = '.\sqlval($data['talent'][$key]).'
             ';
-            query($sql);
+            \query($sql);
         }
 
         if (!empty($data['technique']))
@@ -378,9 +378,9 @@ class Blueprint extends \SmartWork\Model
                 $sql = '
                     INSERT INTO techniquesToBlueprints
                     SET techniqueId = '.\sqlval($technique).',
-                        blueprintId = '.\sqlval($blueprintId).'
+                        blueprintId = '.\sqlval($this->getBlueprintId()).'
                 ';
-                query($sql);
+                \query($sql);
             }
         }
 
